@@ -235,11 +235,10 @@
 
 
         #img{
-            height: 600px;
+            height: 700px;
             background-image: url('flat-lay-burger-fries-plate-with-copyspace.jpg'); 
             background-size: cover;
             background-attachment: fixed;
-            overflow-x: hidden; 
             box-shadow: 0px 3px 10px rgba(39, 39, 39, 0.8);
 
         }
@@ -250,16 +249,8 @@
             color: #ffc400;
         }
 
-
-
-
-
-
-
-
-
         /* Animacion */
-/* 
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -285,7 +276,7 @@
 
         .hero h1,h3 {            
             animation: fadeInUp 1.5s;
-        } */
+        } 
         
     </style>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -300,7 +291,7 @@
 
 </head>
 <body id="body">
-
+    
     
     <div id="img">
         {{-- <img src="LOGO_ATENAS.jpg" alt="sjjj"> --}}
@@ -332,7 +323,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" style="margin-left: 20px;" href="#">Reseñas</a>
                             </li>
-
                             
                             <li class="nav-item" id="icons">
                                 <a class="nav-link" style="margin-left: 20px;" href="#">

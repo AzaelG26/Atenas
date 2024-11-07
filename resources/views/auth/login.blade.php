@@ -60,7 +60,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     {{-- Para íconos de redes sociales --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
     <style>
         #body-login{
             margin: 0;
@@ -93,35 +92,8 @@
             justify-content: center;
             align-items: center;
             /* height: 100%; */
-        }
-/*         
-        #container-inputs div,#btn-sesion{
-            margin-top: 20px;
-        }
-
-        .img-fluid{
-            height: 99.7%;
-        }
-        
-        #btn-sesion{
-            
-            background-color: rgb(13, 118, 136);
-            color: white;
-            border: none;
-            transition: transform 0.3s ease; 
-        }
-
-        #btn-sesion:hover{
-            transform: translateY(1px); 
-            background: rgb(25, 131, 150);
-            box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.219);
-        }
-
-        #btn-sesion:active{
-            background-color: rgb(62, 139, 153);
-            
-        } */
-
+        }       
+     
         .input-icon {
             position: relative;
             width: 100%;
@@ -198,9 +170,6 @@
         #btn-sesion:hover::before {
         transform: translate3d(100%, 0, 0);
         }
-                
-   
-   
     </style>
 </head>
 <body id="body-login">
@@ -236,16 +205,14 @@
                                         @enderror
                                     </p>
                                 </div>
-                            </div>
-                            
-
+                            </div>                    
                             {{-- <div class="col-md-7">
                                 <label for="remember_me" class="inline-flex items-center">
                                     <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
                                     <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                                 </label>
                             </div> --}}
-                            
+                        
                             <div class="mt-4" style="display:flex; flex-direction:column; ">
                                 <div style="display: flex; flex-direction:column; align-items:center">
                                     <button  type="submit" id="btn-sesion" class="btn" style="border-radius: 15px;"><span>Enter</span></button>  
@@ -254,15 +221,12 @@
                                     </a> 
                                 </div>
                             </div>
-
                             @if (Route::has('register'))
                             <div >
                                 Don´t have an account? &nbsp;<a href="{{ route('register') }}" >Register</a>
                             </div>
                             @endif  
-
-                            {{-- <div class="flex items-center justify-end mt-4" >
-                                
+                            {{-- <div class="flex items-center justify-end mt-4" >                                
                                 @if (Route::has('register'))
                                     <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
                                 @endif                
@@ -280,9 +244,7 @@
     @if (session('status'))
     <script>
             alert('{{ session('status') }}');
-    </script>
-        
-    @endif
-        
+    </script>        
+    @endif        
 </body>
 </html>
