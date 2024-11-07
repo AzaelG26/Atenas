@@ -94,7 +94,7 @@
             align-items: center;
             /* height: 100%; */
         }
-        
+/*         
         #container-inputs div,#btn-sesion{
             margin-top: 20px;
         }
@@ -104,7 +104,7 @@
         }
         
         #btn-sesion{
-            width: 17em;
+            
             background-color: rgb(13, 118, 136);
             color: white;
             border: none;
@@ -112,15 +112,15 @@
         }
 
         #btn-sesion:hover{
-            transform: translateY(2px); 
+            transform: translateY(1px); 
             background: rgb(25, 131, 150);
-            box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.473);
+            box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.219);
         }
 
         #btn-sesion:active{
             background-color: rgb(62, 139, 153);
             
-        }
+        } */
 
         .input-icon {
             position: relative;
@@ -145,13 +145,67 @@
             height: auto; 
             justify-content:center
         }     
+
+        #btn-sesion {
+        cursor: pointer;
+        border: none;
+        width: 17em;
+        margin-top: 20px;
+        padding: 0.5rem 2rem;
+        font-family: inherit;
+        height: 45px;
+        font-size: inherit;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        font-weight: 700;       
+        border-radius:20px;
+        overflow: hidden;
+        background: #feffff;
+        color: white;
+        }
+
+        #btn-sesion span {
+        position: relative;
+        z-index: 10;
+        transition: color 0.4s;        
+        
+        }
+
+        #btn-sesion:hover span {
+        color: #006c8d;
+        }
+
+        #btn-sesion::before,
+        #btn-sesion::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        }
+
+        #btn-sesion::before {
+        content: "";
+        background:  rgb(13, 118, 136);
+        width: 120%;
+        left: -10%;
+        transform: skew(30deg);
+        transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+        }
+
+        #btn-sesion:hover::before {
+        transform: translate3d(100%, 0, 0);
+        }
+                
    
    
     </style>
 </head>
 <body id="body-login">
     <section id="cont">
-        <div class="card mb-3" style="height:auto; width:25em;margin-top:40px;">
+        <div class="card mb-3" style="height:auto; width:25em; margin-top:40px;">
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="col-md-12">
@@ -192,9 +246,9 @@
                                 </label>
                             </div> --}}
                             
-                            <div class="mt-4" style="display:flex; flex-direction:column;">
+                            <div class="mt-4" style="display:flex; flex-direction:column; ">
                                 <div style="display: flex; flex-direction:column; align-items:center">
-                                    <button  type="submit" id="btn-sesion" class="btn" style="border-radius: 15px;">Enter</button>  
+                                    <button  type="submit" id="btn-sesion" class="btn" style="border-radius: 15px;"><span>Enter</span></button>  
                                     <a href="{{ route('password.request') }}">
                                         {{ __('Forgot your password?') }}
                                     </a> 
@@ -213,7 +267,8 @@
                                     <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
                                 @endif                
                             </div> --}}
-                            
+                        </div> 
+                    </div>   
                 </form>
             </div>            
         </div>          
@@ -222,6 +277,12 @@
     <section style="border-top:1px solid yellow; margin-top:100px; width:100%;">
         @include('layout.base')
     </section>
-    
+    @if (session('status'))
+    <script>
+            alert('{{ session('status') }}');
+    </script>
+        
+    @endif
+        
 </body>
 </html>

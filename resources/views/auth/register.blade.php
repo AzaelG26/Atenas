@@ -112,24 +112,56 @@
             margin-top: 28px;
         }
         .btn-register{
-            border-radius: 15px;
-            background-color: rgb(13, 118, 136);
-            color: white;
-            border: none;
-            height: 40px;
-            transition: transform 0.3s ease; 
-            margin-top: 28px;
+        cursor: pointer;
+        border: none;
+        width: 17em;
+        margin-top: 60px;
+        padding: 0.5rem 2rem;
+        font-family: inherit;
+        height: 45px;
+        font-size: inherit;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        font-weight: 700;       
+        border-radius: 20px;
+        overflow: hidden;
+        background: #feffff;
+        color: white;
         }
-        .btn-register:hover{
-            transform: translateY(2px); 
-            background: rgb(25, 131, 150);
-            box-shadow: 0px -1px 20px rgb(24, 29, 53);
+        .btn-register span{
+        position: relative;
+        z-index: 10;
+        transition: color 0.4s;
         }
         
-        .btn-register:active{
-            background-color: rgb(62, 139, 153);
+        .btn-register:hover span {
+        color: #006c8d;
         }
 
+        .btn-register::before,
+        .btn-register::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        }
+
+        .btn-register::before {
+        content: "";
+        background:  rgb(13, 118, 136);
+        width: 120%;
+        left: -10%;
+        transform: skew(30deg);
+        transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+        }
+
+        .btn-register:hover::before {
+        transform: translate3d(100%, 0, 0);
+        }
+           
     </style>
  </head>
  <body id="body-register">
@@ -139,7 +171,7 @@
                 <div  class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-                        <h2 class="card-title" style="text-align: center;">Sign in</h2>
+                        <h2 class="card-title" style="text-align: center;">Register</h2>
                         <hr>
 
                         <div class="col-md-12">
@@ -191,7 +223,7 @@
 
                             
                             <div>
-                                <button style="width: 100%" type="submit" class="btn-register">Register</button>
+                                <button style="width: 100%" type="submit" class="btn-register"><span>Accept</span></button>
                             </div>
                         </div>
                     </form>

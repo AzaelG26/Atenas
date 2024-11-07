@@ -8,20 +8,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     {{-- Para íconos de redes sociales --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-
-
-
-
     <style>
         
         #body {
             margin: 0;
+            width: 100vw;
             background-color: #0C1011; /* Cambia a un color opaco para comprobar */
-            min-height: 100vh; /* Asegúrate de que el body ocupe al menos el 100% de la altura de la ventana */
             overflow-x: auto;
+            overflow-y: auto; /* Asegúrate de que el overflow-y esté en auto */
 
-        }
-
+        }        
         
         .sticky-top{
             margin: 0;
@@ -36,7 +32,7 @@
         .navbar-nav .nav-link {
             /* color: #ffffff;  */
             color: #be952c; 
-            font-size: 22px; 
+            font-size: 20px; 
             transition: color 0.1s ease, box-shadow 0.1s ease, font-size 0.1s ease, background-color 0.1s ease;
             padding: 10px 15px; 
             position: relative; 
@@ -46,7 +42,7 @@
 
 .navbar-nav .nav-link:hover {
     text-decoration: none;
-    font-size: 24px;
+    font-size: 22px;
     color: #8CD2F0; 
     background-color: transparent; 
     /* box-shadow: 0px 3px 10px rgba(255, 215, 0, 0.8);  */
@@ -253,6 +249,43 @@
         .subtitulos:hover{
             color: #ffc400;
         }
+
+
+
+
+
+
+
+
+
+        /* Animacion */
+/* 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+            animation: fadeIn 1s;
+            
+        }
+
+        .hero h1,h3 {            
+            animation: fadeInUp 1.5s;
+        } */
         
     </style>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -308,8 +341,7 @@
                                 @if (Route::has('login'))
                                     <a class="nav-link" style="margin-left: 20px;" href="{{route('login')}}">
                                         <ion-icon name="person-sharp"></ion-icon>
-                                    </a>
-                                  
+                                    </a>                                  
                                 @endif
                             </li>
                         </ul>
@@ -322,7 +354,7 @@
         </div>
 
         
-        <div style="text-align:center;">
+        <div style="text-align:center;" class="hero">
             <h1 style="color: rgb(255, 255, 255); font-family: 'DynaPuff', system-ui; font-size:4em;">¡Prueba la Felicidad en Cada Mordida!</h1>
             <h3 style="color: rgb(255, 255, 255); font-family: 'DynaPuff', system-ui; font-size:2em;">Elige calidad, elige sabor, elige disfrutar</h3>
         </div>
@@ -335,9 +367,6 @@
             {{-- src="img2.jpg"
         src="img3.jpg"  --}}
 
-        <section id="container-galery">
-
-        </section>
 
         <section id="container-conocenos-index">
             <div id="interno-conocenos-index">                
