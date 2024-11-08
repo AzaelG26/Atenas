@@ -528,7 +528,7 @@
             </div>
         </section>
     
-        <section style="border-top:1px solid yellow; margin-top:300px; width:100%;">
+        <section style=" margin-top:300px; width:99%;">
             @include('layout.base')
         </section>
 

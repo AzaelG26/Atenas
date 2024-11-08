@@ -10,7 +10,7 @@
 
 </head>
 <body>
-    <footer class="py-5" style="color: white; background-color:#101516; width:100%">
+    <footer class="py-5" style="color: white; background-color:#101516; width:100%; border-top:1px solid yellow;">
     <div class="row">
       <div class="col-6 col-md-2 mb-3">
         <h5>Section</h5>
