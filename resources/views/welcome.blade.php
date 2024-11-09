@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     {{-- Para íconos de redes sociales --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+        
+    
     <style>
         
         #body {
@@ -18,21 +20,23 @@
             overflow-y: auto; /* Asegúrate de que el overflow-y esté en auto */
 
         }        
-        
+ 
         .sticky-top{
             margin: 0;
         }
         
         .container-fluid{
+            display: flex;
+            justify-content: space-between;
             margin: 0;
-            height: 8em;
+            height: auto;
+            width: 100%;
             background-color: rgba(12, 12, 12, 0.616)
         }
         
         .navbar-nav .nav-link {
-            /* color: #ffffff;  */
             color: #be952c; 
-            font-size: 20px; 
+            font-size: 17px; 
             transition: color 0.1s ease, box-shadow 0.1s ease, font-size 0.1s ease, background-color 0.1s ease;
             padding: 10px 15px; 
             position: relative; 
@@ -42,10 +46,9 @@
 
 .navbar-nav .nav-link:hover {
     text-decoration: none;
-    font-size: 22px;
+    font-size: 18px;
     color: #8CD2F0; 
     background-color: transparent; 
-    /* box-shadow: 0px 3px 10px rgba(255, 215, 0, 0.8);  */
 }
 
 .navbar-nav .nav-link::after {
@@ -65,54 +68,11 @@
 
 .navbar-nav {
     display: flex;
-    padding: 0;
-    margin: 0;
+    
     flex-direction: column;
     justify-content: flex-end;
-    align-items: center;
     width: 90vw;
-}
-
-
-.navbar-brand {
-    font-size: 1.5rem; 
-}
-
-        /* @media (max-width: 768px) {
-            .navbar-nav {
-                margin-top: 10em;
-                flex-direction: column; 
-                align-items: flex-start;
-            }
-            .navbar-nav.show {
-                display: flex; 
-                flex-direction: column;
-                flex-wrap: nowrap;
-            }
-            .navbar-toggler {
-                color: #8CD2F0;
-            }
-            
-        } */
-        /* @media (max-width: 576px) {
-            .navbar-nav {
-                margin-top: 10em;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .navbar-nav.show {
-                display: flex;
-                flex-direction: column;
-                flex-wrap: nowrap;
-            }
-
-            .navbar-toggler {
-                color: #8CD2F0;
-            }
-
-        }
-         */
+} 
         
 .nav-link {
     color: #6c757d; 
@@ -277,13 +237,13 @@
         .hero h1,h3 {            
             animation: fadeInUp 1.5s;
         } 
-        
+        .navbar-toggler{
+            color:#8CD2F0;;
+        }
     </style>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -296,49 +256,49 @@
     <div id="img">
         {{-- <img src="LOGO_ATENAS.jpg" alt="sjjj"> --}}
         <div id="navegation" class="sticky-top">
-            <nav id="contenedor-navegador" class="naver navbar navbar-expand-lg  ">
+            <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
-                    
-                    <img id="logo-atenas" style="cursor:-webkit-grabbing;" width="120px" src="LOGO_ATENAS_high_quality_transparent.png" alt="logo_atenas">
-
-                    
-
-                    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" style="margin-left: 20px;" aria-current="page" href="#">Inicio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" style="margin-left: 20px;" href="#">Conócenos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" style="margin-left: 20px;"href="#">Galeria</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" style="margin-left: 20px;" href="#">Menú</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" style="margin-left: 20px;" href="#">Contacto</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" style="margin-left: 20px;" href="#">Reseñas</a>
-                            </li>
-                            
-                            <li class="nav-item" id="icons">
-                                <a class="nav-link" style="margin-left: 20px;" href="#">
-                                    <ion-icon name="cart"></ion-icon>
-                                </a>
-                                @if (Route::has('login'))
-                                    <a class="nav-link" style="margin-left: 20px;" href="{{route('login')}}">
-                                        <ion-icon name="person-sharp"></ion-icon>
-                                    </a>                                  
-                                @endif
-                            </li>
-                        </ul>
-                    </div>
-                    <button style="background-color: rgba(90, 90, 90, 0.425);border:1px solid rgb(83, 83, 83)" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <a class="navbar-brand" href="#">
+                        <img id="logo-atenas" style="cursor:-webkit-grabbing;" width="120px" src="LOGO_ATENAS_high_quality_transparent.png" alt="logo_atenas">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="#">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Conócenos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"href="#">Galeria</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Menú</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Contacto</a>
+                            </li>
+                            <li class="nav-item" style="display: flex; margin-right:50px">
+                                <a class="nav-link" href="#">Reseñas</a>
+                            </li>
+                            
+                            <li class="nav-item" style="display: flex; margin-right:70px">
+                                <a class="nav-link" href="#">
+                                    <ion-icon name="cart"></ion-icon>
+                                </a>    
+                                &nbsp;
+
+                             @if (Route::has('login'))
+                                <a class="nav-link"  href="{{route('login')}}">
+                                    <ion-icon name="person-sharp"></ion-icon>
+                                </a>                                                                  
+                            </li>
+                            @endif
+                        </ul>
+                    
                 </div>
             </nav>
         </div>

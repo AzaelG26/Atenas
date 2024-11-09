@@ -102,7 +102,7 @@
     
 </body>
 </html>  --}}
-
+{{-- 
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -156,7 +156,6 @@
             
             cursor: pointer;
             background-color: transparent; 
-            /* box-shadow: 0px 3px 10px rgba(255, 215, 0, 0.8);  */
         }
 
         .nav-item .links::after {
@@ -173,10 +172,8 @@
         .nav-item .links:hover::after {
             width: 100%; 
         }
-
-
     </style>
-        @yield('styles')
+        @stack('styles')
    
 </head>
 <body>
@@ -194,8 +191,9 @@
             <a href="/" title="Toca para volver al inicio" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                 <h5 style="color: #be952c; font-size: 25px; " class="offcanvas-title" id="offcanvasSidebarLabel">Menú</h5>                
             </a>
-            <button style="background:transparent; border:transparent" type="button" class="text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"><i class="bi bi-x" style="font-size: 40px"></i>
-</button>
+            <button style="background:transparent; border:transparent" type="button" class="text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar">
+                <i class="bi bi-x" style="font-size: 40px"></i>
+            </button>
         </div>
         <hr>
 
@@ -204,8 +202,8 @@
                 
 
                 <li class="nav-item" style="height: 50px;">
-                    <a class="links" data-bs-toggle="collapse" href="#personasSubmenu" role="button" aria-expanded="false" aria-controls="personasSubmenu">
-                        <i class="bi bi-people"></i> Personas 
+                    <a href="{{route('profile.edit')}}" class="links" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="personasSubmenu">
+                        <i class="bi bi-people"></i> Datos personales 
                     </a>                    
                 </li>
 
@@ -259,17 +257,25 @@
 
                 
 
-            {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form> --}}
+            
         </div>
     </div>
 
-    <div class="content">
-        @yield('content')
+    <div class="container mt-8">
+        <main >
+            @yield('content')
+        </main>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     @stack('scripts')
 </body>
-</html>
+</html> --}}
+
+@extends('layout.sidebar')    
+@section('title', 'Datos de usuario')
+    
+@section('content')
+    <h1>Hola</h1>
+@endsection

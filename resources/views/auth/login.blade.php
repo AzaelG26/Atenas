@@ -121,11 +121,11 @@
         #btn-sesion {
         cursor: pointer;
         border: none;
-        width: 17em;
+        width: 13.5em;
         margin-top: 20px;
         padding: 0.5rem 2rem;
         font-family: inherit;
-        height: 45px;
+        height: 40px;
         font-size: inherit;
         position: relative;
         display: flex;
@@ -174,7 +174,7 @@
 </head>
 <body id="body-login">
     <section id="cont">
-        <div class="card mb-3" style="height:auto; width:25em; margin-top:40px;">
+        <div class="card mb-3" style="height:auto; width:20em; margin-top:40px;">
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="col-md-12">
@@ -182,12 +182,13 @@
                             <img id="logo-atenas" style="cursor:-webkit-grabbing;" width="120px" src="LOGO_ATENAS_high_quality_transparent.png" alt="logo_atenas">
 
                             <h2 class="card-title">Sign in</h2>
-
+                            <br>
+                            <br>
                             <div class="col-md-9">                            
                                 {{-- <label for="email" class="form-label">Email</label> --}}
                                 <div class="col-md-8 input-icon">
                                     <i class="bi bi-person-fill"></i>  <!-- Icono de usuario -->
-                                    <input type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus autocomplete="username">
+                                    <input type="email" placeholder="Email" class="form-control" id="email" style="font-size: 15px" name="email" autofocus autocomplete="username">
                                     <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                                         @error('email')
                                             {{ $message }}
