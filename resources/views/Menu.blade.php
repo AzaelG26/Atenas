@@ -1,4 +1,4 @@
-@extends('layouts.g_base')
+@extends('layout.g_base')
 
 @section('title', 'Menu') 
 
@@ -270,53 +270,91 @@
             font-size: 0.8rem;
         }
 
+        .navbar, .side-menu {
+            background-color: #333;
+            color: white;
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            padding: 10px 15px;
+            display: block;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: #2c3e50;
+        }
+
+        /* Efecto en enlaces del menú */
+        .navbar-nav .nav-link.btn-shiny::after {
+            background-color: #FFD700;
+        }
+
+        /* Ajustes de tamaño en dispositivos pequeños */
+        @media (max-width: 768px) {
+            .navbar-nav .nav-link {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 @endsection
 
 @section('content')
-<div class="header-image"></div>
-
-<nav class="navbar navbar-expand-md navbar-dark bg-dark d-md-none">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+<!-- Barra de Navegación de Secciones -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Menú</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarMenu">
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <!-- Categorías del menú -->
+                 @foreach ($categorias as $categoria)
+                    <li class="nav-item">
+                        <a class="nav-link btn-shiny" href="#Categoria_{{ $categoria->id }}">{{ $categoria->name }}</a>
+                    </li>
+                @endforeach
             </ul>
         </div>
     </div>
 </nav>
 
-<aside class="side-menu d-none d-md-block">
-    <h4 class="text-center">Categorías</h4>
+<div class="container mt-5 pt-5">
     @foreach ($categorias as $categoria)
-        <a href="#Categoria_{{ $categoria->nombre }}" class="btn-shiny">{{ $categoria->nombre }}</a>
-    @endforeach
-</aside>
-
-<div class="container mt-4">
-    <div class="d-flex justify-content-end">
-        <div class="cart-icon" onclick="toggleCart()">
-            🛒
-            <span class="cart-count" id="cart-count">0</span>
-        </div>
-    </div>
-
-    @foreach ($categorias as $categoria)
-        <h2 id="Categoria_{{ $categoria->nombre }}" class="text-center my-4">{{ $categoria->nombre }}</h2>
+        <h2 id="Categoria_{{ $categoria->id }}" class="text-center my-4">{{ $categoria->name }}</h2>
         <div class="row menu-container">
-            @foreach ($categoria->comidas as $comida)
+            @foreach ($categoria->menu as $menu)
                 <div class="col-md-4">
                     <div class="card menu-card">
-                        <img src="{{ asset('images/' . $comida->nombre . '.png') }}" class="card-img-top" alt="{{ $comida->nombre }}">
+                        <img src="path/to/image.jpg" class="card-img-top" alt="{{ $menu->name }}">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $comida->nombre }}</h5>
-                            <p class="card-text">{{ $comida->descripcion }}</p>
-                            <p class="card-text">Precio: MX${{ number_format($comida->precio, 2) }}</p>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ $comida->id }}">Ver Detalles</button>
+                            <h5 class="card-title">{{ $menu->name }}</h5>
+                            <p class="card-text">{{ $menu->description }}</p>
+                            <p class="card-text">Precio: MX${{ $menu->price }}</p>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ $menu->id }}">Ver Detalles</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para detalles -->
+                <div class="modal fade" id="modal{{ $menu->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $menu->id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel{{ $menu->id }}">{{ $menu->name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="path/to/image.jpg" alt="{{ $menu->name }}" class="img-fluid">
+                                <p>{{ $menu->description }}</p>
+                                <h6 class="mt-3">Precio: MX${{ $menu->price }}.00</h6>
+                                <button class="btn btn-primary" onclick="addToCart('{{ $menu->name }}', '{{ $menu->price }}')">Agregar al Carrito</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -324,31 +362,6 @@
         </div>
     @endforeach
 </div>
-
-@foreach ($categorias as $categoria)
-    @foreach ($categoria->comidas as $comida)
-        <div class="modal fade" id="modal{{ $comida->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $comida->id }}" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel{{ $comida->id }}">{{ $comida->nombre }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <img src="{{ asset('images/' . $comida->nombre . '.png') }}" alt="{{ $comida->nombre }}" class="img-fluid">
-                        <p>{{ $comida->descripcion }}</p>
-                        <h6 class="mt-3">Precio: MX${{ number_format($comida->precio, 2) }}</h6>
-                        <!-- Pasamos el precio como un número real -->
-                        <button class="btn btn-primary" onclick="addToCart('{{ $comida->nombre }}', {{ $comida->precio }})">Agregar al Carrito</button>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-@endforeach
 
 <!-- Modal para el carrito -->
 <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
@@ -367,7 +380,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('scripts')
@@ -429,6 +441,17 @@ function removeFromCart(index) {
     localStorage.setItem('cart', JSON.stringify(cart));
     toggleCart();
     updateCartCount();
+}
+
+function addToCart(name, price) {
+    if (!Number.isInteger(price)) {
+        console.error(`Error: El precio recibido no es un número entero. Precio: ${price}`);
+        return;
+    }
+    cart.push({ name, price });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    alert(`${name} añadido al carrito.`);
 }
 
 </script>

@@ -15,8 +15,8 @@ class Category extends Model
         'name',
     ];
 
-    public function menuItems()
+    public function menu()
     {
-        return $this->hasMany(Menu::class, 'id_category', 'id_category');
+        return $this->hasMany(Menu::class, 'id_category', 'id_category'); // Especifica la columna correcta
     }
 }
