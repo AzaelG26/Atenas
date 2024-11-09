@@ -9,9 +9,11 @@
     {{-- Para íconos de redes sociales --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         
-    
     <style>
-        
+        html {
+            scroll-behavior: smooth;
+        }
+
         #body {
             margin: 0;
             width: 100vw;
@@ -44,49 +46,46 @@
             text-decoration: none; 
         }
 
-.navbar-nav .nav-link:hover {
-    text-decoration: none;
-    font-size: 18px;
-    color: #8CD2F0; 
-    background-color: transparent; 
-}
+        .navbar-nav .nav-link:hover {
+            text-decoration: none;
+            font-size: 18px;
+            color: #8CD2F0; 
+            background-color: transparent; 
+        }
 
-.navbar-nav .nav-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 3px;
-    left: 0;
-    bottom: 0;
-    background-color: #ffc400;
-    transition: width 0.4s ease;
-}
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            left: 0;
+            bottom: 0;
+            background-color: #ffc400;
+            transition: width 0.4s ease;
+        }
 
-.navbar-nav .nav-link:hover::after {
-    width: 100%; 
-}
+        .navbar-nav .nav-link:hover::after {
+            width: 100%; 
+        }
 
-.navbar-nav {
-    display: flex;
-    
-    flex-direction: column;
-    justify-content: flex-end;
-    width: 90vw;
-} 
-        
-.nav-link {
-    color: #6c757d; 
-    text-decoration: none;
-}
+        .navbar-nav {
+            display: flex;
+            
+            flex-direction: column;
+            justify-content: flex-end;
+            width: 90vw;
+        } 
+                
+        .nav-link {
+            color: #6c757d; 
+            text-decoration: none;
+        }
 
-.nav-link:hover {
-    color: #8CD2F0; 
-    text-decoration: underline; 
-}
+        .nav-link:hover {
+            color: #8CD2F0; 
+            text-decoration: underline; 
+        }
 
-    
-        
-       
         #icons{
             display: flex;
             width: 10em;
@@ -258,7 +257,7 @@
         <div id="navegation" class="sticky-top">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="#img">
                         <img id="logo-atenas" style="cursor:-webkit-grabbing;" width="120px" src="LOGO_ATENAS_high_quality_transparent.png" alt="logo_atenas">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -267,19 +266,19 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="#">Inicio</a>
+                                <a class="nav-link" aria-current="page" href="#img">Inicio</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Conócenos</a>
+                                <a class="nav-link" href="#container-conocenos-index">Conócenos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link"href="#">Galeria</a>
+                                <a class="nav-link"href="#container-galeria-index">Galeria</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Menú</a>
+                                <a class="nav-link" href="#container-menu-index">Menú</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Contacto</a>
+                                <a class="nav-link" href="#container-contacto-index">Contacto</a>
                             </li>
                             <li class="nav-item" style="display: flex; margin-right:50px">
                                 <a class="nav-link" href="#">Reseñas</a>
