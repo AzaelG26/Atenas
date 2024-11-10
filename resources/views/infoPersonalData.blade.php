@@ -72,8 +72,7 @@
 
         <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
             <span class="fs-4 subtitle-persons"> &nbsp; &nbsp;Datos personales</span>
-            
-             <a href="{{route('formPersonalData')}}">
+                <a href="{{route('formPersonalData')}}">
                 <button type="button" class="btn btn-primary" title="Add Data">                
                         <i style="color: white" class="bi bi-plus"></i>
                         <i style="color: white" class="bi bi-person-lines-fill"></i>                    
@@ -207,10 +206,23 @@
         </div>
     </div>
 </main>
-    @if (session('error'))
+     @if (session('success'))
     <script>
-            alert('{{ session('error') }}');
+            alert('{{ session('success') }}');
     </script>        
-    @endif 
+    @endif  
+
+    @if (session('error'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: '{{ session('error') }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
     
 @endsection

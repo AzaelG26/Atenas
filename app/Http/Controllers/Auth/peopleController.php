@@ -33,10 +33,15 @@ class PeopleController extends Controller
     {
         $user_id = Auth::user()->id;
 
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
         $people = People::where('user_id', $user_id)->first();
         if (!$people) {
-            return redirect()->route('personas.create')->with('error', 'No se encontró información personal.');
+            return redirect()->route('formPersonalData')->with('success', 'Primero ingresa tus datos personales');
         }
+
         return view('infoPersonalData', compact('people'));
     }
 
@@ -49,6 +54,12 @@ class PeopleController extends Controller
     public function store(Request $request)
     {
         $user_id = Auth::User()->id;
+        $check = People::where('user_id', $user_id)->first();
+
+        if ($check) {
+            return redirect()->route('personas.create')->with('error', 'Ya existe un registro de tus datos personales.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:90',
             'maternal_lastname' => 'required|string|max:50',
