@@ -126,8 +126,8 @@
                 </li>
 
                 <li>
-                    <a class="links nav-link" href="#direccionesSubmenu" role="button" aria-expanded="false" aria-controls="direccionesSubmenu">
-                        <i class="bi bi-map"></i> Direcciones 
+                    <a class="links nav-link {{ request()->routeIs('personas.create') ? 'active' : '' }}" href="{{route('personas.create')}}" role="button" aria-expanded="false" aria-controls="direccionesSubmenu">
+                        <i class="bi bi-person-vcard"></i> Datos personales 
                     </a>
                 </li>
                 <li>

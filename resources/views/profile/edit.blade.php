@@ -35,57 +35,31 @@
         color: #ce9d22;
         filter: drop-shadow(0px 0px 5px #ce9d22);
     }
-    #btn-sesion {
-        cursor: pointer;
+    /* Style boton */
+    .btn-accept {
+        --hover-shadows: 1px 3px 3px #121212, 0px 0px 13px #303030b6;
+        --accent: rgb(13, 118, 136);
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 0.1em;
         border: none;
-        margin-top: 20px;
-        padding: 0.5rem 2rem;
-        font-family: inherit;
-        height: 40px;
-        font-size: inherit;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        font-weight: 700;       
-        border-radius:20px;
-        overflow: hidden;
-        background: #ce9d22;
+        height: 45px;
+        width: 10em;
+        border-radius: 1.1em;
+        background-color: #212121;
+        cursor: pointer;
         color: white;
-        }
-
-        #btn-sesion span {
-        position: relative;
-        z-index: 10;
-        transition: color 0.4s;        
-        
-        }
-
-        #btn-sesion:hover span {
-        color: #ffffff;
-        }
-
-        #btn-sesion::before,
-        #btn-sesion::after {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        }
-
-        #btn-sesion::before {
-        content: "";
-        background:  rgb(13, 118, 136);
-        width: 120%;
-        left: -10%;
-        transform: skew(30deg);
-        transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
-        }
-
-        #btn-sesion:hover::before {
-        transform: translate3d(100%, 0, 0);
-        }
+        transition: box-shadow ease-in-out 0.3s, background-color ease-in-out 0.1s,
+            letter-spacing ease-in-out 0.1s, transform ease-in-out 0.1s;
+    }
+    .btn-accept:hover {
+        box-shadow: var(--hover-shadows);
+    }
+    .btn-accept:active {
+        box-shadow: var(--hover-shadows), var(--accent) 0px 0px 10px 5px;
+        background-color: var(--accent);
+        transform: scale(0.9);
+    }
         
 </style>
     
@@ -105,7 +79,7 @@
                 @method('PATCH')
                 <p style="color: darkgray;">*Puedes editar tus datos</p>
                     <div class="col-md-8 input-icon">
-                        <input placeholder="Name" class="input" name="name" type="text" value="{{old('name', $user->name)}}">            
+                        <input placeholder="Nombre" class="input" name="name" type="text" value="{{old('name', $user->name)}}">            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('name') 
                                 <div class="text-red-500 text-sm">{{ $message }}</div>
@@ -121,8 +95,8 @@
                             @enderror
                         </p>
                     </div>
-                    
-                    <button  type="submit" id="btn-sesion" class="btn" style="border-radius: 15px;"><span>Aceptar</span></button>  
+
+                    <button  type="submit" class="btn-accept">Aceptar</button>  
 
                 </form>
             </div>    
@@ -157,8 +131,7 @@
                         <input placeholder="Confirma nueva contraseña" class="input" name="password_confirmation" type="password" required>
                     </div>
 
-                    <button  type="submit" id="btn-sesion" class="btn" style="border-radius: 15px;"><span>Aceptar</span></button>  
-
+                    <button  type="submit" class="btn-accept" style="margin-top: 50px"><span>Aceptar</span></button>  
                 </form>
             </div>
         </div>
@@ -172,7 +145,7 @@
                 </div>
             </div>
              --}}
-             @if (session('status'))
+            @if (session('status'))
             <script>
                     alert('{{ session('status') }}');
             </script>        
