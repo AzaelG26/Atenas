@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/menu', [MenuController::class, 'index']);
@@ -33,4 +33,4 @@ Route::middleware('auth')->group(function () {
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
