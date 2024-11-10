@@ -1,5 +1,6 @@
 @extends('layout.sidebar')    
 @section('title', 'Datos de usuario')
+
 @push('styles')
 <style>    
     body{
@@ -59,25 +60,24 @@
         box-shadow: var(--hover-shadows), var(--accent) 0px 0px 10px 5px;
         background-color: var(--accent);
         transform: scale(0.9);
-    }
-        
-</style>
-    
+    }   
+</style>  
 @endpush
-    
+
 @section('content') 
 <main id="content-all">
     <div class="container py-4">
-        <div class="pb-3 mb-4 title-user-form" >
+        <div class="pb-3 mb-4 title-user-form">
             &nbsp; &nbsp;<span class="fs-4 subtitle-user">Datos de usuario</span>
         </div>
 
+        <!-- Formulario para editar datos del perfil -->
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">
                 <form method="POST" action="{{ route('profile.update') }}">
-                @csrf
-                @method('PATCH')
-                <p style="color: darkgray;">*Puedes editar tus datos</p>
+                    @csrf
+                    @method('PATCH')
+                    <p style="color: darkgray;">*Puedes editar tus datos</p>
                     <div class="col-md-8 input-icon">
                         <input placeholder="Nombre" class="input" name="name" type="text" value="{{old('name', $user->name)}}">            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
@@ -97,18 +97,17 @@
                     </div>
 
                     <button  type="submit" class="btn-accept">Aceptar</button>  
-
                 </form>
             </div>    
         </div>
 
+        <!-- Formulario para editar la contraseña -->
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
-             <div class="container-fluid py-5">
+            <div class="container-fluid py-5">
                 <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
-                @csrf
-                @method('put')
+                    @csrf
+                    @method('put')
                     <p style="color: darkgray;">*Puedes editar tu contraseña</p>
-                    
                     <div class="col-md-8 input-icon">
                         <input placeholder="Contraseña actual" class="input" name="current_password" type="password" >            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
@@ -135,24 +134,38 @@
                 </form>
             </div>
         </div>
-            {{--
-                <div class="col-md-6">
-                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                    <h2>Add borders</h2>
-                    <p>Or, keep it light and add a border for some added definition to the boundaries of your content. Be sure to look under the hood at the source HTML here as we've adjusted the alignment and sizing of both column's content for equal-height.</p>
-                    <button class="btn btn-outline-secondary" type="button">Example button</button>
+
+        <!-- Formulario para eliminar cuenta -->
+        <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
+            <div class="container-fluid py-5">
+                <form method="POST" action="{{ route('profile.destroy') }}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')">
+                    @csrf
+                    @method('DELETE')
+                    <p style="color: darkgray;">*Esta acción eliminará permanentemente tu cuenta</p>
+                    
+                    <!-- Campo para confirmar la contraseña antes de eliminar la cuenta -->
+                    <div class="col-md-8 input-icon">
+                        <input placeholder="Confirma tu contraseña" class="input" name="password" type="password" required>            
+                        <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                            @error('password') 
+                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                            @enderror
+                        </p>
                     </div>
-                </div>
+
+                    <button type="submit" class="btn-accept" style="background-color: red; margin-top: 20px;">
+                        Eliminar Cuenta
+                    </button>
+                </form>
             </div>
-             --}}
-            @if (session('status'))
-            <script>
-                    alert('{{ session('status') }}');
-            </script>        
-            @endif 
-  </div>
+        </div>
+
+        @if (session('status'))
+        <script>
+            alert('{{ session('status') }}');
+        </script>        
+        @endif 
+    </div>
 </main>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 @endsection
-    
-
