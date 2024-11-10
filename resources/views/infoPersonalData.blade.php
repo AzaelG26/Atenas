@@ -82,11 +82,11 @@
         <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
             <span class="fs-4 subtitle-persons"> &nbsp; &nbsp;Datos personales</span>
                 <a href="{{route('formPersonalData')}}">
-                <button type="button" class="btn btn-dark btn-add-data" title="Add Data">                
-                        <i style="color:#8CD2F0;" class="bi bi-plus"></i>
-                        <i style="color:#8CD2F0;" class="bi bi-person-lines-fill"></i>                    
-                </button>
-            </a>        
+                    <button type="button" class="btn btn-dark btn-add-data" title="Add Data">                
+                            <i style="color:#8CD2F0;" class="bi bi-plus"></i>
+                            <i style="color:#8CD2F0;" class="bi bi-person-lines-fill"></i>                    
+                    </button>
+                </a>        
         </div>
 
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
@@ -122,13 +122,19 @@
                         <input class="input" id="birthdate" type="text" value="{{old('name', $people->birthdate)}}" disabled>                    
                     </div>
                 </div>
+                
+                <button onclick="showEdit()" class="btn-accept" style="margin-top: 40px">Editar</button>
+
             </div>
         </div>
     </div>
 
-    <div class="container py-4">
-        <div class="pb-3 mb-4 title-person-form" >
-            &nbsp; &nbsp;<span class="fs-4 subtitle-persons">Editar</span>
+    <div class="container py-4" id="edition-container" style="display: none;">
+        <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
+            <span class="fs-4 subtitle-persons">&nbsp; &nbsp;Editar</span>
+            <button type="button" onclick="hideEdition()" class="btn btn-dark btn-add-data" title="close section">               
+                    <i style="color:#8CD2F0;" class="bi bi-x-lg"></i>
+            </button>
         </div>
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">  
@@ -233,5 +239,15 @@
         });
     </script>
     @endif
+
+    <script>
+        function showEdit(){
+            document.getElementById('edition-container').style.display = 'block';
+        }
+
+        function hideEdition(){
+            document.getElementById('edition-container').style.display = 'none';
+        }
+    </script>
     
 @endsection

@@ -123,8 +123,14 @@
 @section('content')
 <main id="content-all">
     <div class="container py-4">
-        <div class="pb-3 mb-4 title-person-form" >
-            &nbsp; &nbsp;<span class="fs-4 subtitle-persons">Datos personales</span>
+        <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
+            <span class="fs-4 subtitle-persons">&nbsp; &nbsp;Datos personales</span>
+
+            <a href="{{route('personas.create')}}">
+                    <button type="button" class="btn btn-dark btn-add-data" title="Back"> 
+                            <i style="color:#8CD2F0;" class="bi bi-reply"></i>
+                    </button>
+                </a>   
         </div>
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">                    
