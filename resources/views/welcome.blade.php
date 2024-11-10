@@ -522,6 +522,11 @@
             navbar.style.top = "0";
         });
     </script>
+    @if (session('success'))
+        <script>
+            alert('{{session('success')}}')
+        </script>        
+    @endif
 
 </body>
 </html>

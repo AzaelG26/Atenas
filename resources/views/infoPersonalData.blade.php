@@ -16,6 +16,15 @@
         color: #ce9d22;
         filter: drop-shadow(0px 0px 5px #ce9d22);
     }
+    .btn-add-data{
+        transition: transform 0.2s ease;        
+    }
+
+    .btn-add-data:hover{
+        transform: translateY(2px);
+    }
+    
+
     /* inputs */    
     .input {
     background-color: #212121;
@@ -73,9 +82,9 @@
         <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
             <span class="fs-4 subtitle-persons"> &nbsp; &nbsp;Datos personales</span>
                 <a href="{{route('formPersonalData')}}">
-                <button type="button" class="btn btn-primary" title="Add Data">                
-                        <i style="color: white" class="bi bi-plus"></i>
-                        <i style="color: white" class="bi bi-person-lines-fill"></i>                    
+                <button type="button" class="btn btn-dark btn-add-data" title="Add Data">                
+                        <i style="color:#8CD2F0;" class="bi bi-plus"></i>
+                        <i style="color:#8CD2F0;" class="bi bi-person-lines-fill"></i>                    
                 </button>
             </a>        
         </div>

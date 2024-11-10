@@ -149,7 +149,7 @@
                             {{Auth::user()->name}} 
                         </button>
                         <ul style="width:100%;" class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
-                            <li><a class="dropdown-item" style="color:#be952c" href="#">Action</a></li>
+                            <li><a class="dropdown-item" style="color:#be952c" href="/">Ir a inicio</a></li>
                             <li><a class="dropdown-item" style="color:#be952c" href="#">Action</a></li>
                             <li><a class="dropdown-item" style="color:#be952c" href="#">Another action</a></li>
                             <li><a class="dropdown-item" style="color:#be952c" href="#">Something else here</a></li>

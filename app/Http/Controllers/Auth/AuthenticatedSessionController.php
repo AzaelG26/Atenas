@@ -29,7 +29,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         // luego de iniciar sesion
-        return redirect('/')/*->intended(RouteServiceProvider::HOME)*/;
+        return redirect('/')->with('success', '¡Início de sesión exitoso!')/*->intended(RouteServiceProvider::HOME)*/;
     }
 
     /**
