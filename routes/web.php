@@ -26,14 +26,17 @@ Route::get('/dashboard', function () {
 
 Route::get('/menu', [MenuController::class, 'index']);
 
+    // rutas para añadir empleados
+    Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
+    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    //rutas para añadir a empleados
-    Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
-    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+
 
 
 });

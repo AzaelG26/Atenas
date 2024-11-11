@@ -20,15 +20,14 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        // Validaciones
         $validatedData = $request->validate([
             'user_name' => 'required|string|max:50',
-            'user_email' => 'required|email|max:50|unique:users,email',
+            'user_email' => 'required|email|max:50',
             'user_password' => 'required|string|min:8',
             'personal_name' => 'required|string|max:50',
             'lastname1' => 'required|string|max:50',
-            'lastname2' => 'nullable|string|max:50',
-            'gender' => 'required|in:Male,Female,Other',
+            'lastname2' => 'required|string|max:50',
+            'gender' => 'required|string',
             'cellphone_number' => 'required|string|max:14',
             'birthdate' => 'required|date',
             'admin' => 'required|boolean',
@@ -36,7 +35,7 @@ class EmployeeController extends Controller
             'nss' => 'required|string|max:11',
             'rfc' => 'required|string|max:13',
         ]);
-
+    
         // Llamada al procedimiento almacenado para añadir el empleado
         DB::statement('CALL add_employee(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
             $validatedData['user_name'],
@@ -53,7 +52,9 @@ class EmployeeController extends Controller
             $validatedData['nss'],
             $validatedData['rfc'],
         ]);
-
-        return redirect()->route('añadir_empleados')->with('success', 'Empleado añadido correctamente.');
+    
+        // Redirección a la ruta correcta
+        return redirect()->route('employee.create')->with('success', 'Empleado añadido correctamente.');
     }
+    
 }
