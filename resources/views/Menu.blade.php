@@ -1,14 +1,20 @@
 @extends('layout.g_base')
 
 @section('title', 'Menu')
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 @section('styles')
 
     <style>
-
-    html {
-        scroll-behavior: smooth;
-    }
+        body{
+            background-color: #0C1011;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .d-flex{
+            border-bottom: 1px solid #FFD700;
+        }
         
         /* Imagen de cabecera */
         .header-image {
@@ -167,15 +173,22 @@
     }
 
     .btn-cart {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px;
-    border-radius: 50%;
-}
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background-color: #131718;
+        color: #be952c;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;    
+        transition: transform 0.2s ease;    
+    }   
+    .btn-cart:hover{
+        transform: translateY(3px);
+        box-shadow: 0px 10px 10px rgba(7, 7, 7, 0.959);
+
+    }
 
     </style>
 @endsection
@@ -209,8 +222,8 @@
     </div>
 
     <!-- Botón para abrir el modal del carrito -->
-    <button onclick="toggleCart()" class="btn btn-cart">
-        🛒 Carrito (<span id="cart-count">0</span>)
+    <button onclick="toggleCart()" class="btn-cart">
+        <i class="bi bi-cart3"></i> Carrito (<span id="cart-count">0</span>)
     </button>
 
     <!-- Contenido principal -->
