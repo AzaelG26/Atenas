@@ -28,4 +28,10 @@ class Menu extends Model
     {
         return $this->belongsToMany(Ingredient::class, 'menu_details', 'id_menu', 'id_ingredient');
     }
+
+    public function imagenes()
+    {
+        return $this->hasMany(Imagen::class);
+    }
+
 }

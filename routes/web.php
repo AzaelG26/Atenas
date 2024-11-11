@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ImagenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//controlador para añadir imagenes al sistema
+Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');
 
 require __DIR__ . '/auth.php';
