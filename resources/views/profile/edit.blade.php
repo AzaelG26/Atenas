@@ -3,46 +3,38 @@
 
 @push('styles')
 <style>    
-    body{
-        background-color:#0C1011;
+    /* Estilos personalizados */
+    body {
+        background-color: #0C1011;
     }
     .input {
-    background-color: #212121;
-    max-width: 400px;
-    width: 100%;
-    height: 40px;
-    padding: 10px;
-    /* text-align: center; */
-    border: 2px solid white;
-    color: white;
-    border-radius: 5px;
-    /* box-shadow: 3px 3px 2px rgb(249, 255, 85); */
+        background-color: #212121;
+        max-width: 400px;
+        width: 100%;
+        height: 40px;
+        padding: 10px;
+        border: 2px solid white;
+        color: white;
+        border-radius: 5px;
     }
-
     .input:focus {
-    background-color: #363535;
-    outline-color: rgb(53, 53, 53);
-    box-shadow: 2px 3px 15px #fcc12d;
-    transition: .1s;
-    transition-property: box-shadow;
+        background-color: #363535;
+        box-shadow: 2px 3px 15px #fcc12d;
+        transition: box-shadow 0.1s;
     }
-    .title-user-form{
+    .title-user-form {
         border-bottom: 1px solid #ce9d22;
     }
-    .subtitle-user{
+    .subtitle-user {
         color: white;
     }
-    .subtitle-user:hover{
+    .subtitle-user:hover {
         color: #ce9d22;
         filter: drop-shadow(0px 0px 5px #ce9d22);
     }
-    /* Style boton */
     .btn-accept {
-        --hover-shadows: 1px 3px 3px #121212, 0px 0px 13px #303030b6;
-        --accent: rgb(13, 118, 136);
         font-size: 14px;
         font-weight: bold;
-        letter-spacing: 0.1em;
         border: none;
         height: 45px;
         width: 10em;
@@ -50,15 +42,14 @@
         background-color: #212121;
         cursor: pointer;
         color: white;
-        transition: box-shadow ease-in-out 0.3s, background-color ease-in-out 0.1s,
-            letter-spacing ease-in-out 0.1s, transform ease-in-out 0.1s;
+        transition: box-shadow 0.3s ease-in-out, background-color 0.1s ease-in-out, transform 0.1s ease-in-out;
     }
     .btn-accept:hover {
-        box-shadow: var(--hover-shadows);
+        box-shadow: 1px 3px 3px #121212, 0px 0px 13px #303030b6;
     }
     .btn-accept:active {
-        box-shadow: var(--hover-shadows), var(--accent) 0px 0px 10px 5px;
-        background-color: var(--accent);
+        box-shadow: 1px 3px 3px #121212, 0px 0px 13px #303030b6, 0px 0px 10px 5px rgb(13, 118, 136);
+        background-color: rgb(13, 118, 136);
         transform: scale(0.9);
     }   
 </style>  
@@ -79,7 +70,7 @@
                     @method('PATCH')
                     <p style="color: darkgray;">*Puedes editar tus datos</p>
                     <div class="col-md-8 input-icon">
-                        <input placeholder="Nombre" class="input" name="name" type="text" value="{{old('name', $user->name)}}">            
+                        <input placeholder="Nombre" class="input" name="name" type="text" value="{{ old('name', $user->name) }}">            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('name') 
                                 <div class="text-red-500 text-sm">{{ $message }}</div>
@@ -88,7 +79,7 @@
                     </div>
 
                     <div class="col-md-8 input-icon">
-                        <input placeholder="Email" class="input" name="email" type="text" value="{{old('email', $user->email)}}">            
+                        <input placeholder="Email" class="input" name="email" type="text" value="{{ old('email', $user->email) }}">            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('email')
                                 {{ $message }}
@@ -96,7 +87,7 @@
                         </p>
                     </div>
 
-                    <button  type="submit" class="btn-accept">Aceptar</button>  
+                    <button type="submit" class="btn-accept">Aceptar</button>  
                 </form>
             </div>    
         </div>
@@ -104,9 +95,9 @@
         <!-- Formulario para editar la contraseña -->
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">
-                <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+                <form method="POST" action="{{ route('password.update') }}">
                     @csrf
-                    @method('put')
+                    @method('PUT')
                     <p style="color: darkgray;">*Puedes editar tu contraseña</p>
                     <div class="col-md-8 input-icon">
                         <input placeholder="Contraseña actual" class="input" name="current_password" type="password" >            
@@ -130,7 +121,7 @@
                         <input placeholder="Confirma nueva contraseña" class="input" name="password_confirmation" type="password" required>
                     </div>
 
-                    <button  type="submit" class="btn-accept" style="margin-top: 50px"><span>Aceptar</span></button>  
+                    <button type="submit" class="btn-accept" style="margin-top: 50px"><span>Aceptar</span></button>  
                 </form>
             </div>
         </div>
@@ -160,12 +151,50 @@
             </div>
         </div>
 
-        @if (session('status'))
-        <script>
-            alert('{{ session('status') }}');
-        </script>        
-        @endif 
+        <!-- Formulario para desactivar cuenta -->
+        <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
+            <div class="container-fluid py-5">
+                <form method="POST" action="{{ route('profile.deactivate') }}">
+                    @csrf
+                    <p style="color: darkgray;">*Puedes desactivar temporalmente tu cuenta. Por favor confirma tu identidad.</p>
+
+                    <!-- Campo para ingresar la contraseña -->
+                    <div class="col-md-8 input-icon">
+                        <input placeholder="Contraseña" class="input" name="password" type="password" required>            
+                        <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                            @error('password') 
+                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                            @enderror
+                        </p>
+                    </div>
+
+                    <!-- Campo para ingresar el correo -->
+                    <div class="col-md-8 input-icon">
+                        <input placeholder="Correo electrónico" class="input" name="email" type="email" value="{{ old('email', $user->email) }}" required>            
+                        <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                            @error('email') 
+                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                            @enderror
+                        </p>
+                    </div>
+
+                    <!-- Campo para confirmar la contraseña -->
+                    <div class="col-md-8 input-icon">
+                        <input placeholder="Confirmar contraseña" class="input" name="password_confirmation" type="password" required>            
+                        <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                            @error('password_confirmation') 
+                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                            @enderror
+                        </p>
+                    </div>
+
+                    <!-- Botón de desactivación de cuenta -->
+                    <button type="submit" class="btn-accept" style="background-color: orange; margin-top: 20px;">
+                        Desactivar Cuenta
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </main>
-<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 @endsection
