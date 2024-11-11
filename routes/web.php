@@ -24,21 +24,17 @@ Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/menu', [MenuController::class, 'index']);
+Route::get('/menu', [MenuController::class, 'index'])->name('carrito');
 
-    // rutas para añadir empleados
-    Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
-    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+// rutas para añadir empleados
+Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
+Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-
-
-
 });
 
 require __DIR__ . '/auth.php';

@@ -10,6 +10,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         
     <style>
+         /* #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0C1011;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        /* Spinner del loader */
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #ffc400;
+        } */
+
         html {
             scroll-behavior: smooth;
         }
@@ -250,8 +269,36 @@
 
 </head>
 <body id="body">
+     {{-- <!-- Loader -->
+    <div id="loader">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
     
-    
+    <!-- Contenido de la página -->
+    <div id="img">
+        <div id="navegation" class="sticky-top">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <!-- Contenido del navbar -->
+                </div>
+            </nav>
+        </div>
+        <div class="hero">
+            <h1>¡Prueba la Felicidad en Cada Mordida!</h1>
+            <h3>Elige calidad, elige sabor, elige disfrutar</h3>
+        </div>
+    </div>
+        <!-- JavaScript para ocultar el loader cuando la página haya cargado -->
+    <script>
+        window.addEventListener('load', function() {
+            document.getElementById('loader').style.display = 'none';
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+     --}}
     <div id="img">
         {{-- <img src="LOGO_ATENAS.jpg" alt="sjjj"> --}}
         <div id="navegation" class="sticky-top">
@@ -285,7 +332,7 @@
                             </li>
                             
                             <li class="nav-item" style="display: flex; margin-right:70px">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{route('carrito')}}">
                                     <ion-icon name="cart"></ion-icon>
                                 </a>    
                                 &nbsp;
