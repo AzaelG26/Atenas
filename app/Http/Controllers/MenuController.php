@@ -9,11 +9,11 @@ class MenuController extends Controller
 {
     public function index()
     {
-        // Obtenemos todas las categorías con sus platillos
-        $categorias = Category::distinct()->get();
-
+        // Obtenemos todas las categorías con sus platillos relacionados usando 'with'
+        $categorias = Category::with('menu')->get();
 
         // Pasamos las categorías a la vista
         return view('Menu', compact('categorias'));
     }
+
 }

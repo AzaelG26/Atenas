@@ -10,6 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $table = 'categories';
+    protected $primaryKey = 'id_category'; // Definimos la clave primaria correcta
 
     protected $fillable = [
         'name',
@@ -17,6 +18,6 @@ class Category extends Model
 
     public function menu()
     {
-        return $this->hasMany(Menu::class, 'id_category', 'id_category'); // Especifica la columna correcta
+        return $this->hasMany(Menu::class, 'id_category', 'id_category'); // Mantenemos la relación con id_category
     }
 }
