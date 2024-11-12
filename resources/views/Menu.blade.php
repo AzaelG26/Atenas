@@ -24,212 +24,23 @@
             background-size: cover;
         }
 
-        /* Barra lateral responsiva */
-        .side-menu {
-            background-color: #000;
-            color: white;
-            padding: 20px;
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-            z-index: 1050;
-        }
 
-        /* Botón para abrir el menú lateral */
-        .side-menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            color: #FFD700;
-            background: none;
-            border: none;
-            z-index: 1100;
-            display: none; /* Ocultar en pantallas grandes */
-        }
-
-        /* Mostrar el botón en pantallas pequeñas */
-        @media (max-width: 992px) {
-            .side-menu-toggle {
-                display: block;
-            }
-        }
-
-        /* Botón para cerrar el menú lateral */
-        .side-menu-close {
-            font-size: 24px;
-            color: #FFD700;
-            background: none;
-            border: none;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1100;
-            display: none; /* Mostrar solo en modo móvil */
-        }
-
-        /* Responsividad para la barra lateral */
-       /* Mostrar el botón de apertura solo en pantallas pequeñas */
-    @media (max-width: 992px) {
-        .side-menu-toggle {
-            display: block;
-        }
-
-        /* Configuración para el menú lateral en pantallas pequeñas */
-        .side-menu {
-            transform: translateX(-100%); /* Oculto inicialmente */
-        }
-
-        /* Mostrar el menú lateral al activar la clase "show" */
-        .side-menu.show {
-            transform: translateX(0);
-        }
-
-        /* Mostrar el botón de cierre solo cuando el menú esté abierto */
-        .side-menu.show .side-menu-close {
-            display: block;
-        }
-    }
-
-    /* Ocultar ambos botones en pantallas grandes */
-    @media (min-width: 992px) {
-        .side-menu-toggle, .side-menu-close {
-            display: none;
-        }
-
-        /* Mantener el menú siempre visible en pantallas grandes */
-        .side-menu {
-            transform: translateX(0);
-        }
-    }
-
-        .side-menu h4, .side-menu a {
-            color: #ffffff;
-        }
-
-        .side-menu hr {
-            border-top: 1px solid #ffffff;
-            opacity: 0.3;
-        }
-
-        .side-menu .nav-link {
-            color: #ffffff;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            transition: color 0.3s ease;
-        }
-
-        .side-menu .nav-link svg {
-            margin-right: 8px;
-        }
-
-        .side-menu .nav-link:hover {
-            color: #FFD700;
-        }
-
-        /* Tarjetas de menú */
-        .menu-container .menu-card {
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .menu-container .menu-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Botón dentro de la tarjeta */
-        .btn-add {
-            background-color: black;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-add:hover {
-            background-color: #131718;
-            color: #FFD700;
-        }
-
-        /* Ajuste de columnas en dispositivos pequeños */
-        @media (max-width: 992px) {
-            .menu-container .col-md-4 {
-                flex: 0 0 100%;
-                max-width: 100%;
-            }
-        }
-        @media (min-width: 992px) {
-        .side-menu-toggle {
-            display: none;
-        }
-    }
-
-    .btn-cart {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-        background-color: #131718;
-        color: #be952c;
-        padding: 10px;
-        border-radius: 10px;
-        border: none;    
-        transition: transform 0.2s ease;    
-    }   
-    .btn-cart:hover{
-        transform: translateY(3px);
-        box-shadow: 0px 10px 10px rgba(7, 7, 7, 0.959);
-
-    }
 
     </style>
 @endsection
 
 @section('content')
-<button class="side-menu-toggle" id="openMenuButton" onclick="toggleSideMenu()">
-    ☰
-</button>
 
-<div class="d-flex">
-    <!-- Barra lateral de categorías -->
-    <div class="side-menu" id="sideMenu">
-        <!-- Botón de cierre para el menú lateral -->
-        <button class="side-menu-close" id="closeMenuButton" onclick="toggleSideMenu()">
-            ×
-        </button>
-        
-        <h4>Categorías</h4>
-        <hr>
-        <ul class="nav flex-column mb-auto">
-            @foreach ($categorias as $categoria)
-                <li class="nav-item">
-                    <a class="nav-link" href="#Categoria_{{ $categoria->id }}">
-                        <svg class="bi pe-none" width="16" height="16"><use xlink:href="#icon-name"></use></svg>
-                        {{ $categoria->name }}
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-        <hr>
-    </div>
 
-    <!-- Botón para abrir el modal del carrito -->
+    {{-- <!-- Botón para abrir el modal del carrito -->
     <button onclick="toggleCart()" class="btn-cart">
         <i class="bi bi-cart3"></i> Carrito (<span id="cart-count">0</span>)
-    </button>
+    </button> --}}
 
     <!-- Contenido principal -->
     <div class="container mt-5 pt-5">
         @foreach ($categorias as $categoria)
-            <h2 id="Categoria_{{ $categoria->id }}" class="text-center my-4">{{ $categoria->name }}</h2>
+            <h2 id="Categoria_{{ $categoria->id }}" class="text-center my-4" id="title-name-category" style="border-bottom: 1px solid #ce9d22; color: white; height:2em"> &nbsp;&nbsp;{{ $categoria->name }}</h2>
             <div class="row menu-container">
                 @foreach ($categoria->menu as $menu)
                     <div class="col-md-4">
@@ -282,7 +93,7 @@
                 <!-- Aquí se mostrarán los elementos del carrito -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" id="btn-cerrar-modal" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -290,7 +101,7 @@
 @endsection
 
 
-@section('scripts')
+{{-- @section('scripts')
 <script>
 // Inicializa el carrito desde localStorage
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -399,4 +210,4 @@ window.addEventListener('resize', () => {
   }
 
 </script>
-@endsection
+@endsection --}}

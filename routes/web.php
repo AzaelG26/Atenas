@@ -24,7 +24,7 @@ Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/menu', [MenuController::class, 'index'])->name('carrito');
+Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 
 // rutas para añadir empleados
 Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'

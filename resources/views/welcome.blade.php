@@ -332,7 +332,7 @@
                             </li>
                             
                             <li class="nav-item" style="display: flex; margin-right:70px">
-                                <a class="nav-link" href="{{route('carrito')}}">
+                                <a class="nav-link" href="{{route('menu')}}">
                                     <ion-icon name="cart"></ion-icon>
                                 </a>    
                                 &nbsp;
