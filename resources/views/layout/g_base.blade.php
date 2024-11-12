@@ -196,27 +196,41 @@
     
 
     <script>
-// Inicializa el carrito desde localStorage
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Inicializa el carrito desde localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-// Actualiza la cantidad de elementos en el carrito
-function updateCartCount() {
-    document.getElementById('cart-count').textContent = cart.length;
-}
-
-// Agrega un producto al carrito
-function addToCart(name, price) {
-    if (isNaN(price)) {
-        console.error(`Error: El precio no es un número. Precio: ${price}`);
-        return;
+    // Actualiza la cantidad de elementos en el carrito
+    function updateCartCount() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById('cart-count').textContent = totalItems;
     }
-    cart.push({ name, price: parseFloat(price) });
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`${name} añadido al carrito.`);
-}
 
-// Muestra los productos en el carrito dentro del modal
-function toggleCart() {
+    // Agrega un producto al carrito con cantidad
+    function addToCart(name, price, menuId) {
+        const quantityInput = document.getElementById(`quantity${menuId}`);
+        const quantity = parseInt(quantityInput.value);
+
+        if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
+            alert('Cantidad no válida.');
+            return;
+        }
+
+        // Verifica si el producto ya está en el carrito
+        const existingItem = cart.find(item => item.menuId === menuId);
+
+        if (existingItem) {
+            existingItem.quantity += quantity; // Incrementa la cantidad
+        } else {
+            cart.push({ menuId, name, price: parseFloat(price), quantity });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
+        updateCartCount();
+    }
+
+    // Muestra los productos en el carrito dentro del modal
+    function toggleCart() {
         const cartItemsContainer = document.getElementById('cart-items');
         cartItemsContainer.innerHTML = '';
         let total = 0;
@@ -225,11 +239,12 @@ function toggleCart() {
             cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
         } else {
             cart.forEach((item, index) => {
-                total += item.price;
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
                 const itemRow = document.createElement('div');
                 itemRow.classList.add('cart-item');
                 itemRow.innerHTML = `
-                    <p>${item.name} - MX$${item.price.toFixed(2)}</p>
+                    <p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity} = MX$${subtotal.toFixed(2)}</p>
                     <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
                 `;
                 cartItemsContainer.appendChild(itemRow);
@@ -239,34 +254,51 @@ function toggleCart() {
 
         const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
         cartModal.show();
-        cartModal.hide();
+    }
 
-         // Asegúrate de que el fondo opaco se elimina correctamente cuando el modal se cierra
-    const closeButton = document.getElementById('btn-cerrar-modal');
-    closeButton.addEventListener('click', function() {
-        cartModal.hide(); // Cierra el modal
-        // Elimina el fondo opaco manualmente
-        document.querySelector('.modal-backdrop').remove();
+    // Elimina un producto del carrito
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        toggleCart();
+        updateCartCount();
+    }
+
+    // Incrementa la cantidad de un producto en el modal
+    function increaseQuantity(menuId, stock) {
+    const quantityInput = document.getElementById(`quantity${menuId}`);
+    const stockElement = document.getElementById(`stock${menuId}`);
+    let currentQuantity = parseInt(quantityInput.value);
+    let currentStock = parseInt(stockElement.textContent);
+
+    if (currentQuantity < stock && currentStock > 0) {
+        quantityInput.value = currentQuantity + 1;
+        stockElement.textContent = currentStock - 1; // Resta al stock disponible
+    } else {
+        alert('No puedes agregar más del stock disponible.');
+    }
+    }
+
+    function decreaseQuantity(menuId) {
+        const quantityInput = document.getElementById(`quantity${menuId}`);
+        const stockElement = document.getElementById(`stock${menuId}`);
+        let currentQuantity = parseInt(quantityInput.value);
+        let currentStock = parseInt(stockElement.textContent);
+
+        if (currentQuantity > 1) {
+            quantityInput.value = currentQuantity - 1;
+            stockElement.textContent = currentStock + 1; // Restaura al stock disponible
+        }
+    }
+
+
+    // Al cargar la página, inicializa el contador del carrito
+    document.addEventListener('DOMContentLoaded', function () {
+        updateCartCount();
     });
-
-}
-
-// Elimina un producto del carrito
-function removeFromCart(index) {
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    toggleCart();
-    updateCartCount();
-}
-
-// Al cargar la página, inicializa el contador del carrito
-document.addEventListener('DOMContentLoaded', function () {
-    updateCartCount();
-});
-
-
 </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    @stack('scripts')
 </body>
 </html>
