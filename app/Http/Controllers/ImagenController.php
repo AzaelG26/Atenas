@@ -20,28 +20,26 @@ class ImagenController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->file('file_path'));
+        dd('Entrando a la función store');
+       
         $request->validate([
             'file_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'menu_id' => 'required|exists:menu,id',
+            'menu_id' => 'required|exists:menu,id_menu',
         ]);
-
+    
         if ($request->hasFile('file_path')) {
-            // Revisa si el archivo está siendo recibido
-           
-            
-            $filePath = $request->file('file_path')->store('public/imagenes');
-
+            $filePath = $request->file('file_path')->store('imagenes', 'public');
+            dd($filePath);
+    
             Imagen::create([
-                'file_path' => $filePath,
+                'file_path' => 'storage/' . $filePath,
                 'menu_id' => $request->menu_id,
             ]);
-
+    
             return back()->with('success', 'Imagen subida correctamente');
         } else {
             return back()->withErrors(['file_path' => 'Error al subir la imagen.']);
         }
     }
-
-    
+        
 }

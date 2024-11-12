@@ -12,7 +12,8 @@
                     <div class="card menu-card">
                         <!-- Imagen del producto, si tiene -->
                         @if($menu->imagenes->isNotEmpty())
-                            <img src="{{ Storage::url($menu->imagenes->first()->file_path) }}" class="card-img-top" alt="{{ $menu->name }}">
+                            <img src="{{ asset($menu->imagenes->first()->file_path) }}" class="card-img-top" alt="{{ $menu->name }}">
+
 
                         @else
                             <img src="path/to/default/image.jpg" class="card-img-top" alt="Imagen no disponible">
