@@ -24,6 +24,7 @@ class Menu extends Model
         return $this->belongsTo(Category::class, 'id_category', 'id_category');
     }
 
+
     public function ingredients()
     {
         return $this->belongsToMany(Ingredient::class, 'menu_details', 'id_menu', 'id_ingredient');
