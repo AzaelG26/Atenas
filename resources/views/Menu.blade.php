@@ -23,14 +23,11 @@
             background: url('/path-to-your-image/atenas1.png') no-repeat center center;
             background-size: cover;
         }
-
-
-
     </style>
 @endsection
 
 @section('content')
-    <div class="container mt-5 pt-5">
+<div class="container mt-5 pt-5">
     @foreach ($categorias as $categoria)
         <h2 id="Categoria_{{ $categoria->id }}" class="text-center my-4" style="border-bottom: 1px solid #ce9d22; color: white; height:2em">
             &nbsp;&nbsp;{{ $categoria->name }}
@@ -60,7 +57,18 @@
                                 <img src="path/to/image.jpg" alt="{{ $menu->name }}" class="img-fluid">
                                 <p>{{ $menu->description }}</p>
                                 <h6 class="mt-3">Precio: MX${{ $menu->price }}.00</h6>
-                                <button class="btn btn-primary" onclick="addToCart('{{ $menu->name }}', '{{ $menu->price }}')">Agregar al Carrito</button>
+                                <p>Stock disponible: <strong id="stock{{ $menu->id_menu }}">{{ $menu->stock->stock }}</strong></p>
+
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-secondary" onclick="decreaseQuantity('{{ $menu->id_menu }}')">-</button>
+                                    <input type="number" id="quantity{{ $menu->id_menu }}" class="form-control mx-2 text-center" value="1" min="1" max="{{ $menu->stock->stock }}" readonly style="width: 70px;">
+                                    <button class="btn btn-primary" onclick="increaseQuantity('{{ $menu->id_menu }}', '{{ $menu->stock->stock }}')">+</button>
+                                </div>
+
+                                <button class="btn btn-success mt-3" 
+                                    onclick="addToCart('{{ $menu->name }}', '{{ $menu->price }}', '{{ $menu->id_menu }}')">
+                                    Agregar al Carrito
+                                </button>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -81,7 +89,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body" id="cart-items">
-                
+                <!-- Items agregados al carrito -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="btn-cerrar-modal" data-bs-dismiss="modal">Cerrar</button>
