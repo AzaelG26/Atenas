@@ -177,7 +177,7 @@
                     </div>
                 </div>
                 
-                <button onclick="showEdit()" class="btn-accept" style="margin-top: 40px">Editar</button>
+                <button onclick="showEdit()" class="btn-accept" title="El formulario estara debajo" style="margin-top: 40px">Editar</button>
 
             </div>
         </div>

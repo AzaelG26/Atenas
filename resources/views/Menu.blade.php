@@ -38,7 +38,7 @@
     </button> --}}
 
     <!-- Contenido principal -->
-    <div class="container mt-5 pt-5">
+    <div class="container">
         @foreach ($categorias as $categoria)
             <h2 id="Categoria_{{ $categoria->id }}" class="text-center my-4" id="title-name-category" style="border-bottom: 1px solid #ce9d22; color: white; height:2em"> &nbsp;&nbsp;{{ $categoria->name }}</h2>
             <div class="row menu-container">

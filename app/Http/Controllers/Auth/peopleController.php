@@ -14,6 +14,23 @@ class PeopleController extends Controller
     {
         return view('formPersonalData');
     }
+
+
+    public function buscarPersona(Request $request)
+    {
+        $busqueda = $request->query('query');
+
+        $resultados = People::where('name', 'LIKE', "%{$busqueda}%")
+            ->orWhere('paternal_lastname', 'LIKE', "%{$busqueda}%")
+            ->orWhere('maternal_lastname', 'LIKE', "%{$busqueda}%")
+            ->get();
+
+        return response()->json($resultados); // Devolver los resultados en JSON
+    }
+
+
+
+
     /**
      * Display a listing of the resource.
      *

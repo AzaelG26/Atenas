@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PeopleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
@@ -30,6 +31,9 @@ Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 // rutas para añadir empleados
 Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+Route::get('/buscarPersonas', [PeopleController::class, 'buscarPersona'])->name('buscar.personas');
+
+
 
 //controlador para añadir imagenes al sistema
 Route::get('/añadir-imagenes', [ImagenController::class, 'showAddImagesForm'])->name('imagenes.add');

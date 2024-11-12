@@ -181,7 +181,6 @@
                                 <svg class="bi pe-none" width="16" height="17"><use xlink:href="#icon-name"></use></svg>
                                 Ir a inicio
                             </a>
-
                         </li>
                     </ul>
                     <hr>                   
@@ -189,12 +188,12 @@
             </ul>
         </div>
     </div>
-
     <div>
         <main>
             @yield('content')
         </main>
     </div>
+    
 
     <script>
 // Inicializa el carrito desde localStorage

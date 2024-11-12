@@ -1,163 +1,207 @@
-@extends('layout.g_base')
+@extends('layout.sidebar')
 
 @section('title', 'Añadir Empleado')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 @section('styles')
-<!-- Aquí puedes incluir CSS adicional si es necesario -->
+    <style>
+        
+    </style>
 @endsection
 
 
 @section('content')
-<div class="container mt-5">
-    <h2 class="text-center text-white">Añadir Empleado</h2>
-    <div class="card bg-dark text-white p-4">
-        <form id="employeeForm" action="{{ route('employee.store') }}" method="POST">
-            @csrf
+<main id="content-all">
 
-            <!-- Modal 1: Datos de Usuario -->
-            <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content bg-dark text-white">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="userModalLabel">Datos de Usuario</h5>
+    <form id="employeeForm" action="{{ route('employee.store') }}" method="POST">
+        @csrf
+    <div class="container py-4">
+        <div class="pb-3 mb-4 title-user-form">
+            &nbsp; &nbsp;<span class="fs-4 subtitle-user">Registro de empleado</span>
+        </div>
+
+        <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
+            <div class="container-fluid py-5">  
+                <h3>Buscar Persona</h3>  
+                    <input class="form-control me-2" id="busqueda" type="search" placeholder="Buscar" aria-label="Search">
+                    <ul id="resultados" class="list-group">
+
+                    </ul>
+
+                <br>
+                <br>                    
+
+                <div class="col-md-8 input-icon">
+                    <input placeholder="Nombre(s)" class="input" name="personal_name" type="text">            
+                    <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                        @error('personal_name') 
+                            <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                        @enderror
+                    </p>
+                </div>
+
+                <div class="col-md-8 input-icon">
+                    <input placeholder="Apellido paterno" class="input" name="lastname1" type="text">            
+                    <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                        @error('lastname1') 
+                            <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                        @enderror
+                    </p>
+                </div>
+
+                <div class="col-md-8 input-icon">
+                    <input placeholder="Apellido materno" class="input" name="lastname2" type="text">            
+                    <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                        @error('lastname2') 
+                            <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                        @enderror
+                    </p>
+                </div>
+
+                <div class="col-md-8 input-icon">
+                    <p style="color: rgb(107, 107, 107);">sexo</p>
+                    <div class="radio-container">
+                        <div class="radio-wrapper">
+                            <label class="radio-button">
+                            <input id="male" name="gender" type="radio" value="Male">
+                            <span class="radio-checkmark"></span>
+                            <span class="radio-label">Masculino</span>
+                            </label>
                         </div>
-                        <div class="modal-body">
-                            <div class="form-group mb-3">
-                                <label for="user_name">Nombre de Usuario</label>
-                                <input type="text" id="user_name" name="user_name" class="form-control" required maxlength="50">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="user_email">Email</label>
-                                <input type="email" id="user_email" name="user_email" class="form-control" required maxlength="50">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="user_password">Contraseña</label>
-                                <input type="password" id="user_password" name="user_password" class="form-control" required minlength="8">
-                            </div>
+
+                        <div class="radio-wrapper">
+                            <label class="radio-button">
+                            <input id="female" name="gender" type="radio" value="Female">
+                            <span class="radio-checkmark"></span>
+                            <span class="radio-label">Femenino</span>
+                            </label>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" onclick="validateModal('userModal', 'personaModal')">Siguiente</button>
+
+                        <div class="radio-wrapper">
+                            <label class="radio-button">
+                            <input id="other" name="gender" type="radio" value="Other">
+                            <span class="radio-checkmark"></span>
+                            <span class="radio-label">Otro</span>
+                            </label>
                         </div>
-                    </div>
+                    </div>                    
+                </div>
+                <br>
+
+                <div class="col-md-8 input-icon">
+                    <input placeholder="Número de teléfono" class="input" name="cellphone_number" type="text">            
+                    <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
+                        @error('cellphone_number') 
+                            <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                        @enderror
+                    </p>
+                </div>
+
+                <div class="col-md-8 input-icon">
+                    <label for="birthdate" style="color: white;">Fecha de nacimiento</label>
+                    <br>
+                    <input style="color: rgb(107, 107, 107);" type="date" id="birthdate" name="birthdate" class="input">
+                    <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
+                        @error('birthdate') 
+                            <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                        @enderror
+                    </p>
                 </div>
             </div>
+        </div>
+    </div>        
 
-            <!-- Modal 2: Datos Personales -->
-            <div class="modal fade" id="personaModal" tabindex="-1" aria-labelledby="personaModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content bg-dark text-white">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="personaModalLabel">Datos Personales</h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group mb-3">
-                                <label for="personal_name">Nombre</label>
-                                <input type="text" id="personal_name" name="personal_name" class="form-control" required maxlength="50">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="lastname1">Apellido Paterno</label>
-                                <input type="text" id="lastname1" name="lastname1" class="form-control" required maxlength="50">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="lastname2">Apellido Materno</label>
-                                <input type="text" id="lastname2" name="lastname2" class="form-control" required maxlength="50">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="gender">Género</label>
-                                <select id="gender" name="gender" class="form-control" required>
-                                    <option value="Male">Masculino</option>
-                                    <option value="Female">Femenino</option>
-                                    <option value="Other">Otro</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="cellphone_number">Número de Celular</label>
-                                <input type="text" id="cellphone_number" name="cellphone_number" class="form-control" required maxlength="14">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="birthdate">Fecha de Nacimiento</label>
-                                <input type="date" id="birthdate" name="birthdate" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="showModal('userModal')">Anterior</button>
-                            <button type="button" class="btn btn-primary" onclick="validateModal('personaModal', 'empleadoModal')">Siguiente</button>
-                        </div>
-                    </div>
+    <div class="container py-4">
+        <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
+            <div class="container-fluid py-5">                
+
+                {{-- Datos para empleado --}}
+                <div class="col-md-8 input-icon">
+                    <input placeholder="CURP" class="input" name="curp" type="text">            
+                    <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                        @error('curp') 
+                            <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                        @enderror
+                    </p>
                 </div>
-            </div>
-
-            <!-- Modal 3: Datos de Empleado -->
-            <div class="modal fade" id="empleadoModal" tabindex="-1" aria-labelledby="empleadoModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content bg-dark text-white">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="empleadoModalLabel">Datos de Empleado</h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group mb-3">
-                                <label for="curp">CURP</label>
-                                <input type="text" id="curp" name="curp" class="form-control" required maxlength="18">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="nss">NSS</label>
-                                <input type="text" id="nss" name="nss" class="form-control" required maxlength="11">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="rfc">RFC</label>
-                                <input type="text" id="rfc" name="rfc" class="form-control" required maxlength="13">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="admin">¿Es administrador?</label>
-                                <select id="admin" name="admin" class="form-control" required>
-                                    <option value="1">Sí</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="showModal('personaModal')">Anterior</button>
-                            <button type="submit" class="btn btn-success">Añadir Empleado</button>
-                        </div>
-                    </div>
+            
+                <div class="col-md-8 input-icon">
+                    <input placeholder="NSS" class="input" name="nss" type="text">            
+                    <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                        @error('nss') 
+                            <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                        @enderror
+                    </p>
                 </div>
-            </div>
 
-        </form>
+                <div class="col-md-8 input-icon">
+                    <input placeholder="RFC" class="input" name="rfc" type="text">            
+                    <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                        @error('rfc') 
+                            <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                        @enderror
+                    </p>
+                </div>
+                <div class="col-md-8 input-icon">
+                    <label for="admin" style="color: white">¿Es administrador?</label> <br>
+                    <select class="input" id="admin" name="admin" required>
+                        <option value="" selected disabled></option>
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <br>
+
+                <button  type="submit" class="btn-accept">Aceptar</button>  
+            </div>
+        </div>
     </div>
-</div>
-@endsection
+    </form>
+  
+</main>
 
-@section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        showModal('userModal');
-    });
+    $(document).ready(function() {
+    $('#busqueda').on('keyup', function() {
+      
+        const query = $(this).val();
+      // Hacer la solicitud AJAX
+      if(query.length >=1) { // Inicia la búsqueda después de 3 caracteres
+        $.ajax({
+          url: "{{ route('buscar.personas') }}",
+          type: 'GET',
+          data: { query: query },
+          success: function(data) {
+            $('#resultados').empty(); // Limpiar resultados anteriores
 
-    function showModal(modalId) {
-        const modal = new bootstrap.Modal(document.getElementById(modalId));
-        modal.show();
-    }
-
-    function validateModal(currentModalId, nextModalId) {
-        let isValid = true;
-        const modal = document.getElementById(currentModalId);
-        const inputs = modal.querySelectorAll("input, select");
-
-        inputs.forEach(input => {
-            if (!input.checkValidity()) {
-                isValid = false;
-                input.classList.add("is-invalid");
+            if (data.length === 0) {
+              $('#resultados').append('<p>No se encontraron personas.</p>');
             } else {
-                input.classList.remove("is-invalid");
+              data.forEach(persona => {
+                $('#resultados').append(`
+                  <li class="list-group-item">
+                    ${persona.name} ${persona.paternal_lastname} ${persona.maternal_lastname}
+                  </li>
+                `);
+              });
             }
+          },
+          error: function() {
+            $('#resultados').empty();
+            $('#resultados').append('<p>Hubo un error en la búsqueda.</p>');
+          }
         });
+      } else {
+        $('#resultados').empty(); // Limpiar cuando hay menos de 3 caracteres
+      }
+    });
+  });
 
-        if (isValid) {
-            const currentModal = bootstrap.Modal.getInstance(modal);
-            currentModal.hide();
-            showModal(nextModalId);
-        }
-    }
+
 </script>
+
+
+
 @endsection
