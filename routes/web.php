@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ImagenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +24,7 @@ Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/menu', [MenuController::class, 'index'])->name('carrito');
+Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 
 // rutas para añadir empleados
 Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
@@ -38,7 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//controlador para añadir imagenes al sistema
-Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');
+
 
 require __DIR__ . '/auth.php';

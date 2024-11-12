@@ -9,6 +9,8 @@ class Imagen extends Model
 {
     use HasFactory;
 
+    protected $table = 'imagenes'; // Nombre de la tabla en la base de datos
+
     protected $fillable = ['file_path', 'menu_id'];
 
     // Relación con el menu
