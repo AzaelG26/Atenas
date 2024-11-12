@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('stock', function (Blueprint $table) {
             $table->id('id_stock');
             $table->integer('stock');
-            $table->foreignId('id_menu')->nullable()->constrained('menu', 'id_category');
+            $table->foreignId('id_menu')->nullable()->constrained('menu', 'id_menu');
             $table->timestamps();
         });
     }
