@@ -27,12 +27,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
+Route::get('/post_carro', [MenuController::class, 'showPostCarro'])->name('show_post_carro');
+
 
 // rutas para añadir empleados
 Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 Route::get('/buscarPersonas', [PeopleController::class, 'buscarPersona'])->name('buscar.personas');
-
 
 
 //controlador para añadir imagenes al sistema
