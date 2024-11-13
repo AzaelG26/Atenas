@@ -14,7 +14,6 @@
                     <tr>
                         <th>Producto</th>
                         <th>Precio Unitario</th>
-                        <th>Cantidad</th>
                         <th>Subtotal</th>
                     </tr>
                 </thead>
@@ -23,7 +22,6 @@
                         <tr>
                             <td>{{ $item['name'] }}</td>
                             <td>MX${{ number_format($item['price'], 2) }}</td>
-                            <td>1</td> <!-- Si quieres manejar cantidades, cambia esto -->
                             <td>MX${{ number_format($item['price'], 2) }}</td>
                         </tr>
                     @endforeach
