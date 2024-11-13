@@ -17,6 +17,4 @@ class MenuController extends Controller
         // Pasamos las categorías a la vista
         return view('Menu', compact('categorias'));
     }
-
-
 }
