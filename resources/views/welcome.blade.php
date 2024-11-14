@@ -10,24 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         
     <style>
-         /* #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #0C1011;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        /* Spinner del loader */
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-            color: #ffc400;
-        } */
+      
+
+
+
 
         html {
             scroll-behavior: smooth;
@@ -35,7 +21,7 @@
 
         #body {
             margin: 0;
-            width: 100vw;
+            width: 100%;
             background-color: #0C1011; /* Cambia a un color opaco para comprobar */
             overflow-x: auto;
             overflow-y: auto; /* Asegúrate de que el overflow-y esté en auto */
@@ -248,8 +234,7 @@
         .hero {
             padding: 100px 0;
             text-align: center;
-            animation: fadeIn 1s;
-            
+            animation: fadeIn 1s;            
         }
 
         .hero h1,h3 {            
@@ -258,10 +243,13 @@
         .navbar-toggler{
             color:#8CD2F0;;
         }
+
+      
     </style>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -269,44 +257,21 @@
 
 </head>
 <body id="body">
-     {{-- <!-- Loader -->
-    <div id="loader">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Cargando...</span>
-        </div>
-    </div>
+   
     
-    <!-- Contenido de la página -->
-    <div id="img">
-        <div id="navegation" class="sticky-top">
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <!-- Contenido del navbar -->
-                </div>
-            </nav>
-        </div>
-        <div class="hero">
-            <h1>¡Prueba la Felicidad en Cada Mordida!</h1>
-            <h3>Elige calidad, elige sabor, elige disfrutar</h3>
-        </div>
-    </div>
-        <!-- JavaScript para ocultar el loader cuando la página haya cargado -->
-    <script>
-        window.addEventListener('load', function() {
-            document.getElementById('loader').style.display = 'none';
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-     --}}
+    
+   
+    
+    
     <div id="img">
         {{-- <img src="LOGO_ATENAS.jpg" alt="sjjj"> --}}
         <div id="navegation" class="sticky-top">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#img">
-                        <img id="logo-atenas" style="cursor:-webkit-grabbing;" width="120px" src="LOGO_ATENAS_high_quality_transparent.png" alt="logo_atenas">
+                        <img id="logo-atenas" style="cursor:-webkit-grabbing;"  width="120px" src="LOGO_ATENAS_high_quality_transparent.png" alt="logo_atenas">
                     </a>
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -348,197 +313,190 @@
                 </div>
             </nav>
         </div>
-
         
         <div style="text-align:center;" class="hero">
             <h1 style="color: rgb(255, 255, 255); font-family: 'DynaPuff', system-ui; font-size:4em;">¡Prueba la Felicidad en Cada Mordida!</h1>
             <h3 style="color: rgb(255, 255, 255); font-family: 'DynaPuff', system-ui; font-size:2em;">Elige calidad, elige sabor, elige disfrutar</h3>
         </div>
     </div>
-
-    
-    
-
-    
             {{-- src="img2.jpg"
         src="img3.jpg"  --}}
 
 
-        <section id="container-conocenos-index">
-            <div id="interno-conocenos-index">                
-                <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Conócenos</h2></div>                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    </div>
+    <section id="container-conocenos-index">
+        <div id="interno-conocenos-index">                
+            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+                <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Conócenos</h2></div>                        
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="container-galeria-index">
-            <div id="interno-galeria-index">                
-                <div class="card" style="height: auto; background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center; height:100px; font-family: 'Monda', sans-serif;">
-                            <h2 class="subtitulos" style="cursor:context-menu;">Galeria</h2>
-                        </div>                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <section id="container-galeria-index">
+        <div id="interno-galeria-index">                
+            <div class="card" style="height: auto; background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+                <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center; height:100px; font-family: 'Monda', sans-serif;">
+                        <h2 class="subtitulos" style="cursor:context-menu;">Galeria</h2>
+                    </div>                        
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    
+                    <div class="row">
+                        <!-- Carrusel 1 -->
+                        <div class="col-md-4">
+                            <div id="carouselExample1" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="carousel-item active">
+                                        <img src="img1.jpg" class="d-block w-100" alt="Imagen 1">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img2.jpg" class="d-block w-100" alt="Imagen 2">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img3.jpg" class="d-block w-100" alt="Imagen 3">
+                                    </div>
+                                </div>
+                                {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample1" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button> --}}
+                            </div>
+                        </div>
                         
-                        <div class="row">
-                            <!-- Carrusel 1 -->
-                            <div class="col-md-4">
-                                <div id="carouselExample1" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
-                                        <div class="carousel-item active">
-                                            <img src="img1.jpg" class="d-block w-100" alt="Imagen 1">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img2.jpg" class="d-block w-100" alt="Imagen 2">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img3.jpg" class="d-block w-100" alt="Imagen 3">
-                                        </div>
+                        <!-- Carrusel 2 -->
+                        <div class="col-md-4">
+                            <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="carousel-item active">
+                                        <img src="img4.jpg" class="d-block w-100" alt="Imagen 4">
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample1" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button> --}}
-                                </div>
-                            </div>
-                            
-                            <!-- Carrusel 2 -->
-                            <div class="col-md-4">
-                                <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
-                                        <div class="carousel-item active">
-                                            <img src="img4.jpg" class="d-block w-100" alt="Imagen 4">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
-                                        </div>
+                                    <div class="carousel-item">
+                                        <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button> --}}
-                                </div>
-                            </div>
-                            
-                            <!-- Carrusel 3 -->
-                            <div class="col-md-4">
-                                <div id="carouselExample3" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
-                                        <div class="carousel-item active">
-                                            <img src="img7.jpg" class="d-block w-100" alt="Imagen 7">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img8.jpg" class="d-block w-100" alt="Imagen 8">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img9.jpg" class="d-block w-100" alt="Imagen 9">
-                                        </div>
+                                    <div class="carousel-item">
+                                        <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample3" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample3" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button> --}}
                                 </div>
+                                {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button> --}}
                             </div>
+                        </div>
+                        
+                        <!-- Carrusel 3 -->
+                        <div class="col-md-4">
+                            <div id="carouselExample3" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="carousel-item active">
+                                        <img src="img7.jpg" class="d-block w-100" alt="Imagen 7">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img8.jpg" class="d-block w-100" alt="Imagen 8">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img9.jpg" class="d-block w-100" alt="Imagen 9">
+                                    </div>
+                                </div>
+                                {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample3" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample3" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button> --}}
+                            </div>
+                        </div>
 
-                            <!-- Carrusel 2 -->
-                            <div class="col-md-4">
-                                <div id="carouselExample4" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
-                                        <div class="carousel-item active">
-                                            <img src="img1.jpg" class="d-block w-100" alt="Imagen 4">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
-                                        </div>
+                        <!-- Carrusel 2 -->
+                        <div class="col-md-4">
+                            <div id="carouselExample4" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="carousel-item active">
+                                        <img src="img1.jpg" class="d-block w-100" alt="Imagen 4">
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button> --}}
+                                    <div class="carousel-item">
+                                        <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
+                                    </div>
                                 </div>
+                                {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button> --}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
+      
 
-        <section id="container-menu-index">
-            <div id="interno-menu-index">                
-                <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Ménu</h2></div>
-                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    </div>
+    <section id="container-menu-index">
+        <div id="interno-menu-index">                
+            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+                <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Ménu</h2></div>                    
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
-        <section id="container-resenias-index">
-            <div id="interno-resenias-index">                
-                <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Reseñas</h2></div>                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    </div>
+    <section id="container-resenias-index">
+        <div id="interno-resenias-index">                
+            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+                <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Reseñas</h2></div>                        
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
-        <section id="container-contacto-index">
-            <div id="interno-contacto-index">                
-                <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Contacto</h2></div>                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    </div>
+    <section id="container-contacto-index">
+        <div id="interno-contacto-index">                
+            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+                <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Contacto</h2></div>                        
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
             </div>
-        </section>
-    
-        <section style=" margin-top:300px; width:99%;">
-            @include('layout.base')
-        </section>
+        </div>
+    </section>
 
-            
+    <section style=" margin-top:300px; width:100%;">
+        @include('layout.base')
+    </section>
+        
     <script>
         let lastScrollTop = 0;
 

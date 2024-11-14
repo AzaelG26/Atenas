@@ -31,7 +31,7 @@ Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 // rutas para añadir empleados
 Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
-Route::get('/buscarPersonas', [PeopleController::class, 'buscarPersona'])->name('buscar.personas');
+Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
 
 
 

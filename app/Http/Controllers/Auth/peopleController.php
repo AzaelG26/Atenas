@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\People;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,18 +16,59 @@ class PeopleController extends Controller
         return view('formPersonalData');
     }
 
+    // public function buscarPersona(Request $request)
+    // {
+    //     $busqueda = $request->query('query');
 
-    public function buscarPersona(Request $request)
-    {
-        $busqueda = $request->query('query');
+    //     $resultadosPersonas = People::where('name', 'LIKE', "%{$busqueda}%")
+    //         ->orWhere('paternal_lastname', 'LIKE', "%{$busqueda}%")
+    //         ->orWhere('maternal_lastname', 'LIKE', "%{$busqueda}%")
+    //         ->get();
+    //     $resultadosUsuarios = User::where('name', 'LIKE', "%{$busqueda}%")
+    //         ->orWhere('email', 'LIKE', "%{$busqueda}%")
+    //         ->get();
 
-        $resultados = People::where('name', 'LIKE', "%{$busqueda}%")
-            ->orWhere('paternal_lastname', 'LIKE', "%{$busqueda}%")
-            ->orWhere('maternal_lastname', 'LIKE', "%{$busqueda}%")
-            ->get();
+    //     $resultados = [
+    //         'personas' => $resultadosPersonas,
+    //         'usuarios' => $resultadosUsuarios,
+    //     ];
 
-        return response()->json($resultados); // Devolver los resultados en JSON
-    }
+    //     return response()->json($resultados); // Devolver los resultados en JSON
+    // }
+
+
+    // public function storeOrUpdateEmployeeData(Request $request)
+    // {
+    //     $user_id = $request->input('user_id');
+
+    //     $people = People::where('user_id', $user_id)->first();
+
+    //     if ($people) {
+    //         // Actualizar solo los datos de empleado si la persona ya existe
+    //         $people->rfc = $employeeData['rfc'];
+    //         $people->save();
+
+    //         return redirect()->route('employee.create')->with('success', 'Registro de empleado con éxito');
+    //     } else {
+    //         $validatedPersonalData = $request->validate([
+    //             'name' => 'required|string|max:90',
+    //             'maternal_lastname' => 'required|string|max:50',
+    //             'paternal_lastname' => 'required|string|max:50',
+    //             'gender' => 'required|in:Male,Female,Other',
+    //             'cellphone_number' => 'required|string|max:20|min:10',
+    //             'birthdate' => 'required|date|before:today',
+    //         ]);
+
+    //         // Crear el nuevo registro con datos personales y de empleado
+    //         $people = new People();
+    //         $people->fill($validatedPersonalData); // Asignar datos personales
+    //         $people->user_id = $user_id;
+    //         $people->rfc = $employeeData['rfc']; // Asignar datos de empleado
+    //         $people->save();
+
+    //         return redirect()->route('employee.create')->with('success', 'Registro empleado y datos personales con éxito');
+    //     }
+    // }
 
 
 
@@ -81,12 +123,17 @@ class PeopleController extends Controller
             'name' => 'required|string|max:90',
             'maternal_lastname' => 'required|string|max:50',
             'paternal_lastname' => 'required|string|max:50',
-            'gender' => 'required|in:Male,Female,Other',
+            'gender' => 'required|in:male,female,other',
             'cellphone_number' => 'required|string|max:20|min:10',
             'birthdate' => 'required|date|before:today',
         ]);
 
+        $birthdate = $request->birthdate;
+        $edad = \Carbon\Carbon::parse($birthdate)->age;
 
+        if ($edad < 18) {
+            return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
+        }
 
         $people = new People();
         $people->name = $request->input('name');
@@ -139,7 +186,7 @@ class PeopleController extends Controller
             'name' => 'nullable|string|max:90',
             'maternal_lastname' => 'nullable|string|max:50',
             'paternal_lastname' => 'nullable|string|max:50',
-            'gender' => 'nullable|in:Male,Female,Other',
+            'gender' => 'nullable|in:male,female,other',
             'cellphone_number' => 'nullable|string|max:20|min:10',
             'birthdate' => 'nullable|date|before:today',
         ]);
@@ -148,6 +195,14 @@ class PeopleController extends Controller
 
         if (!$people) {
             return redirect()->route('personas.create')->with('error', 'No se encontró la persona.');
+        }
+
+
+        $birthdate = $request->birthdate;
+        $edad = \Carbon\Carbon::parse($birthdate)->age;
+
+        if ($edad < 18) {
+            return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
         }
 
         // Actualizar los datos de persona
