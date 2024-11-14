@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImagenController;
+use App\Http\Controllers\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,13 +27,20 @@ Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+//todas las rutas en relación con el carro
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
+Route::get('/post_carro', [MenuController::class, 'showPostCarro'])->name('show_post_carro');
+Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
+Route::get('/addresses/search', [AddressController::class, 'search']);
+
+
+
 
 // rutas para añadir empleados
 Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
-
 
 
 //controlador para añadir imagenes al sistema

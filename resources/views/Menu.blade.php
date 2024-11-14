@@ -81,22 +81,25 @@
     @endforeach
 </div>
 
-<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body" id="cart-items">
-                <!-- Items agregados al carrito -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="btn-cerrar-modal" data-bs-dismiss="modal">Cerrar</button>
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="cart-items">
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="clearCart()" class="btn btn-danger mt-3">Vaciar Carrito</button>
+                    <button type="button" onclick="confirmCart()" class="btn btn-success mt-3">Confirmar Carrito</button>
+                    <button type="button" class="btn btn-secondary" id="btn-cerrar-modal" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 
