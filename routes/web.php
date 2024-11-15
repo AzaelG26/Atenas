@@ -33,6 +33,8 @@ Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_car
 Route::get('/post_carro', [MenuController::class, 'showPostCarro'])->name('show_post_carro');
 Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
 Route::get('/addresses/search', [AddressController::class, 'search']);
+Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
+Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
 
 
 

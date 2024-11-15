@@ -24,14 +24,30 @@
             background-size: cover;
         }
     </style>
+    @push('styles')
+
 @endsection
 
 @section('content')
+<div class="container-fluid mt-3">
+    <div class="pb-1 mb-4" style="color: white; display: flex; justify-content:flex-end;">
+        
+        <a href="{{route('edit.menu')}}" style="text-decoration: none; color:black">
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-pencil-square"></i> Editar    
+            </button>
+        </a>
+    </div>
+</div>
+
 <div class="container mt-5 pt-5">
+    
+
     @foreach ($categorias as $categoria)
-        <h2 id="Categoria_{{ $categoria->id }}" class="text-center my-4" style="border-bottom: 1px solid #ce9d22; color: white; height:2em">
-            &nbsp;&nbsp;{{ $categoria->name }}
-        </h2>
+        <div id="Categoria_{{ $categoria->id }}" class="pb-3 mb-4" style="border-bottom: 1px solid #ce9d22; color: white; display: flex; justify-content:space-between;">
+            <span class="fs-4 subtitle-persons"> &nbsp; &nbsp;{{ $categoria->name }}</span>                  
+        </div>
+        
         <div class="row menu-container">
             @foreach ($categoria->menu as $menu)
                 <div class="col-md-4">
@@ -100,6 +116,13 @@
             </div>
         </div>
     </div>
+
+    @if (session('success'))
+        <script>
+            alert("{{ session('success') }}")
+        </script>
+    @endif
+
 @endsection
 
 

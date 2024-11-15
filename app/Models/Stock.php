@@ -11,6 +11,9 @@ class Stock extends Model
 
     protected $table = 'stock';
 
+    protected $primaryKey = 'id_stock';  // Asegúrate de que la clave primaria esté configurada
+
+
     protected $fillable = [
         'stock',
         'id_menu',
