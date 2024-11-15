@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -21,8 +22,8 @@ class MenuController extends Controller
     {
         //esta funcion la necesito para que se muestre la vista de post_carro, pero se le tiene que pasar la variable y el modelo de las categorias porque
         //sino manda el errorsote por el layout.g_base xd
-        $categorias = Category::all(); 
-        return view('post_carro', compact('categorias')); 
+        $categorias = Category::all();
+        return view('post_carro', compact('categorias'));
     }
 
 
@@ -45,4 +46,40 @@ class MenuController extends Controller
         return view('post_carro', compact('carrito', 'total', 'categorias'));
     }
 
+    public function showEditionMenu()
+    {
+        $categorias = Category::with(['menu' => function ($query) {
+            $query->with('stock'); // Incluimos la relación con el stock
+        }])->get();
+
+
+        return view('edit_menu', compact('categorias'));
+    }
+
+
+    public function update(Request $request, $id)
+    {
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+        ]);
+
+        $menu = Menu::findOrFail($id);
+        $menu->name = $request->input('name');
+        $menu->description = $request->input('description');
+        $menu->price = $request->input('price');
+        $menu->name = $request->input('name');
+        $menu->save();
+
+
+        $menu->stock->stock = $request->input('stock');
+        $menu->stock->save(); // Guarda los cambios en el stock
+
+
+
+        return redirect()->route('menu')->with('success', 'Platillo actualizado correctamente');
+    }
 }

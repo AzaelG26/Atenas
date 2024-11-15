@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\People;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
@@ -15,46 +21,49 @@ class EmployeeController extends Controller
         return view('añadir_empleados');
     }
 
+    public function buscarPersona(Request $request)
+    {
+        $query = $request->input('query');
+
+        $usuarios = User::where(function ($q) use ($query) {
+            $q->where('name', 'like', "%$query%")
+                ->orWhere('email', 'like', "%$query%");
+        })->whereHas('people')->with('people')->get();
+
+        return response()->json([
+            'usuarios' => $usuarios,
+        ]);
+    }
+
+
     /**
      * Almacena los datos del empleado en la base de datos.
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'user_name' => 'required|string|max:50',
-            'user_email' => 'required|email|max:50',
-            'user_password' => 'required|string|min:8',
-            'personal_name' => 'required|string|max:50',
-            'lastname1' => 'required|string|max:50',
-            'lastname2' => 'required|string|max:50',
-            'gender' => 'required|string',
-            'cellphone_number' => 'required|string|max:14',
-            'birthdate' => 'required|date',
-            'admin' => 'required|boolean',
-            'curp' => 'required|string|max:18',
-            'nss' => 'required|string|max:11',
-            'rfc' => 'required|string|max:13',
+        $validated = $request->validate([
+            'people_id' => 'required',
+            'curp' => 'required|string|min:18|max:18',
+            'rfc' => 'required|string|max:13|min:13',
+            'nss' => 'required|string|max:11|min:11',
+            'admin' => 'required|boolean'
         ]);
-    
-        // Llamada al procedimiento almacenado para añadir el empleado
-        DB::statement('CALL add_employee(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-            $validatedData['user_name'],
-            $validatedData['user_email'],
-            bcrypt($validatedData['user_password']),
-            $validatedData['personal_name'],
-            $validatedData['lastname1'],
-            $validatedData['lastname2'],
-            $validatedData['gender'],
-            $validatedData['cellphone_number'],
-            $validatedData['birthdate'],
-            $validatedData['admin'],
-            $validatedData['curp'],
-            $validatedData['nss'],
-            $validatedData['rfc'],
-        ]);
-    
-        // Redirección a la ruta correcta
+
+        $id_people = $request->people_id;
+        $check = Employee::where('id_people', $id_people)->first();
+
+        if ($check) {
+            return redirect()->route('employee.create')->with('error', 'La persona ya esta dada de alta en el sistema como empleado.');
+        }
+
+        $employee = new Employee();
+        $employee->id_people = $validated['people_id'];
+        $employee->curp = $validated['curp'];
+        $employee->rfc = $validated['rfc'];
+        $employee->nss = $validated['nss'];
+        $employee->admin = $validated['admin'];
+        $employee->save();
+
         return redirect()->route('employee.create')->with('success', 'Empleado añadido correctamente.');
     }
-    
 }
