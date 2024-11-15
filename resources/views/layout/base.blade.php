@@ -10,6 +10,8 @@
     <style>
       #loader {
         display: flex;
+          --ANIMATION-DELAY-MULTIPLIER: 70ms;
+
         justify-content: center;
         align-items: center;
         width: 100vw;
