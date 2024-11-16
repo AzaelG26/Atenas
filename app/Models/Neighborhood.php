@@ -9,7 +9,7 @@ class Neighborhood extends Model
 {
     use HasFactory;
 
-    protected $table = 'neighborhood';
+    protected $table = 'neighborhoods'; // Nombre correcto de la tabla
 
     protected $fillable = [
         'name',
@@ -17,14 +17,15 @@ class Neighborhood extends Model
         'id_postal_codes',
     ];
 
-    public function settlementType()
-    {
-        return $this->belongsTo(SettlementType::class, 'id_settlement_type', 'id_settlement_type');
-    }
-
     public function postalCode()
     {
-        return $this->belongsTo(PostalCode::class, 'id_postal_codes', 'id_postal_codes');
+        return $this->belongsTo(PostalCode::class, 'id_postal_codes');
+    }
+
+
+    public function settlementType()
+    {
+        return $this->belongsTo(SettlementType::class, 'id_settlement_type', 'id');
     }
 
     public function addresses()

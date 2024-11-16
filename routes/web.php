@@ -31,10 +31,13 @@ Route::get('/dashboard', function () {
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
 Route::get('/post_carro', [MenuController::class, 'showPostCarro'])->name('show_post_carro');
-Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
-Route::get('/addresses/search', [AddressController::class, 'search']);
 Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
 Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
+Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
+Route::get('/buscar-direcciones', [AddressController::class, 'buscarDirecciones'])->name('buscar.direcciones');
+Route::get('/get-neighborhoods', [AddressController::class, 'getNeighborhoodsByPostalCode'])->name('get.neighborhoods');
+Route::post('/register-address', [AddressController::class, 'registerAddress'])->name('register.address');
+
 
 
 
