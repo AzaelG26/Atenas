@@ -40,7 +40,7 @@
     <main id="content-all">
         <div class="container-fluid py-3">
             <div class="pb-3 mb-4 title-user-form" style="color: white; display: flex; justify-content:space-between;">
-                &nbsp; &nbsp;<span class="fs-4 subtitle-edit-menu">Edición de datos de menú</span>
+                <span class="fs-4 subtitle-edit-menu">&nbsp;&nbsp; Edición de datos de menú</span>
              
                 <a href="{{route('menu')}}" style="text-decoration: none; color:black">
                     <button type="button" class="btn btn-warning" title="Regresar" data-bs-toggle="modal" data-bs-target="#exampleModal">
