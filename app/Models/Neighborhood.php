@@ -9,7 +9,9 @@ class Neighborhood extends Model
 {
     use HasFactory;
 
-    protected $table = 'neighborhoods'; // Nombre correcto de la tabla
+    protected $table = 'neighborhoods';
+
+    protected $primaryKey = 'id'; // Este es el campo que Laravel usará como clave primaria
 
     protected $fillable = [
         'name',
@@ -19,9 +21,8 @@ class Neighborhood extends Model
 
     public function postalCode()
     {
-        return $this->belongsTo(PostalCode::class, 'id_postal_codes');
+        return $this->belongsTo(PostalCode::class, 'id_postal_codes', 'id_postal_codes'); // Ajustado
     }
-
 
     public function settlementType()
     {

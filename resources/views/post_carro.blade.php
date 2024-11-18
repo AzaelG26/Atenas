@@ -5,24 +5,49 @@
 @section('content')
 <div class="container my-5">
     <h1 class="text-center text-light">Confirmación del Carrito</h1>
-    @if(empty($carrito))
-        <p class="text-center text-light mt-4">El carrito está vacío.</p>
+
+    @if (!empty($selectedAddress))
+        <div class="card bg-light mb-3">
+            <div class="card-header">Dirección de Envío</div>
+            <div class="card-body">
+                <p><strong>Calle:</strong> {{ $selectedAddress->street }}</p>
+                <p><strong>Número Exterior:</strong> {{ $selectedAddress->outer_number }}</p>
+                @if (!empty($selectedAddress->interior_number))
+                    <p><strong>Número Interior:</strong> {{ $selectedAddress->interior_number }}</p>
+                @endif
+                <p><strong>Colonia:</strong> {{ $selectedAddress->neighborhood->name }}</p>
+                <p><strong>Código Postal:</strong> {{ $selectedAddress->neighborhood->postalCode->postal_code }}</p>
+                <p><strong>Referencia:</strong> {{ $selectedAddress->reference }}</p>
+            </div>
+        </div>
     @else
+        <p class="text-warning">No se ha seleccionado una dirección.</p>
+    @endif
+   
+    @if (!empty($carrito))
+    
         <div class="table-responsive">
             <table class="table table-dark table-hover mt-4">
                 <thead>
                     <tr>
                         <th>Producto</th>
                         <th>Precio Unitario</th>
+                        <th>Cantidad</th>
                         <th>Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @php $grandTotal = 0; @endphp
                     @foreach ($carrito as $item)
+                        @php 
+                            $subtotal = $item['price']; 
+                            $grandTotal += $subtotal;
+                        @endphp
                         <tr>
                             <td>{{ $item['name'] }}</td>
                             <td>MX${{ number_format($item['price'], 2) }}</td>
-                            <td>MX${{ number_format($item['price'], 2) }}</td>
+                            <td>1</td>
+                            <td>MX${{ number_format($subtotal, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -30,7 +55,14 @@
         </div>
         <h3 class="text-end text-light mt-4">Total: MX${{ number_format($total, 2) }}</h3>
         <div class="text-center mt-4">
-            <button class="btn btn-success btn-lg">Confirmar Compra</button>
+            <a href="{{ route('addresses.form') }}" class="btn btn-success btn-lg">Seleccionar direccion</a>
+            <a href="{{ route('menu') }}" class="btn btn-primary btn-lg">Regresar al Menú</a>
+            <a href="{{ route('vista.pago') }}" class="btn btn-warning btn-lg">Proceder al Pago</a>
+        </div>
+    @else
+        <p class="text-center text-light mt-4">El carrito está vacío.</p>
+        <div class="text-center mt-4">
+            <a href="{{ route('menu') }}" class="btn btn-primary btn-lg">Regresar al Menú</a>
         </div>
     @endif
 </div>

@@ -169,6 +169,7 @@
             <ul class="nav flex-column" style="width: 100%">
                 <li>                    
                     <ul class="nav flex-column mb-auto">
+                        @isset($categorias)
                         @foreach ($categorias as $categoria)
                             <li class="nav-item">
                                 <a class="links nav-link" href="#Categoria_{{ $categoria->id }}">
@@ -177,6 +178,7 @@
                                 </a>
                             </li>
                         @endforeach
+                        @endisset
                         <li class="nav-item">
                             <a class="links nav-link" href="/">
                                 <svg class="bi pe-none" width="16" height="17"><use xlink:href="#icon-name"></use></svg>
@@ -209,56 +211,54 @@
 
     // con esta funcion practicamente se agrega un elemento al fakin carrito
     function addToCart(name, price, menuId) {
-        const quantityInput = document.getElementById(`quantity${menuId}`);
-        const quantity = parseInt(quantityInput.value);
+    const quantityInput = document.getElementById(`quantity${menuId}`);
+    const quantity = parseInt(quantityInput.value);
 
-        if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
-            alert('Cantidad no válida.');
-            return;
-        }
-
-        //esto hace que cuando se agregue un elemento su entrada sea unica
-        for (let i = 0; i < quantity; i++) {
-            cart.push({ menuId, name, price: parseFloat(price) });
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-        alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
-        updateCartCount();
+    if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
+        alert('Cantidad no válida.');
+        return;
     }
+
+    const existingItem = cart.find(item => item.menuId === menuId);
+
+    if (existingItem) {
+        existingItem.quantity += quantity; // Aumenta la cantidad si el producto ya existe
+    } else {
+        cart.push({ menuId, name, price: parseFloat(price), quantity });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
+    updateCartCount();
+}
 
     // Muestra los productos en el carrito dentro del modal
     function toggleCart() {
-    // Limpia cualquier capa de modal residual antes de abrir
-    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
-    document.body.classList.remove('modal-open');
-    document.body.style = '';
-
     const cartItemsContainer = document.getElementById('cart-items');
     cartItemsContainer.innerHTML = '';
     let total = 0;
 
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
-        } else {
-            cart.forEach((item, index) => {
-                total += item.price;
-                const itemRow = document.createElement('div');
-                itemRow.classList.add('cart-item');
-                itemRow.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <p>${item.name} - MX$${item.price.toFixed(2)}</p>
-                        <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                    </div>
-                `;
-                cartItemsContainer.appendChild(itemRow);
-            });
-            cartItemsContainer.innerHTML += `<h5 class="mt-3">Total: MX$${total.toFixed(2)}</h5>`;
-        }
-
-        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
-        cartModal.show();
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+    } else {
+        cart.forEach((item, index) => {
+            total += item.price * item.quantity;
+            const itemRow = document.createElement('div');
+            itemRow.classList.add('cart-item');
+            itemRow.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>
+                    <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                </div>
+            `;
+            cartItemsContainer.appendChild(itemRow);
+        });
+        cartItemsContainer.innerHTML += `<h5 class="mt-3">Total: MX$${total.toFixed(2)}</h5>`;
     }
+
+    const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+    cartModal.show();
+}
 
 
     //con esto eliminamos un producto del carrito
@@ -330,14 +330,14 @@
     //la noti diciendole que el carro esta vacio
     //aparte de que me aseguro de que el form se mande de forma segura
     function confirmCart() {
-        if (cart.length === 0) {
-            alert('El carrito está vacío.');
-            return;
+    if (cart.length === 0) {
+        alert('El carrito está vacío.');
+        return;
         }
 
         const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '{{ route("post_carro") }}';
+        form.method = 'GET'; // Cambiar el método a GET para redirigir correctamente
+        form.action = '{{ route("addresses.form") }}';
         form.innerHTML = `
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" name="cart" value='${JSON.stringify(cart)}'>
@@ -346,11 +346,15 @@
         form.submit();
     }
 
+
+
+
     //cuando carga la pagina, esto hace que se inicialice el contador para el carrito
     document.addEventListener('DOMContentLoaded', function () {
         updateCartCount();
     });
-</script>
+</script> 
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

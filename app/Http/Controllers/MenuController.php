@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Menu;
+use App\Models\Address;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MenuController extends Controller
 {
@@ -12,44 +15,46 @@ class MenuController extends Controller
     {
         //con esta variable, practicamente traemos a todas las categorias y el stock relacionado con el platillo del menu
         $categorias = Category::with(['menu' => function ($query) {
-            $query->with('stock'); // Incluimos la relación con el stock
+            $query->with('stock'); 
         }])->get();
 
         return view('Menu', compact('categorias'));
     }
-
-    public function showPostCarro()
-    {
-        //esta funcion la necesito para que se muestre la vista de post_carro, pero se le tiene que pasar la variable y el modelo de las categorias porque
-        //sino manda el errorsote por el layout.g_base xd
-        $categorias = Category::all();
-        return view('post_carro', compact('categorias'));
-    }
-
-
+    
     public function postCarro(Request $request)
     {
-        //aqui hacemos lo mismo para lo de las categorias, para que no nos mande el error, con la diferencia de que 
-        //vamos a pasar todos los productos que tenemos en el arreglo del carrito, para la vista de post_carro
-        //es para ello que utilizamos toda esta funcion
-        $categorias = Category::all();
         $carrito = json_decode($request->input('cart', '[]'), true);
-
+    
         if (!is_array($carrito)) {
             return redirect()->back()->withErrors(['error' => 'El formato del carrito no es válido.']);
         }
-
-        // calculamos el total de todo el carrito
+    
         $total = collect($carrito)->sum(fn($item) => $item['price'] ?? 0);
-
-        // pasamos como tal el carrito, el total, y de ahuevo las categorias para que no nos mande el error ya antes mencionado
-        return view('post_carro', compact('carrito', 'total', 'categorias'));
+    
+        $selectedAddressId = $request->input('selectedAddress'); 
+        
+        $selectedAddress = null;
+    
+        if ($selectedAddressId) {
+            $selectedAddress = Address::where('id_address', $selectedAddressId)
+                ->whereHas('client', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->with(['neighborhood', 'neighborhood.postalCode'])
+                ->first();
+        }
+    
+        if (!$selectedAddress) {
+            return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
+        }
+    
+        return view('post_carro', compact('carrito', 'total', 'selectedAddress'));
     }
-
+    
     public function showEditionMenu()
     {
         $categorias = Category::with(['menu' => function ($query) {
-            $query->with('stock'); // Incluimos la relación con el stock
+            $query->with('stock'); 
         }])->get();
 
 
@@ -74,12 +79,75 @@ class MenuController extends Controller
         $menu->name = $request->input('name');
         $menu->save();
 
-
         $menu->stock->stock = $request->input('stock');
-        $menu->stock->save(); // Guarda los cambios en el stock
-
-
+        $menu->stock->save(); 
 
         return redirect()->route('menu')->with('success', 'Platillo actualizado correctamente');
     }
+
+    public function vistaPago(Request $request)
+    {
+        $carrito = session('carrito', []);
+        $total = collect($carrito)->sum(fn($item) => $item['price'] ?? 0);
+
+        $selectedAddress = session('selectedAddress');
+
+        return view('vista_pago', compact('carrito', 'total', 'selectedAddress'));
+    }
+
+
+
+    public function procesarPago(Request $request)
+    {
+        $validatedData = $request->validate([
+            'card_number' => ['required', 'digits:16'],
+            'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
+            'cvv' => ['required', 'digits:3'],
+        ]);
+
+        $carrito = session('carrito', []);
+
+        if (empty($carrito)) {
+            return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
+        }
+
+        $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
+
+        try {
+            DB::beginTransaction();
+
+            $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?)', [
+                1, 
+                $totalPrice,
+                'Completed', 
+                'Pedido de Comida', 
+                'Orden realizada desde el sitio web.', 
+                Auth::id(), 
+                $totalPrice, 
+            ]);
+
+            $paymentAndOrderData = collect($paymentAndOrderResult)->first();
+            $newOrderId = $paymentAndOrderData->OrderID;
+
+            foreach ($carrito as $item) {
+                DB::select('CALL AddOrderDetail(?, ?, ?, ?)', [
+                    $newOrderId,
+                    $item['menuId'],
+                    $item['quantity'] ?? 1,
+                    $item['specifications'] ?? null,
+                ]);
+            }
+
+            DB::commit();
+
+            session()->forget('carrito');
+
+            return redirect()->route('menu')->with('success', "Pago procesado exitosamente. Folio: {$paymentAndOrderData->FolioIdentifier}");
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
+        }
+    }
+
 }

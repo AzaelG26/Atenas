@@ -27,16 +27,7 @@ Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//todas las rutas en relación con el carro
-Route::get('/menu', [MenuController::class, 'index'])->name('menu');
-Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
-Route::get('/post_carro', [MenuController::class, 'showPostCarro'])->name('show_post_carro');
-Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
-Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
-Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
-Route::get('/buscar-direcciones', [AddressController::class, 'buscarDirecciones'])->name('buscar.direcciones');
-Route::get('/get-neighborhoods', [AddressController::class, 'getNeighborhoodsByPostalCode'])->name('get.neighborhoods');
-Route::post('/register-address', [AddressController::class, 'registerAddress'])->name('register.address');
+
 
 
 
@@ -56,6 +47,32 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+//todas las rutas en relación con el carro
+Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
+Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
+Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
+Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
+Route::get('/buscar-direcciones', [AddressController::class, 'buscarDirecciones'])->name('buscar.direcciones');
+Route::get('/get-neighborhoods', [AddressController::class, 'getNeighborhoodsByPostalCode'])->name('get.neighborhoods');
+Route::post('/register-address', [AddressController::class, 'registerAddress'])->name('register.address');
+Route::get('/user-addresses', [AddressController::class, 'userAddresses'])->name('user.addresses');
+Route::get('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
+Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
+Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
+Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
+
+
+
+
+
+
+Route::get('/post_carro', function () {
+    return view('post_carro');
+})->name('post_carro');
+
+
 });
 
 

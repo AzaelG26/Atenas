@@ -11,6 +11,8 @@ class PostalCode extends Model
 
     protected $table = 'postal_codes';
 
+    protected $primaryKey = 'id_postal_codes'; // Cambia esto
+
     protected $fillable = [
         'postal_code',
     ];
