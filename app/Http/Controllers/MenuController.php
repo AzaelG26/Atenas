@@ -15,26 +15,26 @@ class MenuController extends Controller
     {
         //con esta variable, practicamente traemos a todas las categorias y el stock relacionado con el platillo del menu
         $categorias = Category::with(['menu' => function ($query) {
-            $query->with('stock'); 
+            $query->with('stock');
         }])->get();
 
         return view('Menu', compact('categorias'));
     }
-    
+
     public function postCarro(Request $request)
     {
         $carrito = json_decode($request->input('cart', '[]'), true);
-    
+
         if (!is_array($carrito)) {
             return redirect()->back()->withErrors(['error' => 'El formato del carrito no es válido.']);
         }
-    
+
         $total = collect($carrito)->sum(fn($item) => $item['price'] ?? 0);
-    
-        $selectedAddressId = $request->input('selectedAddress'); 
-        
+
+        $selectedAddressId = $request->input('selectedAddress');
+
         $selectedAddress = null;
-    
+
         if ($selectedAddressId) {
             $selectedAddress = Address::where('id_address', $selectedAddressId)
                 ->whereHas('client', function ($query) {
@@ -43,18 +43,18 @@ class MenuController extends Controller
                 ->with(['neighborhood', 'neighborhood.postalCode'])
                 ->first();
         }
-    
+
         if (!$selectedAddress) {
             return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
         }
-    
+
         return view('post_carro', compact('carrito', 'total', 'selectedAddress'));
     }
-    
+
     public function showEditionMenu()
     {
         $categorias = Category::with(['menu' => function ($query) {
-            $query->with('stock'); 
+            $query->with('stock');
         }])->get();
 
 
@@ -80,7 +80,7 @@ class MenuController extends Controller
         $menu->save();
 
         $menu->stock->stock = $request->input('stock');
-        $menu->stock->save(); 
+        $menu->stock->save();
 
         return redirect()->route('menu')->with('success', 'Platillo actualizado correctamente');
     }
@@ -117,13 +117,13 @@ class MenuController extends Controller
             DB::beginTransaction();
 
             $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?)', [
-                1, 
+                1,
                 $totalPrice,
-                'Completed', 
-                'Pedido de Comida', 
-                'Orden realizada desde el sitio web.', 
-                Auth::id(), 
-                $totalPrice, 
+                'Completed',
+                'Pedido de Comida',
+                'Orden realizada desde el sitio web.',
+                Auth::id(),
+                $totalPrice,
             ]);
 
             $paymentAndOrderData = collect($paymentAndOrderResult)->first();
@@ -149,5 +149,4 @@ class MenuController extends Controller
             return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
         }
     }
-
 }

@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 use App\Models\Neighborhood;
 use App\Models\PostalCode;
 use App\Models\Category;
@@ -14,12 +14,12 @@ class AddressController extends Controller
 {
     public function showForm(Request $request)
     {
-        $user = Auth::user(); 
+        $user = Auth::user();
         $addresses = Address::whereHas('client', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })->with(['neighborhood', 'neighborhood.postalCode'])->get();
 
-        $categorias = Category::all(); 
+        $categorias = Category::all();
         $postalCodes = PostalCode::with('neighborhoods')->get();
 
         $carrito = session('carrito', json_decode($request->input('cart', '[]'), true));
@@ -42,7 +42,7 @@ class AddressController extends Controller
             $user = Auth::user();
 
             $addresses = Address::whereHas('client', function ($query) use ($user) {
-                $query->where('user_id', $user->id); 
+                $query->where('user_id', $user->id);
             })->with(['neighborhood', 'neighborhood.postalCode'])->get();
 
             return view('user_addresses', compact('addresses'));
@@ -56,88 +56,94 @@ class AddressController extends Controller
     {
         try {
             $query = $request->input('query');
-            
+
             $resultados = Neighborhood::where('name', 'like', "%$query%")
-                            ->orWhereHas('postalCode', function($q) use ($query) {
-                                $q->where('postal_code', 'like', "%$query%");
-                            })
-                            ->with('postalCode')
-                            ->get()
-                            ->map(function($neighborhood) {
-                                return [
-                                    'id' => $neighborhood->id,
-                                    'postal_code' => $neighborhood->postalCode->postal_code,
-                                    'neighborhood' => $neighborhood->name,
-                                ];
-                            });
+                ->orWhereHas('postalCode', function ($q) use ($query) {
+                    $q->where('postal_code', 'like', "%$query%");
+                })
+                ->with('postalCode')
+                ->get()
+                ->map(function ($neighborhood) {
+                    return [
+                        'id' => $neighborhood->id,
+                        'postal_code' => $neighborhood->postalCode->postal_code,
+                        'neighborhood' => $neighborhood->name,
+                    ];
+                });
 
             return response()->json(['resultados' => $resultados]);
-
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
     public function registerAddress(Request $request)
-{
-    $idClient = $request->input('id_client');
-    $idNeighborhood = $request->input('id_neighborhood');
-    $street = $request->input('street');
-    $reference = $request->input('reference');
-    $interiorNumber = $request->input('interior_number');
-    $outerNumber = $request->input('outer_number');
+    {
+        // con el "?" se previene el error en caso de haber datos nulos
+        $user = auth()->user()->people?->id;
 
-    try {
-        DB::statement('CALL register_address(?, ?, ?, ?, ?, ?, @id_address)', [
-            $idClient,
-            $idNeighborhood,
-            $street,
-            $reference,
-            $interiorNumber,
-            $outerNumber
-        ]);
+        if ($user) {
+            $idClient = $user;
+        } else {
+            return redirect()->route('addresses.form')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
+        }
 
-        $result = DB::select('SELECT @id_address AS id_address');
+        $idNeighborhood = $request->input('id_neighborhood');
+        $street = $request->input('street');
+        $reference = $request->input('reference');
+        $interiorNumber = $request->input('interior_number');
+        $outerNumber = $request->input('outer_number');
 
-        return redirect()->route('addresses.form')
-            ->with('success', 'Dirección registrada exitosamente.');
-        
-    } catch (\Exception $e) {
-        return redirect()->route('addresses.form')->with('error', 'Error al registrar la dirección: ' . $e->getMessage());
-    }
-}
+        try {
+            DB::statement('CALL register_address(?, ?, ?, ?, ?, ?, @id_address)', [
+                $idClient,
+                $idNeighborhood,
+                $street,
+                $reference,
+                $interiorNumber,
+                $outerNumber
+            ]);
 
+            $result = DB::select('SELECT @id_address AS id_address');
 
-
-public function postCarro(Request $request)
-{
-    $carrito = json_decode($request->input('cart', '[]'), true);
-    
-
-    if (!is_array($carrito)) {
-        return redirect()->back()->withErrors(['error' => 'El formato del carrito no es válido.']);
+            return redirect()->route('addresses.form')
+                ->with('success', 'Dirección registrada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('addresses.form')->with('error', 'Error al registrar la dirección: ' . $e->getMessage());
+        }
     }
 
-    $total = collect($carrito)->sum(fn($item) => $item['price'] ?? 0);
 
-    $selectedAddressId = $request->input('selectedAddress');
-    $selectedAddress = null;
 
-    if ($selectedAddressId) {
-        $selectedAddress = Address::where('id', $selectedAddressId)
-            ->whereHas('client', function ($query) {
-                $query->where('user_id', Auth::id());
-            })
-            ->with(['neighborhood', 'neighborhood.postalCode'])
-            ->first();
+    public function postCarro(Request $request)
+    {
+        $carrito = json_decode($request->input('cart', '[]'), true);
+
+
+        if (!is_array($carrito)) {
+            return redirect()->back()->withErrors(['error' => 'El formato del carrito no es válido.']);
+        }
+
+        $total = collect($carrito)->sum(fn($item) => $item['price'] ?? 0);
+
+        $selectedAddressId = $request->input('selectedAddress');
+        $selectedAddress = null;
+
+        if ($selectedAddressId) {
+            $selectedAddress = Address::where('id', $selectedAddressId)
+                ->whereHas('client', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->with(['neighborhood', 'neighborhood.postalCode'])
+                ->first();
+        }
+
+        if (!$selectedAddress) {
+            return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
+        }
+
+        return view('post_carro', compact('carrito', 'total', 'selectedAddress'));
     }
-
-    if (!$selectedAddress) {
-        return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
-    }
-
-    return view('post_carro', compact('carrito', 'total', 'selectedAddress'));
-}
 
 
     public function seleccionarDireccion(Request $request)
@@ -165,11 +171,4 @@ public function postCarro(Request $request)
 
         return redirect()->route('post_carro')->with('success', 'Dirección seleccionada correctamente.');
     }
-
-
-
-
-
-
-
 }
