@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\PeopleController;
+use App\Http\Controllers\ordersController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -62,4 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/informacion-personal', [PeopleController::class, 'store'])->name('personas.store');
     Route::get('/form-personalData', [PeopleController::class, 'formularioPersonas'])->name('formPersonalData');
     Route::put('/informacion-personal/{id}', [PeopleController::class, 'update'])->name('personas.update');
+
+
+    Route::get('/orders', [ordersController::class, 'getOrdersOnline'])->name('orders');
 });

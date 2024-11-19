@@ -78,14 +78,16 @@
         } */
                  
         .nav-link:hover{
-            color:#8CD2F0;
+            color:#ce9d22;
             /* filter: drop-shadow(0px 0px 1px rgb(151, 124, 116)); */
             font-size: 18px;
             background-color: #2929294b;
 
 
         } 
+        
         .nav-link.active {
+            
             background-color: #2929294b;
         }
         body{
@@ -236,18 +238,21 @@
                 </li>
 
                 <li>
-                    <a class="links nav-link {{ request()->routeIs('personas.create') ? 'active' : '' }}" href="{{route('personas.create')}}" role="button" aria-expanded="false" aria-controls="direccionesSubmenu">
+                    <a class="links nav-link {{ request()->routeIs('personas.create') ? 'active' : '' }}" href="{{route('personas.create')}}">
                         <i class="bi bi-person-vcard"></i> Datos personales 
                     </a>
                 </li>
                 <li>
-                    <a  class="links nav-link {{ request()->routeIs('link_persona_direccion') ? 'active' : '' }}">
-                        <i class="bi bi-link"></i> Vincular Persona a Dirección
+                    <a  class="links nav-link {{ request()->routeIs('employee.create') ? 'active' : '' }}" href="{{route('employee.create')}}">
+                        <img width="15" height="15" src="https://img.icons8.com/glyph-neue/64/ce9d22/cook-male.png" alt="cook-male"/>
+                         Nuevo empleado
                     </a>
                 </li>
                 <li>
-                    <a class="links nav-link" data-bs-toggle="collapse" href="#usuariosSubmenu" role="button" aria-expanded="false" aria-controls="usuariosSubmenu">
-                        <i class="bi bi-people"></i> Usuarios 
+                    <a class="links nav-link" {{ request()->routeIs('orders') ? 'active' : '' }} href="{{route('orders')}}" >
+                        <i>
+                            <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/purchase-order.png" alt="purchase-order"/>
+                        </i> ordenes 
                     </a>                                    
                 </li>
                 <li style="border-top:1px solid#be952c">                     

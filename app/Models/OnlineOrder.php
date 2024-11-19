@@ -10,6 +10,7 @@ class OnlineOrder extends Model
     use HasFactory;
 
     protected $table = 'online_orders';
+    protected $primaryKey = 'id_online_order';  // Especificando la clave primaria
 
     protected $fillable = [
         'order_name',
