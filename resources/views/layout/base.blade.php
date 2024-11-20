@@ -41,7 +41,7 @@
           background-color: #fffeb4; /* Rojo */
         }
         100% {
-          background-color: #ffe7cdec; /* Naranja */
+          background-color: #ffe7cd; /* Naranja */
         }
       }
 
@@ -239,7 +239,7 @@
       </div>
 
       <div class="col-md-5 offset-md-1 mb-3">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2626.0207569556997!2d-103.24203932293464!3d25.533978707918646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x868fc73c5ed16169%3A0x307b4a1c36875901!2sAtenas%20Food!5e0!3m2!1ses!2smx!4v1731618615256!5m2!1ses!2smx" width="420" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2626.0207569556997!2d-103.24203932293464!3d25.533978707918646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x868fc73c5ed16169%3A0x307b4a1c36875901!2sAtenas%20Food!5e0!3m2!1ses!2smx!4v1731618615256!5m2!1ses!2smx" width="400" height="200" style="border:0;" allowfullscreen="" loading="lazy" class="mapa" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
 

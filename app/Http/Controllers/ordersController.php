@@ -17,6 +17,7 @@ class ordersController extends Controller
             'people',
         ])->orderBy('updated_at', 'desc')->get();
 
+
         $orders = Order::with([
             'orderDetail.menu',
             'folio',
