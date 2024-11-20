@@ -67,8 +67,10 @@
     <style>
          #body-register{
             margin: 0;
-            background-color: #0e1327; /* Cambia a un color opaco para comprobar */
-            min-height: 100vh; /* Asegúrate de que el body ocupe al menos el 100% de la altura de la ventana */
+            background-color: #0C1011; /* Cambia a un color opaco para comprobar */
+            min-height: 100vh; 
+            max-width: 100vw;
+            overflow-x: auto;
             position: relative; /* Necesario para posicionar contenido sobre el video */
 
         }
@@ -107,7 +109,8 @@
             width:100vw; 
             height: auto; 
             justify-content:center;
-            align-items: center;
+            position: relative; 
+            z-index: 1; 
         }
         .input-icon {
             margin-top: 28px;
@@ -167,11 +170,10 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 70%;
             filter: blur(1px);
             object-fit: cover; 
             background-size: cover;            
-            background-attachment: fixed;
             z-index: -1;
         }
     </style>
