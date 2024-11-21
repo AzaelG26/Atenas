@@ -14,8 +14,8 @@ class People extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'maternal_lastname',
         'paternal_lastname',
+        'maternal_lastname',
         'gender',
         'cellphone_number',
         'birthdate',

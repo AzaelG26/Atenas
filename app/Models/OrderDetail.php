@@ -18,7 +18,6 @@ class OrderDetail extends Model
         'quantity',
         'notes',
         'specifications',
-        'status',
     ];
 
     public function order()
