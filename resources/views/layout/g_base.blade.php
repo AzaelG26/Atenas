@@ -200,68 +200,67 @@
     
 
     <script>
-    //aqui se inicia el carrito con el localstorage, json
+    // Aquí se inicializa el carrito con el localStorage en formato JSON
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    //con esto vamos actualizando la cantidad de productos en el carro
+    // Función para actualizar la cantidad de productos en el carrito
     function updateCartCount() {
-        const totalItems = cart.length; // con esto hacemos que cada entrada sea individual
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         document.getElementById('cart-count').textContent = totalItems;
     }
 
-    // con esta funcion practicamente se agrega un elemento al fakin carrito
+    // Función para agregar un producto al carrito
     function addToCart(name, price, menuId) {
-    const quantityInput = document.getElementById(`quantity${menuId}`);
-    const quantity = parseInt(quantityInput.value);
+        const quantityInput = document.getElementById(`quantity${menuId}`);
+        const quantity = parseInt(quantityInput.value);
 
-    if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
-        alert('Cantidad no válida.');
-        return;
+        if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
+            alert('Cantidad no válida.');
+            return;
+        }
+
+        const existingItem = cart.find(item => item.menuId === menuId);
+
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            cart.push({ menuId, name, price: parseFloat(price), quantity });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
+        updateCartCount();
     }
 
-    const existingItem = cart.find(item => item.menuId === menuId);
-
-    if (existingItem) {
-        existingItem.quantity += quantity; // Aumenta la cantidad si el producto ya existe
-    } else {
-        cart.push({ menuId, name, price: parseFloat(price), quantity });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
-    updateCartCount();
-}
-
-    // Muestra los productos en el carrito dentro del modal
+    // Función para mostrar el carrito dentro del modal
     function toggleCart() {
-    const cartItemsContainer = document.getElementById('cart-items');
-    cartItemsContainer.innerHTML = '';
-    let total = 0;
+        const cartItemsContainer = document.getElementById('cart-items');
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
 
-    if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
-    } else {
-        cart.forEach((item, index) => {
-            total += item.price * item.quantity;
-            const itemRow = document.createElement('div');
-            itemRow.classList.add('cart-item');
-            itemRow.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>
-                    <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                </div>
-            `;
-            cartItemsContainer.appendChild(itemRow);
-        });
-        cartItemsContainer.innerHTML += `<h5 class="mt-3">Total: MX$${total.toFixed(2)}</h5>`;
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+        } else {
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+                const itemRow = document.createElement('div');
+                itemRow.classList.add('cart-item');
+                itemRow.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>
+                        <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemRow);
+            });
+            cartItemsContainer.innerHTML += `<h5 class="mt-3">Total: MX$${total.toFixed(2)}</h5>`;
+        }
+
+        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+        cartModal.show();
     }
 
-    const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
-    cartModal.show();
-}
-
-
-    //con esto eliminamos un producto del carrito
+    // Función para eliminar un producto del carrito
     function removeFromCart(index) {
         cart.splice(index, 1);
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -269,7 +268,7 @@
         updateCartCount();
     }
 
-    //con las siguientes funciones, hacemos que se pueda incrementar o disminuir la cantidad de eelemntos que querramos llevar en el carrito
+    // Función para incrementar la cantidad de un producto
     function increaseQuantity(menuId, stock) {
         const quantityInput = document.getElementById(`quantity${menuId}`);
         const stockElement = document.getElementById(`stock${menuId}`);
@@ -284,6 +283,7 @@
         }
     }
 
+    // Función para disminuir la cantidad de un producto
     function decreaseQuantity(menuId) {
         const quantityInput = document.getElementById(`quantity${menuId}`);
         const stockElement = document.getElementById(`stock${menuId}`);
@@ -296,47 +296,40 @@
         }
     }
 
+    // Función para vaciar el carrito
     function clearCart() {
-        //con esto vaciamos el carro y actualizamos el localstorage
         cart = [];
         localStorage.setItem('cart', JSON.stringify(cart));
-
-        //y con esto se va actualizando la vista y el contador muejejej
         toggleCart();
         updateCartCount();
-
         alert('El carrito ha sido vaciado.');
     }
 
-
-    // con esto se limpia correctamente la vista cuando eliminamos elementos del carrito y se queda vacío
-    //porque cuando se quedaba vacío y se cerraba el modal, era de que por ejemplo como si el modal siguiera abierto, entonces para esto es esta funcion
+    // Limpia la vista correctamente al cerrar el modal
     document.addEventListener('hidden.bs.modal', function (event) {
         if (event.target.id === 'cartModal') {
-            
             document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
             document.body.classList.remove('modal-open');
             document.body.style = '';
         }
     });
 
+    // Limpieza adicional para asegurarse de que el modal funcione correctamente
     document.getElementById('cartModal').addEventListener('hidden.bs.modal', function () {
-    document.body.style = ''; 
-    document.body.classList.remove('modal-open');
-    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+        document.body.style = '';
+        document.body.classList.remove('modal-open');
+        document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
     });
 
-    //con esta funcion me aseguro que el carrito no este vacio, y cuando se quiera pasar a la vista de post_carro, le mande 
-    //la noti diciendole que el carro esta vacio
-    //aparte de que me aseguro de que el form se mande de forma segura
+    // Validar carrito antes de enviar el formulario
     function confirmCart() {
-    if (cart.length === 0) {
-        alert('El carrito está vacío.');
-        return;
+        if (cart.length === 0) {
+            alert('El carrito está vacío.');
+            return;
         }
 
         const form = document.createElement('form');
-        form.method = 'GET'; // Cambiar el método a GET para redirigir correctamente
+        form.method = 'GET';
         form.action = '{{ route("addresses.form") }}';
         form.innerHTML = `
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -346,14 +339,12 @@
         form.submit();
     }
 
-
-
-
-    //cuando carga la pagina, esto hace que se inicialice el contador para el carrito
+    // Inicializar contador del carrito al cargar la página
     document.addEventListener('DOMContentLoaded', function () {
         updateCartCount();
     });
-</script> 
+</script>
+
 
 
 

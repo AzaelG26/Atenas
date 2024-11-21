@@ -114,35 +114,40 @@
 @section('scripts')
 <script>
     document.getElementById('paymentForm').addEventListener('submit', function (e) {
-        const cardNumber = document.getElementById('cardNumber').value.trim();
-        const expiryDate = document.getElementById('expiryDate').value.trim();
-        const cvv = document.getElementById('cvv').value.trim();
+    const cardNumber = document.getElementById('cardNumber').value.trim();
+    const expiryDate = document.getElementById('expiryDate').value.trim();
+    const cvv = document.getElementById('cvv').value.trim();
 
-        const cardNumberRegex = /^\d{16}$/;
-        const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
-        const cvvRegex = /^\d{3}$/;
+    const cardNumberRegex = /^\d{16}$/;
+    const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    const cvvRegex = /^\d{3}$/;
 
-        let valid = true;
+    let valid = true;
 
-        if (!cardNumberRegex.test(cardNumber)) {
-            alert('El número de tarjeta debe tener 16 dígitos.');
-            valid = false;
-        }
+    if (!cardNumberRegex.test(cardNumber)) {
+        alert('El número de tarjeta debe tener 16 dígitos.');
+        valid = false;
+    }
 
-        if (!expiryDateRegex.test(expiryDate)) {
-            alert('La fecha de expiración debe tener el formato MM/YY.');
-            valid = false;
-        }
+    if (!expiryDateRegex.test(expiryDate)) {
+        alert('La fecha de expiración debe tener el formato MM/YY.');
+        valid = false;
+    }
 
-        if (!cvvRegex.test(cvv)) {
-            alert('El CVV debe tener 3 dígitos.');
-            valid = false;
-        }
+    if (!cvvRegex.test(cvv)) {
+        alert('El CVV debe tener 3 dígitos.');
+        valid = false;
+    }
 
-        if (!valid) {
-            e.preventDefault(); 
-        }
-    });
+    if (!valid) {
+        e.preventDefault(); 
+    } else {
+        // Limpia el carrito al procesar el pago
+        localStorage.removeItem('cart');
+        updateCartCount();
+    }
+});
+
 </script>
 
 @endsection
