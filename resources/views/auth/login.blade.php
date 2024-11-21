@@ -1,55 +1,3 @@
-{{-- <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ml-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout> --}}
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +13,10 @@
             margin: 0;
             background-color: #0C1011; /* Cambia a un color opaco para comprobar */
             min-height: 100vh; 
+            max-width: 100vw;
             overflow-x: auto;
+            position: relative; /* Necesario para posicionar contenido sobre el video */
+
         }
 
         .nav-link {
@@ -79,11 +30,11 @@
         }
 
         .card{
-            background-color: rgba(49, 49, 49, 0.651);
-            color: white;
-            box-shadow: 0px 0px 20px rgb(29, 29, 29);
+            background-color: rgba(14, 14, 14, 0.342);
+            color: white;            
+            /* box-shadow: 0px 0px 4px rgb(29, 29, 29); */
             border-radius: 20px;
-            border: none;
+            border: 1px solid rgb(41, 41, 41);
         }
 
         .card-body{
@@ -115,7 +66,9 @@
             display:flex; 
             width:100vw; 
             height: auto; 
-            justify-content:center
+            justify-content:center;
+            position: relative; 
+            z-index: 1; 
         }     
 
         #btn-sesion {
@@ -170,9 +123,25 @@
         #btn-sesion:hover::before {
         transform: translate3d(100%, 0, 0);
         }
+        #video{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            filter: blur(1px);
+            object-fit: cover; 
+            background-size: cover;            
+            background-attachment: fixed;
+            z-index: -1;
+        }
     </style>
 </head>
 <body id="body-login">
+    <video autoplay muted loop playsinline id="video" >
+        <source src="6899103_Dream_Scene_3840x2160.mp4" type="video/mp4">
+    </video>
+    
     <section id="cont">
         <div class="card mb-3" style="height:auto; width:20em; margin-top:40px;">
                 <form method="POST" action="{{ route('login') }}">
@@ -246,6 +215,6 @@
     <script>
             alert('{{ session('status') }}');
     </script>        
-    @endif        
+    @endif 
 </body>
 </html>

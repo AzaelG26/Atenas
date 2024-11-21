@@ -119,7 +119,7 @@
                         >            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('name') 
-                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                                <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
                             @enderror
                         </p>
                         @if ($errors->has('name') && strlen(old('name', $user->name)) < 4)
@@ -128,10 +128,10 @@
                     </div>
 
                     <div class="col-md-8 input-icon">
-                        <input placeholder="Email" class="input" name="email" type="text" value="{{ old('email', $user->email) }}">            
+                        <input placeholder="Email" class="input" name="email" type="text" value="{{old('email', $user->email)}}">            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('email')
-                                {{ $message }}
+                                <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
                             @enderror
                         </p>
                     </div>
@@ -152,7 +152,7 @@
                         <input placeholder="Contraseña actual" class="input" name="current_password" type="password" >            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('current_password') 
-                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                                <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
                             @enderror
                         </p>
                     </div>
@@ -161,7 +161,7 @@
                         <input placeholder="Nueva contraseña" class="input" name="password" type="password" >            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('password') 
-                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                                <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
                             @enderror
                         </p>
                     </div>
@@ -187,7 +187,7 @@
                         <input placeholder="Confirma tu contraseña" class="input" name="password" type="password" required>            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('password') 
-                                <div class="text-red-500 text-sm">{{ $message }}</div>
+                                <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
                             @enderror
                         </p>
                     </div>

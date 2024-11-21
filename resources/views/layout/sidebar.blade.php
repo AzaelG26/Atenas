@@ -16,7 +16,7 @@
     <style>
         body {
             margin: 0;
-            background-color:rgba(12, 12, 12, 0.616);
+            background-color:#0C1011;
         }
         .content {
             padding: 20px;
@@ -50,7 +50,9 @@
             font-size: 18px;
             background-color: #2929294b;
         } 
+        
         .nav-link.active {
+            
             background-color: #2929294b;
         }
     </style>
@@ -85,18 +87,21 @@
                     </a>                    
                 </li>
                 <li>
-                    <a class="links nav-link {{ request()->routeIs('personas.create') ? 'active' : '' }}" href="{{route('personas.create')}}" role="button" aria-expanded="false" aria-controls="direccionesSubmenu">
+                    <a class="links nav-link {{ request()->routeIs('personas.create') ? 'active' : '' }}" href="{{route('personas.create')}}">
                         <i class="bi bi-person-vcard"></i> Datos personales 
                     </a>
                 </li>
                 <li>
-                    <a  class="links nav-link {{ request()->routeIs('link_persona_direccion') ? 'active' : '' }}">
-                        <i class="bi bi-link"></i> Vincular Persona a Dirección
+                    <a  class="links nav-link {{ request()->routeIs('employee.create') ? 'active' : '' }}" href="{{route('employee.create')}}">
+                        <img width="15" height="15" src="https://img.icons8.com/glyph-neue/64/ce9d22/cook-male.png" alt="cook-male"/>
+                         Nuevo empleado
                     </a>
                 </li>
                 <li>
-                    <a class="links nav-link" data-bs-toggle="collapse" href="#usuariosSubmenu" role="button" aria-expanded="false" aria-controls="usuariosSubmenu">
-                        <i class="bi bi-people"></i> Usuarios 
+                    <a class="links nav-link" {{ request()->routeIs('orders') ? 'active' : '' }} href="{{route('orders')}}" >
+                        <i>
+                            <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/purchase-order.png" alt="purchase-order"/>
+                        </i> ordenes 
                     </a>                                    
                 </li>
                 <li>
@@ -138,6 +143,10 @@
             @yield('content')
         </main>
     </div>
+
+    @stack('scripts') 
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

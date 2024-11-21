@@ -10,6 +10,7 @@ class Order extends Model
     use HasFactory;
 
     protected $table = 'orders';
+    protected $primaryKey = 'id_order';
 
     protected $fillable = [
         'diner_name',
@@ -19,6 +20,11 @@ class Order extends Model
         'id_payment',
         'id_folio',
     ];
+
+    public function orderDetail()
+    {
+        return $this->hasMany(OrderDetail::class, 'id_order');
+    }
 
     public function employee()
     {

@@ -10,6 +10,7 @@ class OnlineOrderDetail extends Model
     use HasFactory;
 
     protected $table = 'online_orders_details';
+    protected $primaryKey = 'id_online_o_details';  // Especificando la clave primaria
 
     protected $fillable = [
         'id_online_order',
@@ -26,7 +27,7 @@ class OnlineOrderDetail extends Model
 
     public function menu()
     {
-        return $this->belongsTo(Menu::class, 'id_menu', 'id_menu');
+        return $this->belongsTo(Menu::class, 'id_menu');
     }
 
     public function folio()

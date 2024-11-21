@@ -134,13 +134,7 @@
     <div class="container py-4">
 
         <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
-            <span class="fs-4 subtitle-persons"> &nbsp; &nbsp;Datos personales</span>
-                <a href="{{route('formPersonalData')}}">
-                    <button type="button" class="btn btn-dark btn-add-data" title="Add Data">                
-                            <i style="color:#8CD2F0;" class="bi bi-plus"></i>
-                            <i style="color:#8CD2F0;" class="bi bi-person-lines-fill"></i>                    
-                    </button>
-                </a>        
+            <span class="fs-4 subtitle-persons"> &nbsp; &nbsp;Datos personales</span>      
         </div>
 
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
@@ -177,7 +171,7 @@
                     </div>
                 </div>
                 
-                <button onclick="showEdit()" class="btn-accept" style="margin-top: 40px">Editar</button>
+                <button onclick="showEdit()" class="btn-accept" title="El formulario estara debajo" style="margin-top: 40px">Editar</button>
 
             </div>
         </div>
@@ -225,25 +219,25 @@
                             <div class="radio-container">
                                 <div class="radio-wrapper">
                                     <label class="radio-button">
-                                    <input id="male" name="gender" type="radio" value="Male" {{ old('gender', $people->gender) == 'Male' ? 'checked' : '' }}>
+                                    <input id="male" name="gender" type="radio" value="male" {{ old('gender', $people->gender) == 'male' ? 'checked' : '' }}>
                                     <span class="radio-checkmark"></span>
-                                    <span class="radio-label">Male</span>
+                                    <span class="radio-label">Masculino</span>
                                     </label>
                                 </div>
 
                                 <div class="radio-wrapper">
                                     <label class="radio-button">
-                                    <input id="female" name="gender" type="radio" value="Female" {{ old('gender', $people->gender) == 'Female' ? 'checked' : '' }}>
+                                    <input id="female" name="gender" type="radio" value="female" {{ old('gender', $people->gender) == 'female' ? 'checked' : '' }}>
                                     <span class="radio-checkmark"></span>
-                                    <span class="radio-label">Female</span>
+                                    <span class="radio-label">Femenino</span>
                                     </label>
                                 </div>
 
                                 <div class="radio-wrapper">
                                     <label class="radio-button">
-                                    <input id="other" name="gender" type="radio" value="Other" {{ old('gender', $people->gender) == 'Other' ? 'checked' : '' }}>
+                                    <input id="other" name="gender" type="radio" value="other" {{ old('gender', $people->gender) == 'other' ? 'checked' : '' }}>
                                     <span class="radio-checkmark"></span>
-                                    <span class="radio-label">Other</span>
+                                    <span class="radio-label">Otro</span>
                                     </label>
                                 </div>
                             </div>                    

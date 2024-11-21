@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController; 
+use App\Http\Controllers\Auth\PeopleController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\OrderController;
@@ -25,10 +28,15 @@ Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/menu', [MenuController::class, 'index'])->name('carrito');
+
+
+
+
+
 
 Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
 
 // Rutas del perfil de usuario
 Route::middleware('auth')->group(function () {
@@ -44,5 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reseñas', [ReseñaController::class, 'index'])->name('reseñas.index'); // Mostrar reseñas
     Route::post('/reseñas', [ReseñaController::class, 'store'])->name('reseñas.store'); // Crear nueva reseña
 });
+
+
 
 require __DIR__ . '/auth.php';

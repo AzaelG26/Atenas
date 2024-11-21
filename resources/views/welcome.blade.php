@@ -10,35 +10,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         
     <style>
-         /* #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #0C1011;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        /* Spinner del loader */
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-            color: #ffc400;
-        } */
-
         html {
             scroll-behavior: smooth;
         }
 
         #body {
             margin: 0;
-            width: 100vw;
-            background-color: #0C1011; /* Cambia a un color opaco para comprobar */
+            width: 100%;
+            background-color: #0C1011; 
             overflow-x: auto;
-            overflow-y: auto; /* Asegúrate de que el overflow-y esté en auto */
+            overflow-y: auto; 
 
         }        
  
@@ -114,14 +95,14 @@
         #container-conocenos-index{
             display: flex;
             justify-content: center;
-            width: auto;
-            height: 25em;
+            width: 100%;
+            height: auto;
             margin-top: 200px;
         }
 
         #interno-conocenos-index{
-            width: 90%;
-            height: 100%;
+            width: 94%;
+            height: auto;
         }
 
         #container-galeria-index{
@@ -135,20 +116,20 @@
         #interno-galeria-index{
             width: 90%;
             height: 100%;
-        }
+        } 
 
         #container-menu-index{
             display: flex;
             justify-content: center;
-            width: auto;
-            height: 25em;
+            width: 100%;
+            height: auto;
             margin-top: 30em;
 
         }
 
         #interno-menu-index{
-            width: 90%;
-            height: 100%;
+            width: 95%;
+            height: auto;
         }
 
         #container-resenias-index{
@@ -186,6 +167,7 @@
             align-items: flex-start;
             background-attachment: fixed; 
             height: 200px;
+            width:100vw;;
             transition: top 0.5s ease; 
             position: sticky;
             top: 0;     
@@ -213,18 +195,21 @@
 
 
         #img{
-            height: 700px;
-            background-image: url('flat-lay-burger-fries-plate-with-copyspace.jpg'); 
-            background-size: cover;
+            height: auto;
+            width: auto;
+            background-image: url('top-view-burger-fries-with-sauces-copy-space.jpg'); 
+            /* filter: blur(5px); */
+            background-size: cover;            
             background-attachment: fixed;
             box-shadow: 0px 3px 10px rgba(39, 39, 39, 0.8);
 
         }
         .subtitulos{
             color: white;
+            font-family: "Karla", sans-serif;
         }
         .subtitulos:hover{
-            color: #ffc400;
+            color: #e0a91e;
         }
 
         /* Animacion */
@@ -248,65 +233,93 @@
         .hero {
             padding: 100px 0;
             text-align: center;
-            animation: fadeIn 1s;
-            
+            animation: fadeIn 1s;            
         }
 
         .hero h1,h3 {            
             animation: fadeInUp 1.5s;
+            font-size: 3em;
         } 
         .navbar-toggler{
             color:#8CD2F0;;
         }
+
+        
+        .contenedor-about .card-body{
+            transition: all 0.3s ease;
+        }
+
+        .contenedor-about .card-body:hover{
+            transform: scale(1.02);
+        }
+
+        .contenido-menu{
+            width:60%;
+            display: flex;
+            flex-direction:column;
+            align-items:center; 
+        }
+
+        /* Media query para pantallas pequeñas */
+        @media (max-width: 1030px) {
+            #interno-menu-index{
+                width: 99%;
+            }
+            #picture-menu, .cont-picture-menu{
+                display: none;
+            }
+            .contenido-menu{
+                width: 100%;
+            }
+            .contenedor-about{
+                width: 95vw;
+            }
+            .mapa{
+                width: 100%;
+            }
+            .content-about {
+                width: 90%; /* Ajusta el ancho al contenedor */
+                height: 80vh; /* Permite que la altura se ajuste dinámicamente */
+            }
+
+            .card-body:not(.content-about) {
+                display: none;
+            }
+
+            .hero h1, .hero h3 {
+                font-size: 1.5em; /* Ajusta el tamaño del texto */
+                margin-bottom: 10px;
+            }
+
+            #container-conocenos-index {
+                margin-top: 50px; /* Reduce el margen para pantallas pequeñas */
+            }
+        }
+
+      
     </style>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Monda:wght@400..700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Courgette&family=DynaPuff:wght@400..700&family=Karla:ital,wght@0,200..800;1,200..800&family=Monda:wght@400..700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body id="body">
-     {{-- <!-- Loader -->
-    <div id="loader">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Cargando...</span>
-        </div>
-    </div>
-    
-    <!-- Contenido de la página -->
-    <div id="img">
-        <div id="navegation" class="sticky-top">
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <!-- Contenido del navbar -->
-                </div>
-            </nav>
-        </div>
-        <div class="hero">
-            <h1>¡Prueba la Felicidad en Cada Mordida!</h1>
-            <h3>Elige calidad, elige sabor, elige disfrutar</h3>
-        </div>
-    </div>
-        <!-- JavaScript para ocultar el loader cuando la página haya cargado -->
-    <script>
-        window.addEventListener('load', function() {
-            document.getElementById('loader').style.display = 'none';
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-     --}}
+    
+    
     <div id="img">
         {{-- <img src="LOGO_ATENAS.jpg" alt="sjjj"> --}}
         <div id="navegation" class="sticky-top">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#img">
-                        <img id="logo-atenas" style="cursor:-webkit-grabbing;" width="120px" src="LOGO_ATENAS_high_quality_transparent.png" alt="logo_atenas">
+                        <img id="logo-atenas" style="cursor:-webkit-grabbing;"  width="120px" src="LOGO_ATENAS_high_quality_transparent.png" alt="logo_atenas">
                     </a>
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -333,7 +346,7 @@
                             </li>
                             
                             <li class="nav-item" style="display: flex; margin-right:70px">
-                                <a class="nav-link" href="{{route('carrito')}}">
+                                <a class="nav-link" href="{{route('menu')}}">
                                     <ion-icon name="cart"></ion-icon>
                                 </a>    
                                 &nbsp;
@@ -344,202 +357,206 @@
                                 </a>                                                                  
                             </li>
                             @endif
-                        </ul>
-                    
+                        </ul> 
+                    </div>                   
                 </div>
             </nav>
         </div>
-
         
         <div style="text-align:center;" class="hero">
-            <h1 style="color: rgb(255, 255, 255); font-family: 'DynaPuff', system-ui; font-size:4em;">¡Prueba la Felicidad en Cada Mordida!</h1>
-            <h3 style="color: rgb(255, 255, 255); font-family: 'DynaPuff', system-ui; font-size:2em;">Elige calidad, elige sabor, elige disfrutar</h3>
+            <h1 style="color: rgb(255, 255, 255); font-family: Oleo Script, system-ui; font-size:4em; font-weight: 700; font-size:4.5em;">¡Prueba la Felicidad en Cada Mordida!</h1>
+            <h3 style="color: rgb(255, 255, 255); font-family: Oleo Script, system-ui; font-size:2em; font-weight: 700; font-size:2em;">Elige calidad, elige sabor, elige disfrutar</h3>
         </div>
     </div>
+            
 
-    
-    
+    <section id="container-conocenos-index">
+        <div id="interno-conocenos-index">                
+            <div class="card" style="height: 40em; background-color: transparent; border:none;">
+                <div class="card-header" style="background: transparent; border:none;">
+                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos acerca-de-nosotros" style="cursor:context-menu;">Acerca de nosotros</h2></div>                        
+                </div>
+                <div class="card-body contenedor-about" style="display:flex;flex-wrap:nowrap;">
 
-    
-            {{-- src="img2.jpg"
-        src="img3.jpg"  --}}
+                    <div class="card-body" style="background-image:url('series-images-from-series-images-from-series.jpg'); box-shadow: 0px 2px 15px rgb(0, 0, 0); width:25em; background-size: cover; margin:10px;"></div>
+                    <div class="card-body content-about" style="background-color: #131718; box-shadow: 0px 2px 15px rgb(0, 0, 0); margin:10px; width:40em;"></div>
+                    <div class="card-body" style="background-image:url('front-view-man-putting-sauce-burger.jpg'); box-shadow: 0px 2px 15px rgb(0, 0, 0); width:25em; background-size: cover; margin:10px;"></div>
 
-
-        <section id="container-conocenos-index">
-            <div id="interno-conocenos-index">                
-                <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Conócenos</h2></div>                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    </div>
                 </div>
             </div>
-        </section>
-
-        <section id="container-galeria-index">
-            <div id="interno-galeria-index">                
-                <div class="card" style="height: auto; background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center; height:100px; font-family: 'Monda', sans-serif;">
-                            <h2 class="subtitulos" style="cursor:context-menu;">Galeria</h2>
-                        </div>                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+    </section>
+    
+    <section id="container-galeria-index">
+        <div id="interno-galeria-index">                
+            <div class="card" style="height: auto; background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+                <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center; height:100px; font-family: 'Monda', sans-serif;">
+                        <h2 class="subtitulos" style="cursor:context-menu;">Galeria</h2>
+                    </div>                        
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    
+                    <div class="row">
+                        <!-- Carrusel 1 -->
+                        <div class="col-md-4">
+                            <div id="carouselExample1" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="carousel-item active">
+                                        <img src="img1.jpg" class="d-block w-100" alt="Imagen 1">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img2.jpg" class="d-block w-100" alt="Imagen 2">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img3.jpg" class="d-block w-100" alt="Imagen 3">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample1" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
                         
-                        <div class="row">
-                            <!-- Carrusel 1 -->
-                            <div class="col-md-4">
-                                <div id="carouselExample1" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
-                                        <div class="carousel-item active">
-                                            <img src="img1.jpg" class="d-block w-100" alt="Imagen 1">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img2.jpg" class="d-block w-100" alt="Imagen 2">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img3.jpg" class="d-block w-100" alt="Imagen 3">
-                                        </div>
+                        <!-- Carrusel 2 -->
+                        <div class="col-md-4">
+                            <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="carousel-item active">
+                                        <img src="img4.jpg" class="d-block w-100" alt="Imagen 4">
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample1" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button> --}}
-                                </div>
-                            </div>
-                            
-                            <!-- Carrusel 2 -->
-                            <div class="col-md-4">
-                                <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
-                                        <div class="carousel-item active">
-                                            <img src="img4.jpg" class="d-block w-100" alt="Imagen 4">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
-                                        </div>
+                                    <div class="carousel-item">
+                                        <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button> --}}
-                                </div>
-                            </div>
-                            
-                            <!-- Carrusel 3 -->
-                            <div class="col-md-4">
-                                <div id="carouselExample3" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
-                                        <div class="carousel-item active">
-                                            <img src="img7.jpg" class="d-block w-100" alt="Imagen 7">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img8.jpg" class="d-block w-100" alt="Imagen 8">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img9.jpg" class="d-block w-100" alt="Imagen 9">
-                                        </div>
+                                    <div class="carousel-item">
+                                        <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample3" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample3" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button> --}}
                                 </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
                             </div>
+                        </div>
+                        
+                        <!-- Carrusel 3 -->
+                        <div class="col-md-4">
+                            <div id="carouselExample3" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="carousel-item active">
+                                        <img src="img7.jpg" class="d-block w-100" alt="Imagen 7">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img8.jpg" class="d-block w-100" alt="Imagen 8">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img9.jpg" class="d-block w-100" alt="Imagen 9">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample3" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample3" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
 
-                            <!-- Carrusel 2 -->
-                            <div class="col-md-4">
-                                <div id="carouselExample4" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
-                                        <div class="carousel-item active">
-                                            <img src="img1.jpg" class="d-block w-100" alt="Imagen 4">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
-                                        </div>
+                        <!-- Carrusel 2 -->
+                        <div class="col-md-4">
+                            <div id="carouselExample4" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="carousel-item active">
+                                        <img src="img1.jpg" class="d-block w-100" alt="Imagen 4">
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button> --}}
+                                    <div class="carousel-item">
+                                        
+                                        <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
+                                    </div>
                                 </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
+      
 
-        <section id="container-menu-index">
-            <div id="interno-menu-index">                
-                <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Ménu</h2></div>
-                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section id="container-menu-index">
+        <div id="interno-menu-index">                
+            <div class="card" style="height: 35em; background-color: transparent; border:none;">
+                
+                <div class="card-body " style="display:flex; flex-wrap:nowrap; background-color: transparent;">
+                    <div class="card-body content-about" style=" display:flex;flex-wrap:nowrap; background-color: #131718; box-shadow: 0px 2px 15px rgb(0, 0, 0); margin:10px; width:100%;">
 
+                        <div class="cont-picture-menu" style="width: 40%; max-width:40;">
+                            <img src="tasty-fried-chicken-with-sauce.jpg" id="picture-menu" style="max-width: 100%" alt="food">
+                        </div>
 
-        <section id="container-resenias-index">
-            <div id="interno-resenias-index">                
-                <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Reseñas</h2></div>                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <div class="contenido-menu" >
+                            <h2 class="subtitulos" style="cursor:context-menu;">Ménu</h2>
+                            <p>jjjsjsj</p>
+
+                        </div   
+
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
-        <section id="container-contacto-index">
-            <div id="interno-contacto-index">                
-                <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                    <div class="card-header">
-                        <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Contacto</h2></div>                        
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    </div>
+    <section id="container-resenias-index">
+        <div id="interno-resenias-index">                
+            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+                <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Reseñas</h2></div>                        
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
             </div>
-        </section>
-    
-        <section style=" margin-top:300px; width:99%;">
-            @include('layout.base')
-        </section>
+        </div>
+    </section>
 
-            
+
+    <section id="container-contacto-index">
+        <div id="interno-contacto-index">                
+            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+                <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Contacto</h2></div>                        
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style=" margin-top:300px; width:100%;">
+        @include('layout.base')
+    </section>
+        
     <script>
         let lastScrollTop = 0;
 

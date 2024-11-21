@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\People;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,7 +39,7 @@ class PeopleController extends Controller
     public function store(Request $request)
     {
         $user_id = Auth::User()->id;
-        
+
         // Verificar si ya existe un registro de datos personales
         $check = People::where('user_id', $user_id)->first();
         if ($check) {
@@ -50,10 +52,17 @@ class PeopleController extends Controller
             'name' => 'required|string|min:4|max:90',
             'maternal_lastname' => 'required|string|max:50',
             'paternal_lastname' => 'required|string|max:50',
-            'gender' => 'required|in:Male,Female,Other',
+            'gender' => 'required|in:male,female,other',
             'cellphone_number' => 'required|string|max:20|min:10',
             'birthdate' => 'required|date|before:today',
         ]);
+
+        $birthdate = $request->birthdate;
+        $edad = Carbon::parse($birthdate)->age;
+
+        if ($edad < 18) {
+            return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
+        }
 
         // Crear el registro en la base de datos
         $people = new People();
@@ -79,7 +88,7 @@ class PeopleController extends Controller
             'name' => 'nullable|string|min:4|max:90',
             'maternal_lastname' => 'nullable|string|max:50',
             'paternal_lastname' => 'nullable|string|max:50',
-            'gender' => 'required|in:Male,Female,Other',
+            'gender' => 'nullable|in:male,female,other',
             'cellphone_number' => 'nullable|string|max:20|min:10',
             'birthdate' => 'nullable|date|before:today',
         ]);
@@ -89,6 +98,15 @@ class PeopleController extends Controller
         if (!$people) {
             // Si no se encuentra la persona, redirigir con un mensaje de error
             return redirect()->route('personas.create')->with('error', 'No se encontró la persona.');
+        }
+
+        $birthdate = $request->birthdate;
+        if ($birthdate) {
+            $edad = Carbon::parse($birthdate)->age;
+
+            if ($edad < 18) {
+                return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
+            }
         }
 
         // Actualizar los datos de la persona

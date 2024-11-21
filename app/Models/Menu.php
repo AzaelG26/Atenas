@@ -9,6 +9,9 @@ class Menu extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_menu'; // Nombre de la columna de la clave primaria, era necesario, si no daba error si no la especificaba al modificar el menu, osea el platillo
+
+
     protected $table = 'menu';
 
     protected $fillable = [
@@ -27,5 +30,15 @@ class Menu extends Model
     public function ingredients()
     {
         return $this->belongsToMany(Ingredient::class, 'menu_details', 'id_menu', 'id_ingredient');
+    }
+
+    public function imagenes()
+    {
+        return $this->hasMany(Imagen::class);
+    }
+
+    public function stock()
+    {
+        return $this->hasOne(Stock::class, 'id_menu', 'id_menu');
     }
 }

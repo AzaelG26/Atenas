@@ -124,13 +124,7 @@
 <main id="content-all">
     <div class="container py-4">
         <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
-            <span class="fs-4 subtitle-persons">&nbsp; &nbsp;Datos personales</span>
-
-            <a href="{{route('personas.create')}}">
-                    <button type="button" class="btn btn-dark btn-add-data" title="Back"> 
-                            <i style="color:#8CD2F0;" class="bi bi-reply"></i>
-                    </button>
-                </a>   
+            <span class="fs-4 subtitle-persons">&nbsp; &nbsp;Datos personales</span>             
         </div>
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">                    
@@ -145,7 +139,16 @@
                                 @enderror
                             </p>
                         </div> 
-                        
+                                                
+                        <div class="col-md-8 input-icon">
+                            <input placeholder="Apellido paterno" class="input" name="paternal_lastname" type="text" >            
+                            <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
+                                @error('paternal_lastname') 
+                                    <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
+                                @enderror
+                            </p>
+                        </div>  
+
                         <div class="col-md-8 input-icon">
                             <input placeholder="Apellido materno" class="input" name="maternal_lastname" type="text" >            
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
@@ -153,39 +156,31 @@
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
                                 @enderror
                             </p>
-                        </div>  
-                        
-                        <div class="col-md-8 input-icon">
-                            <input placeholder="Apellido paterno" class="input" name="paternal_lastname" type="text" >            
-                            <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
-                                @error('paternal_lastname') 
-                                    <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)red">{{ $message }}</div>
-                                @enderror
-                            </p>
-                        </div>  
+                        </div>                          
+
                         <div class="col-md-8 input-icon">
                             <div class="radio-container">
                                 <div class="radio-wrapper">
                                     <label class="radio-button">
-                                    <input id="male" name="gender" type="radio" value="Male">
+                                    <input id="male" name="gender" type="radio" value="male">
                                     <span class="radio-checkmark"></span>
-                                    <span class="radio-label">Male</span>
+                                    <span class="radio-label">Masculino</span>
                                     </label>
                                 </div>
 
                                 <div class="radio-wrapper">
                                     <label class="radio-button">
-                                    <input id="female" name="gender" type="radio" value="Female">
+                                    <input id="female" name="gender" type="radio" value="memale">
                                     <span class="radio-checkmark"></span>
-                                    <span class="radio-label">Female</span>
+                                    <span class="radio-label">Femenino</span>
                                     </label>
                                 </div>
 
                                 <div class="radio-wrapper">
                                     <label class="radio-button">
-                                    <input id="other" name="gender" type="radio" value="Other">
+                                    <input id="other" name="gender" type="radio" value="other">
                                     <span class="radio-checkmark"></span>
-                                    <span class="radio-label">Other</span>
+                                    <span class="radio-label">Otro</span>
                                     </label>
                                 </div>
                             </div>                    
@@ -221,5 +216,19 @@
     <script>
             alert('{{ session('success') }}');
     </script>        
-    @endif 
+@endif 
+
+@if (session('error'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: '{{ session('error') }}',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+    });
+</script>
+@endif
+
 @endsection
