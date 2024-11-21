@@ -10,11 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         
     <style>
-      
-
-
-
-
         html {
             scroll-behavior: smooth;
         }
@@ -22,9 +17,9 @@
         #body {
             margin: 0;
             width: 100%;
-            background-color: #0C1011; /* Cambia a un color opaco para comprobar */
+            background-color: #0C1011; 
             overflow-x: auto;
-            overflow-y: auto; /* Asegúrate de que el overflow-y esté en auto */
+            overflow-y: auto; 
 
         }        
  
@@ -100,14 +95,14 @@
         #container-conocenos-index{
             display: flex;
             justify-content: center;
-            width: auto;
-            height: 25em;
+            width: 100%;
+            height: auto;
             margin-top: 200px;
         }
 
         #interno-conocenos-index{
-            width: 90%;
-            height: 100%;
+            width: 94%;
+            height: auto;
         }
 
         #container-galeria-index{
@@ -121,20 +116,20 @@
         #interno-galeria-index{
             width: 90%;
             height: 100%;
-        }
+        } 
 
         #container-menu-index{
             display: flex;
             justify-content: center;
-            width: auto;
-            height: 25em;
+            width: 100%;
+            height: auto;
             margin-top: 30em;
 
         }
 
         #interno-menu-index{
-            width: 90%;
-            height: 100%;
+            width: 95%;
+            height: auto;
         }
 
         #container-resenias-index{
@@ -172,6 +167,7 @@
             align-items: flex-start;
             background-attachment: fixed; 
             height: 200px;
+            width:100vw;;
             transition: top 0.5s ease; 
             position: sticky;
             top: 0;     
@@ -199,18 +195,21 @@
 
 
         #img{
-            height: 700px;
-            background-image: url('flat-lay-burger-fries-plate-with-copyspace.jpg'); 
-            background-size: cover;
+            height: auto;
+            width: auto;
+            background-image: url('top-view-burger-fries-with-sauces-copy-space.jpg'); 
+            /* filter: blur(5px); */
+            background-size: cover;            
             background-attachment: fixed;
             box-shadow: 0px 3px 10px rgba(39, 39, 39, 0.8);
 
         }
         .subtitulos{
             color: white;
+            font-family: "Karla", sans-serif;
         }
         .subtitulos:hover{
-            color: #ffc400;
+            color: #e0a91e;
         }
 
         /* Animacion */
@@ -239,9 +238,62 @@
 
         .hero h1,h3 {            
             animation: fadeInUp 1.5s;
+            font-size: 3em;
         } 
         .navbar-toggler{
             color:#8CD2F0;;
+        }
+
+        
+        .contenedor-about .card-body{
+            transition: all 0.3s ease;
+        }
+
+        .contenedor-about .card-body:hover{
+            transform: scale(1.02);
+        }
+
+        .contenido-menu{
+            width:60%;
+            display: flex;
+            flex-direction:column;
+            align-items:center; 
+        }
+
+        /* Media query para pantallas pequeñas */
+        @media (max-width: 1030px) {
+            #interno-menu-index{
+                width: 99%;
+            }
+            #picture-menu, .cont-picture-menu{
+                display: none;
+            }
+            .contenido-menu{
+                width: 100%;
+            }
+            .contenedor-about{
+                width: 95vw;
+            }
+            .mapa{
+                width: 100%;
+            }
+            .content-about {
+                width: 90%; /* Ajusta el ancho al contenedor */
+                height: 80vh; /* Permite que la altura se ajuste dinámicamente */
+            }
+
+            .card-body:not(.content-about) {
+                display: none;
+            }
+
+            .hero h1, .hero h3 {
+                font-size: 1.5em; /* Ajusta el tamaño del texto */
+                margin-bottom: 10px;
+            }
+
+            #container-conocenos-index {
+                margin-top: 50px; /* Reduce el margen para pantallas pequeñas */
+            }
         }
 
       
@@ -253,14 +305,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Monda:wght@400..700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Courgette&family=DynaPuff:wght@400..700&family=Karla:ital,wght@0,200..800;1,200..800&family=Monda:wght@400..700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body id="body">
-   
-    
-    
-   
+
     
     
     <div id="img">
@@ -308,35 +356,36 @@
                                 </a>                                                                  
                             </li>
                             @endif
-                        </ul>
-                    
+                        </ul> 
+                    </div>                   
                 </div>
             </nav>
         </div>
         
         <div style="text-align:center;" class="hero">
-            <h1 style="color: rgb(255, 255, 255); font-family: 'DynaPuff', system-ui; font-size:4em;">¡Prueba la Felicidad en Cada Mordida!</h1>
-            <h3 style="color: rgb(255, 255, 255); font-family: 'DynaPuff', system-ui; font-size:2em;">Elige calidad, elige sabor, elige disfrutar</h3>
+            <h1 style="color: rgb(255, 255, 255); font-family: Oleo Script, system-ui; font-size:4em; font-weight: 700; font-size:4.5em;">¡Prueba la Felicidad en Cada Mordida!</h1>
+            <h3 style="color: rgb(255, 255, 255); font-family: Oleo Script, system-ui; font-size:2em; font-weight: 700; font-size:2em;">Elige calidad, elige sabor, elige disfrutar</h3>
         </div>
     </div>
-            {{-- src="img2.jpg"
-        src="img3.jpg"  --}}
-
+            
 
     <section id="container-conocenos-index">
         <div id="interno-conocenos-index">                
-            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                <div class="card-header">
-                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Conócenos</h2></div>                        
+            <div class="card" style="height: 40em; background-color: transparent; border:none;">
+                <div class="card-header" style="background: transparent; border:none;">
+                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos acerca-de-nosotros" style="cursor:context-menu;">Acerca de nosotros</h2></div>                        
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <div class="card-body contenedor-about" style="display:flex;flex-wrap:nowrap;">
+
+                    <div class="card-body" style="background-image:url('series-images-from-series-images-from-series.jpg'); box-shadow: 0px 2px 15px rgb(0, 0, 0); width:25em; background-size: cover; margin:10px;"></div>
+                    <div class="card-body content-about" style="background-color: #131718; box-shadow: 0px 2px 15px rgb(0, 0, 0); margin:10px; width:40em;"></div>
+                    <div class="card-body" style="background-image:url('front-view-man-putting-sauce-burger.jpg'); box-shadow: 0px 2px 15px rgb(0, 0, 0); width:25em; background-size: cover; margin:10px;"></div>
+
                 </div>
             </div>
         </div>
     </section>
-
+    
     <section id="container-galeria-index">
         <div id="interno-galeria-index">                
             <div class="card" style="height: auto; background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
@@ -364,12 +413,12 @@
                                         <img src="img3.jpg" class="d-block w-100" alt="Imagen 3">
                                     </div>
                                 </div>
-                                {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample1" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 </button>
                                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExample1" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                </button> --}}
+                                </button>
                             </div>
                         </div>
                         
@@ -387,12 +436,12 @@
                                         <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
                                     </div>
                                 </div>
-                                {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 </button>
                                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                </button> --}}
+                                </button>
                             </div>
                         </div>
                         
@@ -410,12 +459,12 @@
                                         <img src="img9.jpg" class="d-block w-100" alt="Imagen 9">
                                     </div>
                                 </div>
-                                {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample3" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample3" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 </button>
                                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExample3" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                </button> --}}
+                                </button>
                             </div>
                         </div>
 
@@ -427,18 +476,19 @@
                                         <img src="img1.jpg" class="d-block w-100" alt="Imagen 4">
                                     </div>
                                     <div class="carousel-item">
+                                        
                                         <img src="img5.jpg" class="d-block w-100" alt="Imagen 5">
                                     </div>
                                     <div class="carousel-item">
                                         <img src="img6.jpg" class="d-block w-100" alt="Imagen 6">
                                     </div>
                                 </div>
-                                {{-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 </button>
                                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                </button> --}}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -451,13 +501,22 @@
 
     <section id="container-menu-index">
         <div id="interno-menu-index">                
-            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                <div class="card-header">
-                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Ménu</h2></div>                    
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <div class="card" style="height: 35em; background-color: transparent; border:none;">
+                
+                <div class="card-body " style="display:flex; flex-wrap:nowrap; background-color: transparent;">
+                    <div class="card-body content-about" style=" display:flex;flex-wrap:nowrap; background-color: #131718; box-shadow: 0px 2px 15px rgb(0, 0, 0); margin:10px; width:100%;">
+
+                        <div class="cont-picture-menu" style="width: 40%; max-width:40;">
+                            <img src="tasty-fried-chicken-with-sauce.jpg" id="picture-menu" style="max-width: 100%" alt="food">
+                        </div>
+
+                        <div class="contenido-menu" >
+                            <h2 class="subtitulos" style="cursor:context-menu;">Ménu</h2>
+                            <p>jjjsjsj</p>
+
+                        </div   
+
+                    </div>
                 </div>
             </div>
         </div>

@@ -13,7 +13,10 @@
             margin: 0;
             background-color: #0C1011; /* Cambia a un color opaco para comprobar */
             min-height: 100vh; 
+            max-width: 100vw;
             overflow-x: auto;
+            position: relative; /* Necesario para posicionar contenido sobre el video */
+
         }
 
         .nav-link {
@@ -27,11 +30,11 @@
         }
 
         .card{
-            background-color: rgba(49, 49, 49, 0.651);
-            color: white;
-            box-shadow: 0px 0px 20px rgb(29, 29, 29);
+            background-color: rgba(14, 14, 14, 0.342);
+            color: white;            
+            /* box-shadow: 0px 0px 4px rgb(29, 29, 29); */
             border-radius: 20px;
-            border: none;
+            border: 1px solid rgb(41, 41, 41);
         }
 
         .card-body{
@@ -63,7 +66,9 @@
             display:flex; 
             width:100vw; 
             height: auto; 
-            justify-content:center
+            justify-content:center;
+            position: relative; 
+            z-index: 1; 
         }     
 
         #btn-sesion {
@@ -118,9 +123,25 @@
         #btn-sesion:hover::before {
         transform: translate3d(100%, 0, 0);
         }
+        #video{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            filter: blur(1px);
+            object-fit: cover; 
+            background-size: cover;            
+            background-attachment: fixed;
+            z-index: -1;
+        }
     </style>
 </head>
 <body id="body-login">
+    <video autoplay muted loop playsinline id="video" >
+        <source src="6899103_Dream_Scene_3840x2160.mp4" type="video/mp4">
+    </video>
+    
     <section id="cont">
         <div class="card mb-3" style="height:auto; width:20em; margin-top:40px;">
                 <form method="POST" action="{{ route('login') }}">
@@ -194,6 +215,6 @@
     <script>
             alert('{{ session('status') }}');
     </script>        
-    @endif        
+    @endif 
 </body>
 </html>

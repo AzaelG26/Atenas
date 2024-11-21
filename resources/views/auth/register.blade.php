@@ -67,18 +67,21 @@
     <style>
          #body-register{
             margin: 0;
-            background-color: #0e1327; /* Cambia a un color opaco para comprobar */
-            min-height: 100vh; /* Asegúrate de que el body ocupe al menos el 100% de la altura de la ventana */
+            background-color: #0C1011; /* Cambia a un color opaco para comprobar */
+            min-height: 100vh; 
+            max-width: 100vw;
+            overflow-x: auto;
+            position: relative; /* Necesario para posicionar contenido sobre el video */
 
         }
         .input-icon {
             position: relative;
-            width: 100%;
+            width: 80%;
         }
         .input-icon i {
             position: absolute;
             left: 10px;
-            top: 45%;
+            top: 32%;
             transform: translateY(-50%);
             color: #888;
         }
@@ -95,18 +98,19 @@
             text-decoration: underline; 
         }
         .card{
-            background-color: rgba(49, 49, 49, 0.651);   
+            background-color: rgba(14, 14, 14, 0.342);
             color: white;
-            box-shadow: 0px 0px 20px rgb(29, 29, 29);
+            /* box-shadow: 0px 0px 20px rgb(29, 29, 29); */
             border-radius: 20px;
-            border: none;
+            border: 1px solid rgb(8, 5, 39);
         }
         #reg-cont{
             display:flex; 
             width:100vw; 
             height: auto; 
             justify-content:center;
-            align-items: center;
+            position: relative; 
+            z-index: 1; 
         }
         .input-icon {
             margin-top: 28px;
@@ -161,10 +165,25 @@
         .btn-register:hover::before {
         transform: translate3d(100%, 0, 0);
         }
-           
+        #video{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            filter: blur(1px);
+            object-fit: cover; 
+            background-size: cover;            
+            z-index: -1;
+        }
     </style>
  </head>
  <body id="body-register">
+
+    <video autoplay muted loop playsinline id="video" >
+        <source src="6899103_Dream_Scene_3840x2160.mp4" type="video/mp4">
+    </video>
+    
     <section id="reg-cont">            
         <div class="card mb-3" style="height:auto; width:25em;margin-top:40px;">
             <div class="row g-0" style="height: auto;">
@@ -174,9 +193,9 @@
                         <h2 class="card-title" style="text-align: center;">Register</h2>
                         <hr>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="display: flex; flex-direction:column; align-items:center;">
                             
-                            <div class="col-md-8 input-icon">
+                            <div class="col-md-12 input-icon">
                                 <i class="bi bi-person-fill"></i>  <!-- Icono de usuario -->
                                 <input type="text" placeholder="Name" class="form-control" id="name" name="name" autocomplete="name">
                                 <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
@@ -220,10 +239,9 @@
                                     @enderror
                                 </p>
                             </div>
-
                             
-                            <div>
-                                <button style="width: 100%" type="submit" class="btn-register"><span>Accept</span></button>
+                            <div style=" display:flex; justify-content:center; width: 100%;">
+                                <button style="width: 80%" type="submit" class="btn-register"><span>Accept</span></button>
                             </div>
                         </div>
                     </form>
