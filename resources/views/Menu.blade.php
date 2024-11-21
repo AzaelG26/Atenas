@@ -244,7 +244,6 @@
                         </div>
                     </div>
 
-                    <!-- Modal para detalles del producto -->
                     <div class="modal fade" id="modal{{ $menu->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $menu->id }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
@@ -279,7 +278,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body" id="cart-items">
-                <!-- Aquí se mostrarán los elementos del carrito -->
+            
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -292,10 +291,9 @@
 
 @section('scripts')
 <script>
-// Inicializa el carrito desde localStorage
+
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-// Actualiza la cantidad de elementos en el carrito
 function updateCartCount() {
     document.getElementById('cart-count').textContent = cart.length;
 }
@@ -338,7 +336,7 @@ function toggleCart() {
     cartModal.show();
 }
 
-// Elimina un producto del carrito
+
 function removeFromCart(index) {
     cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -346,7 +344,7 @@ function removeFromCart(index) {
     updateCartCount();
 }
 
-// Al cargar la página, inicializa el contador del carrito
+
 document.addEventListener('DOMContentLoaded', function () {
     updateCartCount();
 });
@@ -358,10 +356,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const openButton = document.getElementById("openMenuButton");
     const closeButton = document.getElementById("closeMenuButton");
 
-    // Alternar la clase "show" para mostrar/ocultar el menú
+   
     sideMenu.classList.toggle("show");
 
-    // Mostrar u ocultar los botones según el estado del menú y el ancho de pantalla
+    
     if (window.innerWidth <= 992) {
         if (sideMenu.classList.contains("show")) {
             openButton.style.display = "none";
@@ -373,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 }
 
-// Asegúrate de ocultar los botones en pantallas grandes al redimensionar
+
 window.addEventListener('resize', () => {
     const openButton = document.getElementById("openMenuButton");
     const closeButton = document.getElementById("closeMenuButton");
@@ -386,14 +384,14 @@ window.addEventListener('resize', () => {
     }
 });
 
- // Función para desplazarse suavemente hasta la categoría
+ 
  function scrollToCategory(event, categoryId) {
-      event.preventDefault(); // Evita el salto instantáneo
+      event.preventDefault(); 
       const categoryElement = document.getElementById(categoryId);
       if (categoryElement) {
           window.scrollTo({
-              top: categoryElement.offsetTop - 80, // Ajusta la posición según la altura del menú superior
-              behavior: 'smooth' // Habilita desplazamiento suave
+              top: categoryElement.offsetTop - 80,
+              behavior: 'smooth'
           });
       }
   }

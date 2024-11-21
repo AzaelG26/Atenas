@@ -7,9 +7,14 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Notifications\AccountDeactivated;  // Importar la notificación
+use App\Notifications\AccountDeactivated;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -28,15 +33,70 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($request->user()->id),
+            ],
+            'username' => [
+                'required',
+                'string',
+                'min:4', 
+                'max:255',
+                Rule::unique('users')->ignore($request->user()->id),
+            ],
+            'gender' => 'required|in:Male,Female,Other',
+            'birthdate' => 'required|date_format:d/m/Y',
+            'cellphone_number' => 'required|string|max:15',
+            'password' => 'required_if:email,' . $request->user()->email, // Requerir contraseña si el email cambia
+        ], [
+            'username.min' => 'El nombre de usuario debe tener al menos 4 caracteres.', // Mensaje personalizado
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user = $request->user();
+
+        
+        if ($user->email !== $request->input('email')) {
+           
+            if (!Hash::check($request->input('password'), $user->password)) {
+                return redirect()->route('profile.edit')->withErrors(['password' => 'La contraseña es incorrecta para confirmar el cambio de correo electrónico.']);
+        }
+            
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+       
+        $birthdate = $request->input('birthdate');
+        try {
+            $formattedBirthdate = Carbon::createFromFormat('d/m/Y', $birthdate)->format('Y-m-d');
+        } catch (\Exception $e) {
+            return redirect()->route('profile.edit')->withErrors(['birthdate' => 'Fecha de nacimiento inválida. Debe estar en formato dd/mm/yyyy.']);
+        }
+// 
+        $age = Carbon::parse($formattedBirthdate)->diffInYears(Carbon::now());
+        if ($age < 18) {
+            return redirect()->route('profile.edit')->withErrors(['birthdate' => 'Debes ser mayor de 18 años.']);
+        }
 
-        return Redirect::route('profile.edit')->with('status', 'Se aplicó modificación');
+        $user->fill([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'username' => $request->input('username'),
+            'gender' => $request->input('gender'),
+            'birthdate' => $formattedBirthdate,
+            'cellphone_number' => $request->input('cellphone_number'),
+        ]);
+
+        // Guardar los cambios
+        $user->save();
+
+        // Establecer el mensaje en la sesión
+        session()->flash('status', '¡Los datos se actualizaron correctamente!');
+
+        return redirect()->route('profile.edit');
     }
 
     /**
@@ -72,8 +132,8 @@ class ProfileController extends Controller
         // Notificar al usuario sobre la desactivación
         $user->notify(new AccountDeactivated($user));
 
-        // Depuración con dd()
-        dd('Correo enviado a: ' . $user->email); // Muestra un mensaje indicando que el correo se envió
+        // Depuración para verificar si el correo se envió correctamente
+        dd('Correo enviado a: ' . $user->email);
 
         Auth::logout();
 
@@ -82,7 +142,6 @@ class ProfileController extends Controller
 
     /**
      * Activate a user's account.
-     * (This method assumes an admin role or a special endpoint where an authorized user can activate an account.)
      */
     public function activateAccount($userId): RedirectResponse
     {

@@ -1,9 +1,28 @@
 @extends('layout.sidebar')    
+
 @section('title', 'Datos de usuario')
 
 @push('styles')
 <style>    
-    /* Estilos personalizados */
+   
+    .alert-success {
+        background-color: #4BB543;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        position: fixed; 
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        text-align: center;
+        z-index: 9999; 
+        opacity: 1;
+        transition: opacity 1s ease-in-out;
+    }
+
+    
     body {
         background-color: #0C1011;
     }
@@ -51,18 +70,37 @@
         box-shadow: 1px 3px 3px #121212, 0px 0px 13px #303030b6, 0px 0px 10px 5px rgb(13, 118, 136);
         background-color: rgb(13, 118, 136);
         transform: scale(0.9);
-    }   
+    }
 </style>  
 @endpush
 
 @section('content') 
 <main id="content-all">
     <div class="container py-4">
+        
+        @if (session('success'))
+        <div class="alert alert-success" id="success-message">
+            {{ session('success') }}
+        </div>
+        @endif
+
+        @push('scripts')
+        <script>
+            @if (session('status'))
+                window.onload = function() {
+                    setTimeout(function() {
+                        document.getElementById('success-message').style.display = 'none';
+                    }, 5000); 
+                }
+            @endif
+        </script>
+        @endpush
+
         <div class="pb-3 mb-4 title-user-form">
             &nbsp; &nbsp;<span class="fs-4 subtitle-user">Datos de usuario</span>
         </div>
 
-        <!-- Formulario para editar datos del perfil -->
+
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">
                 <form method="POST" action="{{ route('profile.update') }}">
@@ -70,12 +108,23 @@
                     @method('PATCH')
                     <p style="color: darkgray;">*Puedes editar tus datos</p>
                     <div class="col-md-8 input-icon">
-                        <input placeholder="Nombre" class="input" name="name" type="text" value="{{ old('name', $user->name) }}">            
+                        <input 
+                            placeholder="Nombre" 
+                            class="input" 
+                            name="name" 
+                            type="text" 
+                            value="{{ old('name', $user->name) }}" 
+                            minlength="4" 
+                            required
+                        >            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('name') 
                                 <div class="text-red-500 text-sm">{{ $message }}</div>
                             @enderror
                         </p>
+                        @if ($errors->has('name') && strlen(old('name', $user->name)) < 4)
+                            <div class="text-red-500 text-sm">El nombre debe tener al menos 4 caracteres.</div>
+                        @endif
                     </div>
 
                     <div class="col-md-8 input-icon">
@@ -92,7 +141,7 @@
             </div>    
         </div>
 
-        <!-- Formulario para editar la contraseña -->
+     
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">
                 <form method="POST" action="{{ route('password.update') }}">
@@ -126,7 +175,7 @@
             </div>
         </div>
 
-        <!-- Formulario para eliminar cuenta -->
+        
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">
                 <form method="POST" action="{{ route('profile.destroy') }}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')">
@@ -134,7 +183,6 @@
                     @method('DELETE')
                     <p style="color: darkgray;">*Esta acción eliminará permanentemente tu cuenta</p>
                     
-                    <!-- Campo para confirmar la contraseña antes de eliminar la cuenta -->
                     <div class="col-md-8 input-icon">
                         <input placeholder="Confirma tu contraseña" class="input" name="password" type="password" required>            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
@@ -151,14 +199,13 @@
             </div>
         </div>
 
-        <!-- Formulario para desactivar cuenta -->
+    
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">
                 <form method="POST" action="{{ route('profile.deactivate') }}">
                     @csrf
                     <p style="color: darkgray;">*Puedes desactivar temporalmente tu cuenta. Por favor confirma tu identidad.</p>
 
-                    <!-- Campo para ingresar la contraseña -->
                     <div class="col-md-8 input-icon">
                         <input placeholder="Contraseña" class="input" name="password" type="password" required>            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
@@ -168,28 +215,7 @@
                         </p>
                     </div>
 
-                    <!-- Campo para ingresar el correo -->
-                    <div class="col-md-8 input-icon">
-                        <input placeholder="Correo electrónico" class="input" name="email" type="email" value="{{ old('email', $user->email) }}" required>            
-                        <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
-                            @error('email') 
-                                <div class="text-red-500 text-sm">{{ $message }}</div>
-                            @enderror
-                        </p>
-                    </div>
-
-                    <!-- Campo para confirmar la contraseña -->
-                    <div class="col-md-8 input-icon">
-                        <input placeholder="Confirmar contraseña" class="input" name="password_confirmation" type="password" required>            
-                        <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
-                            @error('password_confirmation') 
-                                <div class="text-red-500 text-sm">{{ $message }}</div>
-                            @enderror
-                        </p>
-                    </div>
-
-                    <!-- Botón de desactivación de cuenta -->
-                    <button type="submit" class="btn-accept" style="background-color: orange; margin-top: 20px;">
+                    <button type="submit" class="btn-accept" style="background-color: #cc7300; margin-top: 20px;">
                         Desactivar Cuenta
                     </button>
                 </form>
