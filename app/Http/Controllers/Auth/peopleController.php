@@ -205,6 +205,10 @@ class PeopleController extends Controller
             return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
         }
 
+        if (strlen($request->cellphone_number) < 10) {
+            return redirect()->route('formPersonalData')->with('error', 'Ingresa 10 dígitos en tu número de teléfono.');
+        }
+
         // Actualizar los datos de persona
         $people->name = $request->input('name');
         $people->maternal_lastname = $request->input('maternal_lastname');

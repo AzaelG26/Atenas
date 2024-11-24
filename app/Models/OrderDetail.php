@@ -21,6 +21,13 @@ class OrderDetail extends Model
         'status',
     ];
 
+    // Desactivar las marcas de tiempo automáticas
+    public $timestamps = false;
+
+    // O si quieres que solo maneje created_at
+    const CREATED_AT = 'created_at';  // Mantener el manejo de created_at
+
+
     public function order()
     {
         return $this->belongsTo(Order::class, 'id_order', 'id_order');

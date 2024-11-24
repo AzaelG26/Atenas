@@ -40,6 +40,7 @@
             color:#be952c;
             font-size: 17px;
             height: 50px;
+            transition: all 0.2s ease;            
         }
         .nav-item  {
             color: #be952c;                         
@@ -77,7 +78,7 @@
             width: 100%; 
         } */
                  
-        .nav-link:hover{
+        .links:hover{
             color:#ce9d22;
             /* filter: drop-shadow(0px 0px 1px rgb(151, 124, 116)); */
             font-size: 18px;
@@ -86,7 +87,7 @@
 
         } 
         
-        .nav-link.active {
+        .links.active {
             
             background-color: #2929294b;
         }
@@ -242,19 +243,37 @@
                         <i class="bi bi-person-vcard"></i> Datos personales 
                     </a>
                 </li>
+                @if (optional(optional(Auth::user()->people)->employees)->admin == true)
                 <li>
                     <a  class="links nav-link {{ request()->routeIs('employee.create') ? 'active' : '' }}" href="{{route('employee.create')}}">
                         <img width="15" height="15" src="https://img.icons8.com/glyph-neue/64/ce9d22/cook-male.png" alt="cook-male"/>
                          Nuevo empleado
                     </a>
                 </li>
-                <li>
-                    <a class="links nav-link" {{ request()->routeIs('orders') ? 'active' : '' }} href="{{route('orders')}}" >
-                        <i>
-                            <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/purchase-order.png" alt="purchase-order"/>
-                        </i> ordenes 
-                    </a>                                    
-                </li>
+                @endif
+                @if (Auth::user()->people)                            
+                    @if (Auth::user()->people->employees)
+                    <li>
+                        <a class="links nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{route('orders')}}" >
+                            <i>
+                                <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/purchase-order.png" alt="purchase-order"/>
+                            </i> ordenes 
+                        </a>                                    
+                    </li>
+                    @endif
+                @endif
+
+                @if (Auth::user()->people)                            
+                    @if(Auth::user()->people->employees)
+                    <li>
+                        <a class="links nav-link {{ request()->routeIs('formOrders') ? 'active' : '' }}"   href="{{route('formOrders')}}">
+                            <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/signing-a-document.png" alt="signing-a-document"/>
+                            Realizar una orden
+                        </a>
+                    </li>
+                    @endif
+                @endif
+
                 <li style="border-top:1px solid#be952c">                     
                     <div class="dropdown" data-bs-theme="dark">
                         <a>
@@ -265,10 +284,6 @@
                         </button>
                         <ul style="width:100%;" class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
                             <li><a class="dropdown-item" style="color:#be952c" href="/">Ir a inicio</a></li>
-                            <li><a class="dropdown-item" style="color:#be952c" href="#">Action</a></li>
-                            <li><a class="dropdown-item" style="color:#be952c" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" style="color:#be952c" href="#">Something else here</a></li>
-                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf                                                                                                                    

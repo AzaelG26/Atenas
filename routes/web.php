@@ -7,6 +7,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\ordersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,16 +28,6 @@ Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-
-
-
-
-
-// rutas para añadir empleados
-Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
-Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
-Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
 
 
 //controlador para añadir imagenes al sistema
@@ -61,6 +52,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
     Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
     Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
+});
+
+Route::middleware('admin')->group(function () {
+    // rutas para añadir empleados
+    Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
+    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+    Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
+});
+Route::middleware('employee')->group(function () {
+    //orders
+    Route::get('/orders', [ordersController::class, 'getOrdersOnline'])->name('orders');
+    // Ordenes fisico
+    Route::get('/realizar-orden', [ordersController::class, 'formMakeOrder'])->name('formOrders');
+    Route::post('/realizar-orden', [ordersController::class, 'create'])->name('makeOrders');
 });
 
 
