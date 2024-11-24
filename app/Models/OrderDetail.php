@@ -18,7 +18,6 @@ class OrderDetail extends Model
         'quantity',
         'notes',
         'specifications',
-        'status',
     ];
 
     // Desactivar las marcas de tiempo automáticas

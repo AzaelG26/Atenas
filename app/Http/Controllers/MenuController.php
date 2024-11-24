@@ -23,16 +23,18 @@ class MenuController extends Controller
 
     public function postCarro(Request $request)
     {
-        $carrito = json_decode($request->input('cart', '[]'), true);
+        // Recupera el carrito desde el request o de la sesión
+        $carrito = session('carrito', []);
 
         if (!is_array($carrito)) {
             return redirect()->back()->withErrors(['error' => 'El formato del carrito no es válido.']);
         }
 
-        $total = collect($carrito)->sum(fn($item) => $item['price'] ?? 0);
+        // Calcula el total del carrito
+        $total = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
 
+        // Recupera la dirección seleccionada
         $selectedAddressId = $request->input('selectedAddress');
-
         $selectedAddress = null;
 
         if ($selectedAddressId) {
@@ -44,6 +46,7 @@ class MenuController extends Controller
                 ->first();
         }
 
+        // Redirige si no se seleccionó una dirección válida
         if (!$selectedAddress) {
             return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
         }
@@ -53,10 +56,10 @@ class MenuController extends Controller
 
     public function showEditionMenu()
     {
+        // Trae las categorías con sus menús y stock
         $categorias = Category::with(['menu' => function ($query) {
             $query->with('stock');
         }])->get();
-
 
         return view('edit_menu', compact('categorias'));
     }
@@ -64,7 +67,7 @@ class MenuController extends Controller
 
     public function update(Request $request, $id)
     {
-
+        // Validación de los datos
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -72,11 +75,11 @@ class MenuController extends Controller
             'stock' => 'required|integer',
         ]);
 
+        // Actualización del menú y su stock
         $menu = Menu::findOrFail($id);
         $menu->name = $request->input('name');
         $menu->description = $request->input('description');
         $menu->price = $request->input('price');
-        $menu->name = $request->input('name');
         $menu->save();
 
         $menu->stock->stock = $request->input('stock');
@@ -87,9 +90,11 @@ class MenuController extends Controller
 
     public function vistaPago(Request $request)
     {
+        // Recupera el carrito desde la sesión
         $carrito = session('carrito', []);
-        $total = collect($carrito)->sum(fn($item) => $item['price'] ?? 0);
+        $total = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
 
+        // Recupera la dirección seleccionada desde la sesión
         $selectedAddress = session('selectedAddress');
 
         return view('vista_pago', compact('carrito', 'total', 'selectedAddress'));
@@ -98,55 +103,58 @@ class MenuController extends Controller
 
 
     public function procesarPago(Request $request)
-    {
-        $validatedData = $request->validate([
-            'card_number' => ['required', 'digits:16'],
-            'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
-            'cvv' => ['required', 'digits:3'],
+{
+    $validatedData = $request->validate([
+        'card_number' => ['required', 'digits:16'],
+        'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
+        'cvv' => ['required', 'digits:3'],
+    ]);
+
+    $carrito = session('carrito', []);
+
+    if (empty($carrito)) {
+        return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
+    }
+
+    $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
+
+    try {
+        DB::beginTransaction();
+
+        $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?)', [
+            1,
+            $totalPrice,
+            'Completed',
+            'Pedido de Comida',
+            'Orden realizada desde el sitio web.',
+            Auth::id(),
+            $totalPrice,
         ]);
 
-        $carrito = session('carrito', []);
+        $paymentAndOrderData = collect($paymentAndOrderResult)->first();
+        $newOrderId = $paymentAndOrderData->OrderID;
 
-        if (empty($carrito)) {
-            return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
-        }
-
-        $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
-
-        try {
-            DB::beginTransaction();
-
-            $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?)', [
-                1,
-                $totalPrice,
-                'Completed',
-                'Pedido de Comida',
-                'Orden realizada desde el sitio web.',
-                Auth::id(),
-                $totalPrice,
+        foreach ($carrito as $item) {
+            DB::select('CALL AddOrderDetail(?, ?, ?, ?)', [
+                $newOrderId,
+                $item['menuId'],
+                $item['quantity'] ?? 1,
+                $item['specifications'] ?? null,
             ]);
-
-            $paymentAndOrderData = collect($paymentAndOrderResult)->first();
-            $newOrderId = $paymentAndOrderData->OrderID;
-
-            foreach ($carrito as $item) {
-                DB::select('CALL AddOrderDetail(?, ?, ?, ?)', [
-                    $newOrderId,
-                    $item['menuId'],
-                    $item['quantity'] ?? 1,
-                    $item['specifications'] ?? null,
-                ]);
-            }
-
-            DB::commit();
-
-            session()->forget('carrito');
-
-            return redirect()->route('menu')->with('success', "Pago procesado exitosamente. Folio: {$paymentAndOrderData->FolioIdentifier}");
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
         }
+
+        DB::commit();
+
+        // Vacía el carrito en la sesión
+        session()->forget('carrito');
+
+        // Aquí enviamos una respuesta de éxito con una señal para el frontend
+        return redirect()->route('menu')->with('success', "Pago procesado exitosamente. Folio: {$paymentAndOrderData->FolioIdentifier}");
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
     }
+}
+
 }

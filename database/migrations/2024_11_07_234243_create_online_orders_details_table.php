@@ -14,11 +14,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_menu');
             $table->integer('quantity')->nullable(false);
             $table->text('specifications')->nullable();
-            $table->unsignedBigInteger('id_folio')->nullable();
-
+            
             $table->foreign('id_online_order')->references('id_online_order')->on('online_orders');
             $table->foreign('id_menu')->references('id_menu')->on('menu');
-            $table->foreign('id_folio')->references('id_folio')->on('folios');
         });
     }
 
