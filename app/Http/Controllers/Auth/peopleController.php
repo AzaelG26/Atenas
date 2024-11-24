@@ -119,6 +119,10 @@ class PeopleController extends Controller
             return redirect()->route('personas.create')->with('error', 'Ya existe un registro de tus datos personales.');
         }
 
+        if (strlen($request->cellphone_number) < 10) {
+            return redirect()->route('personas.create')->with('error', 'Ingresa 10 dígitos en tu número de teléfono.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:90',
             'maternal_lastname' => 'required|string|max:50',
@@ -182,6 +186,9 @@ class PeopleController extends Controller
     {
         $user_id = Auth::user()->id;
 
+        if (strlen($request->cellphone_number) < 10) {
+            return redirect()->route('personas.create')->with('error', 'Ingresa 10 dígitos en tu número de teléfono.');
+        }
         $validated = $request->validate([
             'name' => 'nullable|string|max:90',
             'maternal_lastname' => 'nullable|string|max:50',
@@ -205,9 +212,7 @@ class PeopleController extends Controller
             return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
         }
 
-        if (strlen($request->cellphone_number) < 10) {
-            return redirect()->route('formPersonalData')->with('error', 'Ingresa 10 dígitos en tu número de teléfono.');
-        }
+
 
         // Actualizar los datos de persona
         $people->name = $request->input('name');
