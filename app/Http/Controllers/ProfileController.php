@@ -51,9 +51,9 @@ class ProfileController extends Controller
             'gender' => 'required|in:Male,Female,Other',
             'birthdate' => 'required|date_format:d/m/Y',
             'cellphone_number' => 'required|string|max:15',
-            'password' => 'required_if:email,' . $request->user()->email, // Requerir contraseña si el email cambia
+            'password' => 'required_if:email,' . $request->user()->email, 
         ], [
-            'username.min' => 'El nombre de usuario debe tener al menos 4 caracteres.', // Mensaje personalizado
+            'username.min' => 'El nombre de usuario debe tener al menos 4 caracteres.', 
         ]);
 
         $user = $request->user();
@@ -90,10 +90,10 @@ class ProfileController extends Controller
             'cellphone_number' => $request->input('cellphone_number'),
         ]);
 
-        // Guardar los cambios
+       
         $user->save();
 
-        // Establecer el mensaje en la sesión
+       
         session()->flash('status', '¡Los datos se actualizaron correctamente!');
 
         return redirect()->route('profile.edit');
@@ -126,13 +126,13 @@ class ProfileController extends Controller
     public function deactivateAccount(Request $request): RedirectResponse
     {
         $user = $request->user();
-        $user->active = 0; // Desactivar la cuenta (0 significa inactivo)
+        $user->active = 0; 
         $user->save();
 
-        // Notificar al usuario sobre la desactivación
+        
         $user->notify(new AccountDeactivated($user));
 
-        // Depuración para verificar si el correo se envió correctamente
+       
         dd('Correo enviado a: ' . $user->email);
 
         Auth::logout();
@@ -146,7 +146,7 @@ class ProfileController extends Controller
     public function activateAccount($userId): RedirectResponse
     {
         $user = User::findOrFail($userId);
-        $user->active = 1; // Activar la cuenta (1 significa activo)
+        $user->active = 1; //activar la cuenta del tilin
         $user->save();
 
         return redirect()->back()->with('status', 'La cuenta ha sido activada.');

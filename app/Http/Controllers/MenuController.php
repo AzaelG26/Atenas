@@ -13,7 +13,7 @@ class MenuController extends Controller
 {
     public function index()
     {
-        //con esta variable, practicamente traemos a todas las categorias y el stock relacionado con el platillo del menu
+        
         $categorias = Category::with(['menu' => function ($query) {
             $query->with('stock');
         }])->get();

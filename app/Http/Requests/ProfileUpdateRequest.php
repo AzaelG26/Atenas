@@ -14,7 +14,7 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true; // Autoriza la solicitud
+        return true; 
     }
 
     /**
@@ -28,7 +28,7 @@ class ProfileUpdateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user()->id,
             'username' => 'required|string|min:4|max:255|unique:users,username,' . $this->user()->id,
-            'birthdate' => ['required', 'date_format:d/m/Y', new AdultAge], // Usamos la regla personalizada aquí
+            'birthdate' => ['required', 'date_format:d/m/Y', new AdultAge], //se supone que se usa la regla aqui xdd
             'gender' => 'required|string|in:Masculino,Femenino,Otro',
             'cellphone_number' => 'required|string|min:10',
             'password' => 'nullable|string|min:8|confirmed',

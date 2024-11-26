@@ -2,14 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function history()
     {
+        
+        $user = auth()->user();
+
+      
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión primero.');
+        }
+
        
-        return view('ordershistory'); 
+        $pedidos = $user->pedidos()->get();
+
+       
+        return view('ordershistory', compact('pedidos'));
     }
 }

@@ -4,28 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReseñasTable extends Migration
+class RecreateReseñasTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
+        Schema::dropIfExists('reseñas');
+
         Schema::create('reseñas', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('contenido'); 
-            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade'); 
+            $table->id();
+            $table->string('contenido');
+            $table->unsignedBigInteger('usuario_id')->nullable(); // Ahora es nullable
+            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('reseñas');

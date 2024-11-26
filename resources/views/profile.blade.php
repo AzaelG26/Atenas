@@ -13,14 +13,14 @@
     <div class="container mt-5">
         <h2>Editar Perfil</h2>
 
-        <!-- Mostrar mensaje de éxito si existe -->
+      
         @if(session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}
             </div>
         @endif
 
-        <!-- Formulario de edición -->
+      
         <form method="POST" action="{{ route('profile.update') }}">
             @csrf
             @method('PUT')

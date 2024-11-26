@@ -105,8 +105,13 @@
                     </a>                                    
                 </li>
                 <li>
-    <a class="links nav-link {{ request()->routeIs('ordershistory') ? 'active' : '' }}" href="{{ route('ordershistory') }}">
+                <a class="links nav-link {{ request()->routeIs('ordershistory') ? 'active' : '' }}" href="{{ route('ordershistory') }}">
         <i class="bi bi-cart"></i> Ver Historial de Compras
+    </a>
+</li>
+<li>
+    <a class="links nav-link {{ request()->routeIs('showreseñas') ? 'active' : '' }}" href="{{ route('showreseñas') }}">
+        <i class="bi bi-star"></i> Ver Reseñas
     </a>
 </li>
 

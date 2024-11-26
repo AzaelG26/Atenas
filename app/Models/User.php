@@ -24,6 +24,7 @@ class User extends Authenticatable
      * 
      */
     protected $table = 'users';
+    protected $primaryKey="id";
 
     protected $fillable = [
         'name',
@@ -50,6 +51,11 @@ class User extends Authenticatable
     public function people()
     {
         return $this->hasOne(People::class);
+    }
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class);  // Verifica que la relación sea 'hasMany'
     }
 
     /**

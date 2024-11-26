@@ -40,14 +40,14 @@ class PeopleController extends Controller
     {
         $user_id = Auth::User()->id;
 
-        // Verificar si ya existe un registro de datos personales
+      
         $check = People::where('user_id', $user_id)->first();
         if ($check) {
-            // Si existe un registro, redirigir con un mensaje de error
+        
             return redirect()->route('personas.create')->with('error', 'Ya existe un registro de tus datos personales.');
         }
 
-        // Validar los datos del formulario
+        
         $validated = $request->validate([
             'name' => 'required|string|min:4|max:90',
             'maternal_lastname' => 'required|string|max:50',
@@ -64,7 +64,7 @@ class PeopleController extends Controller
             return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
         }
 
-        // Crear el registro en la base de datos
+      
         $people = new People();
         $people->name = $request->input('name');
         $people->maternal_lastname = $request->input('maternal_lastname');
@@ -75,7 +75,7 @@ class PeopleController extends Controller
         $people->user_id = $user_id;
         $people->save();
 
-        // Redirigir con un mensaje de éxito
+    
         return redirect()->route('personas.create')->with('success', 'Se agregaron tus datos con éxito');
     }
 
@@ -83,7 +83,7 @@ class PeopleController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        // Validar los datos del formulario
+       
         $validated = $request->validate([
             'name' => 'nullable|string|min:4|max:90',
             'maternal_lastname' => 'nullable|string|max:50',
@@ -93,10 +93,9 @@ class PeopleController extends Controller
             'birthdate' => 'nullable|date|before:today',
         ]);
 
-        // Buscar la persona correspondiente al ID
         $people = People::where('user_id', $user_id)->where('id', $id)->first();
         if (!$people) {
-            // Si no se encuentra la persona, redirigir con un mensaje de error
+            
             return redirect()->route('personas.create')->with('error', 'No se encontró la persona.');
         }
 
@@ -109,7 +108,6 @@ class PeopleController extends Controller
             }
         }
 
-        // Actualizar los datos de la persona
         $people->name = $request->input('name');
         $people->maternal_lastname = $request->input('maternal_lastname');
         $people->paternal_lastname = $request->input('paternal_lastname');
@@ -118,7 +116,7 @@ class PeopleController extends Controller
         $people->birthdate = $request->input('birthdate');
         $people->save();
 
-        // Redirigir con un mensaje de éxito
+     
         return redirect()->route('personas.create')->with('success', 'Datos actualizados correctamente.');
     }
 }

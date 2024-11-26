@@ -11,7 +11,6 @@ class Reseña extends Model
 
     protected $fillable = ['contenido', 'usuario_id'];
 
-    // Relación con el modelo User
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');
