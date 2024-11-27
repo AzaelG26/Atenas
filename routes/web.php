@@ -10,6 +10,10 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ordersController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +35,31 @@ Route::get('/dashboard', function () {
 
 
 
+Route::get('/login-google', function () {
+    return Socialite::driver('google')->redirect();
+});
 
+Route::get('/google-callback-url', function () {
+    $googleUser = Socialite::driver('google')->user();
 
+    $user = User::where('google_id', $googleUser->id)
+        ->orWhere('email', $googleUser->email)
+        ->first();
+
+    if (!$user) {
+
+        $user = User::create([
+            'name' => $googleUser->name,
+            'email' => $googleUser->email,
+            'google_id' => $googleUser->id,
+            'password' => Hash::make(uniqid()),
+            'active' => true,
+        ]);
+    }
+
+    Auth::login($user);
+    return redirect('/profile');
+});
 
 
 // rutas para añadir empleados
@@ -58,6 +85,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
     Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
     Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
+
+
+    Route::post('/profile/deactivate', [ProfileController::class, 'deactivateAccount'])->name('profile.deactivate');
+    Route::post('/reseñas', [ReseñaController::class, 'store'])->name('reseñas.store');
+    Route::get('/reseñas', [ReseñaController::class, 'index'])->name('reseñas');
+    Route::get('/orders-history', [OrderController::class, 'history'])->name('ordershistory');
 });
 
 Route::middleware('admin')->group(function () {

@@ -18,14 +18,12 @@ class ordersController extends Controller
 
     public function showProfits(Request $request)
     {
-
         // Falta que muestre por pagado en línea pero aun estamos en eso, hay error en tipo de dato en el status
         $ventas = Order::with('orderDetail.menu', 'folio')
-            ->where('status', 'Paid')
+            ->where('status', 'Completed')
             ->orderBy('updated_at', 'asc');
 
         $ventasOnline = OnlineOrder::with([
-            'onlineOrderDetails.folio',
             'onlineOrderDetails.menu',
         ])->orderBy('updated_at', 'asc');
 
@@ -39,8 +37,6 @@ class ordersController extends Controller
         }
         $ventas = $ventas->get();
         $ventasOnline = $ventasOnline->get();
-
-
 
         $totalFisico = $ventas->sum('total_price');
         $totalOnline = $ventasOnline->sum('total_price');
@@ -159,10 +155,11 @@ class ordersController extends Controller
             $validated = $request->validate([
                 'diner_name' => 'required|max:100',
                 'menu_items.*.quantity' => 'integer|min:1',
-                'menu_items.*.notes' => 'string',
-                'menu_items.*.specifications' => 'string',
+                'menu_items.*.notes' => 'nullable|string',
+                'menu_items.*.specifications' => 'nullable|string',
             ]);
 
+            // dd($request);
             $order = new Order();
             $order->diner_name = $request->input('diner_name');
             $order->status = 'Pending';
@@ -178,7 +175,6 @@ class ordersController extends Controller
                 $orderDetail->quantity = $item['quantity'];
                 $orderDetail->notes = $item['notes'];
                 $orderDetail->specifications = $item['specifications'];
-                $orderDetail->status = 'Pending';
                 $orderDetail->save();
             }
 
@@ -187,7 +183,7 @@ class ordersController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('formOrders')->with('error', 'Hubo un error al crear la orden.');
+            return redirect()->route('formOrders')->with('error', 'Hubo un error al crear la orden. Error: ' . $e->getMessage());
         }
     }
 

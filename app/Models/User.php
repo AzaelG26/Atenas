@@ -24,7 +24,7 @@ class User extends Authenticatable
      * 
      */
     protected $table = 'users';
-    protected $primaryKey="id";
+    protected $primaryKey = "id";
 
     protected $fillable = [
         'name',
@@ -35,7 +35,8 @@ class User extends Authenticatable
         'remember_token',
         'created_at',
         'updated_at',
-        'active'
+        'active',
+        'google_id',
     ];
 
     /**

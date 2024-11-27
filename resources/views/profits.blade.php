@@ -128,7 +128,8 @@
             </section>
             <section class="filter-button">
                 <br>
-                <button class="btn btn-outline-warning" id="filtrar" onclick="filtrarPorMes()">Buscar</button>
+                
+                <button class="btn btn-outline-warning" id="filtrar" onclick="filtrarPorMes()"><i class="bi bi-funnel"></i> Buscar</button>
             </section>   
         </div>
         <br>

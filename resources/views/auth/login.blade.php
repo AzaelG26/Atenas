@@ -33,7 +33,7 @@
             background-color: rgba(14, 14, 14, 0.342);
             color: white;            
             /* box-shadow: 0px 0px 4px rgb(29, 29, 29); */
-            border-radius: 20px;
+            border-radius: 20px; /* PENDIENTE DE AJUSTAR*/
             border: 1px solid rgb(41, 41, 41);
         }
 
@@ -135,7 +135,60 @@
             background-attachment: fixed;
             z-index: -1;
         }
-    </style>
+
+
+        /* Boton register */
+        .btn-register{
+        cursor: pointer;
+        border: none;
+        width: 17em;
+        margin-top: 60px;
+        padding: 0.5rem 2rem;
+        font-family: inherit;
+        height: 45px;
+        font-size: inherit;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        font-weight: 700;       
+        border-radius: 20px;
+        overflow: hidden;
+        background: #feffff;
+        color: white;
+        }
+        .btn-register span{
+        position: relative;
+        z-index: 10;
+        transition: color 0.4s;
+        }
+        
+        .btn-register:hover span {
+        color: #006c8d;
+        }
+
+        .btn-register::before,
+        .btn-register::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        }
+
+        .btn-register::before {
+        content: "";
+        background:  rgb(13, 118, 136);
+        width: 120%;
+        left: -10%;
+        transform: skew(30deg);
+        transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+        }
+
+        .btn-register:hover::before {
+        transform: translate3d(100%, 0, 0);
+        }
+    </style>    
 </head>
 <body id="body-login">
     <video autoplay muted loop playsinline id="video" >
@@ -143,7 +196,9 @@
     </video>
     
     <section id="cont">
-        <div class="card mb-3" style="height:auto; width:20em; margin-top:40px;">
+        <div style="display: flex;">
+
+            <div class="card mb-3" style="height:auto; width:20em; margin-top:40px;">
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="col-md-12">
@@ -203,9 +258,85 @@
                             </div> --}}
                         </div> 
                     </div>   
+                    <div class="mt-4">                                            
+                    </div>
                 </form>
-            </div>            
-        </div>          
+            </div>  
+            
+            <div class="card mb-3" style="height:auto; width:20em;margin-top:40px;">
+                <div class="card-body col-md-12">
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+                        <h2 class="card-title" style="text-align: center;">Register</h2>
+                        <div class="card-body col-md-12">
+
+                            
+                            <div class="col-md-12" style="display: flex; flex-direction:column; align-items:center;">
+                                
+                                <div class="col-md-12 input-icon">
+                                    <i class="bi bi-person-fill"></i>  <!-- Icono de usuario -->
+                                    <input type="text" placeholder="Name" class="form-control" id="name" name="name" autocomplete="name">
+                                    <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
+                                        @error('name')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+
+
+                                
+
+                                <div class="col-md-8 input-icon">
+                                    <i class="bi bi-envelope-fill"></i>  <!-- Icono de Correo Electrónico -->
+                                    <input type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus autocomplete="username">
+                                    <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
+                                        @error('email')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+
+                            
+                                <div class="col-md-8 input-icon">
+                                    <i class="bi bi-lock-fill"> </i> <!-- Icono de candado -->
+                                    <input type="password" placeholder="Password" class="form-control" id="password" name="password" autocomplete="current-password">
+                                    <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
+                                        @error('password')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+
+                                
+                                <div class="col-md-8 input-icon">
+                                    <i class="bi bi-lock-fill"> </i> <!-- Icono de candado -->
+                                    <input type="password" placeholder="Confirm Password" class="form-control" id="password_confirmation" name="password_confirmation"  autocomplete="new-password">
+                                    <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
+                                        @error('password_confirmation')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                
+                                <div style="display:flex; justify-content:center; width: 100%;">
+                                    <button style="width: 100%" type="submit" class="btn-register"><span>Accept</span></button>
+                                </div>
+                                <br>
+                                <p>Ó</p>
+                                <div>
+                                    <a href="{{ url('/login-google') }}" class="btn" style="background-color: white; color: black; border-radius:17px; ">
+                                        <img width="25" height="25" src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo"/>
+                                        Iniciar sesión con Google
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div> 
     </section>
     
     <section style="border-top:1px solid yellow; margin-top:100px; width:100%;">

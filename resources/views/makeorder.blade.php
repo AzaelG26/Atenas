@@ -123,8 +123,7 @@
             <form method="POST" action="{{route('makeOrders')}}">
                 @csrf                
                 <div style="display: flex; flex-wrap:wrap; justify-content:center;">
-                    <div class="card text-center" style="width: 95vw; border:none">
-                        
+                    <div class="card text-center" style="width: 95vw; border:none">                        
 
                             <div class="card-header" style="background-color: #131718;">
                                 <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist" style="display:flex; justify-content:space-between; flex-wrap:nowrap">
