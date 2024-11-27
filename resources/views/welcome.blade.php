@@ -532,7 +532,8 @@
                                 <a class="nav-link" href="#container-contacto-index">Contacto</a>
                             </li>
                             <li class="nav-item" style="display: flex; margin-right:50px">
-                                <a class="nav-link" href="#">Reseñas</a>
+                                <a class="nav-link" href="{{route('reseñas')}}">Reseñas</a>
+                                
                             </li>
                             
                             <li class="nav-item" style="display: flex; margin-right:70px">

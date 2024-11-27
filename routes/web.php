@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ordercontroller;
+use App\Http\Controllers\ReseñaController;
 use App\Http\Controllers\Auth\PeopleController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -23,14 +25,21 @@ use App\Http\Controllers\ordersController;
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
 
-//controlador para añadir imagenes al sistema
+
+
+
+
+// rutas para añadir empleados
+Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
+Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
+
 Route::get('/añadir-imagenes', [ImagenController::class, 'showAddImagesForm'])->name('imagenes.add');
 Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');
 
@@ -39,7 +48,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    //todas las rutas en relación con el carro
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
     Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
     Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
