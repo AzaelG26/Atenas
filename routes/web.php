@@ -7,6 +7,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,18 +50,32 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //todas las rutas en relación con el carro
+   
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
-    Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
     Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
     Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
+    Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
+    Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
+
+    // Rutas para el carrito
+    Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+    Route::delete('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+    Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
+    Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+
+    // Rutas para direcciones
     Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
+    Route::post('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
     Route::get('/buscar-direcciones', [AddressController::class, 'buscarDirecciones'])->name('buscar.direcciones');
     Route::get('/get-neighborhoods', [AddressController::class, 'getNeighborhoodsByPostalCode'])->name('get.neighborhoods');
     Route::post('/register-address', [AddressController::class, 'registerAddress'])->name('register.address');
     Route::get('/user-addresses', [AddressController::class, 'userAddresses'])->name('user.addresses');
     Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
-    Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
-    Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
+
+
 });
 
 

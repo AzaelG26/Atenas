@@ -64,7 +64,6 @@ class MenuController extends Controller
         return view('edit_menu', compact('categorias'));
     }
 
-
     public function update(Request $request, $id)
     {
         // Validación de los datos
@@ -103,58 +102,79 @@ class MenuController extends Controller
 
 
     public function procesarPago(Request $request)
-{
-    $validatedData = $request->validate([
-        'card_number' => ['required', 'digits:16'],
-        'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
-        'cvv' => ['required', 'digits:3'],
-    ]);
-
-    $carrito = session('carrito', []);
-
-    if (empty($carrito)) {
-        return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
-    }
-
-    $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
-
-    try {
-        DB::beginTransaction();
-
-        $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?)', [
-            1,
-            $totalPrice,
-            'Completed',
-            'Pedido de Comida',
-            'Orden realizada desde el sitio web.',
-            Auth::id(),
-            $totalPrice,
+    {
+        $validatedData = $request->validate([
+            'card_number' => ['required', 'digits:16'],
+            'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
+            'cvv' => ['required', 'digits:3'],
         ]);
-
-        $paymentAndOrderData = collect($paymentAndOrderResult)->first();
-        $newOrderId = $paymentAndOrderData->OrderID;
-
-        foreach ($carrito as $item) {
-            DB::select('CALL AddOrderDetail(?, ?, ?, ?)', [
-                $newOrderId,
-                $item['menuId'],
-                $item['quantity'] ?? 1,
-                $item['specifications'] ?? null,
-            ]);
+    
+        $carrito = session('carrito', []);
+    
+        if (empty($carrito)) {
+            return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
         }
-
-        DB::commit();
-
-        // Vacía el carrito en la sesión
-        session()->forget('carrito');
-
-        // Aquí enviamos una respuesta de éxito con una señal para el frontend
-        return redirect()->route('menu')->with('success', "Pago procesado exitosamente. Folio: {$paymentAndOrderData->FolioIdentifier}");
-    } catch (\Exception $e) {
-        DB::rollBack();
-
-        return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
+    
+        $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
+    
+        try {
+            DB::beginTransaction();
+    
+            // Llamar al procedimiento RegisterPaymentAndOrder
+            $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?)', [
+                1,  // payment_method_id
+                $totalPrice,  // payment_amount
+                'Completed',  // payment_status
+                'Pedido de Comida',  // order_name
+                'Orden realizada desde el sitio web.',  // order_notes
+                Auth::id(),  // person_id
+                $totalPrice,  // total_price
+            ]);
+    
+            $paymentAndOrderData = collect($paymentAndOrderResult)->first();
+            $newOrderId = $paymentAndOrderData->OrderID;
+    
+            // Actualizar el estado de la orden a "Paid"
+            DB::update('UPDATE online_orders SET status = ? WHERE id_online_order = ?', ['Paid', $newOrderId]);
+    
+            // Registrar los detalles de la orden
+            foreach ($carrito as $item) {
+                DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
+                    $newOrderId,
+                    $item['menuId'],
+                    $item['quantity'] ?? 1,
+                    $item['specifications'] ?? null,
+                ]);
+            }
+    
+            // Generar folio después de que la orden haya sido pagada
+            DB::select('CALL GenerateFolioAfterOrderPaid(?)', [$newOrderId]);
+    
+            // Obtener el id_folio recién generado
+            $folioResult = DB::select('SELECT id_folio FROM folios WHERE identifier = ?', ['ORD-' . str_pad($newOrderId, 8, '0', STR_PAD_LEFT)]);
+    
+            // Si se obtiene un resultado, tomar el primer id_folio
+            if (count($folioResult) > 0) {
+                $newFolioId = $folioResult[0]->id_folio;
+            } else {
+                $newFolioId = null;
+            }
+    
+            // Si se generó un folio, actualizar la orden con el id_folio
+            if ($newFolioId) {
+                DB::update('UPDATE online_orders SET id_folio = ? WHERE id_online_order = ?', [$newFolioId, $newOrderId]);
+            }
+    
+            DB::commit();
+    
+            // Vaciar el carrito en la sesión
+            session()->forget('carrito');
+    
+            return redirect()->route('menu')->with('success', "Pago procesado exitosamente.");
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
+        }
     }
-}
-
 }

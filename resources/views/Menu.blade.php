@@ -78,7 +78,8 @@
                                 <div class="d-flex align-items-center">
                                     <button class="btn btn-secondary" onclick="decreaseQuantity('{{ $menu->id_menu }}')">-</button>
                                     <input type="number" id="quantity{{ $menu->id_menu }}" class="form-control mx-2 text-center" value="1" min="1" max="{{ $menu->stock->stock }}" readonly style="width: 70px;">
-                                    <button class="btn btn-primary" onclick="increaseQuantity('{{ $menu->id_menu }}', '{{ $menu->stock->stock }}')">+</button>
+                                    <button class="btn btn-primary" onclick="increaseQuantity('{{ $menu->id_menu }}', '{{ $menu->stock->stock }}')" data-menu-id="{{ $menu->id_menu }}">+</button>
+
                                 </div>
 
                                 <button class="btn btn-success mt-3" 
@@ -108,7 +109,7 @@
                 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="clearCart()" class="btn btn-danger mt-3">Vaciar Carrito</button>
+                    <button onclick="clearCart()" class="btn btn-danger">Vaciar Carro</button>
                     <button type="button" onclick="confirmCart()" class="btn btn-success mt-3">Confirmar Carrito</button>
                     <button type="button" class="btn btn-secondary" id="btn-cerrar-modal" data-bs-dismiss="modal">Cerrar</button>
                 </div>
@@ -116,6 +117,9 @@
             </div>
         </div>
     </div>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     @if (session('success'))
         <script>
