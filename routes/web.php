@@ -42,8 +42,6 @@ Route::middleware('auth')->group(function () {
     //todas las rutas en relación con el carro
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
     Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
-    Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
-    Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
     Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
     Route::get('/buscar-direcciones', [AddressController::class, 'buscarDirecciones'])->name('buscar.direcciones');
     Route::get('/get-neighborhoods', [AddressController::class, 'getNeighborhoodsByPostalCode'])->name('get.neighborhoods');
@@ -59,7 +57,15 @@ Route::middleware('admin')->group(function () {
     Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
     Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
     Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
+    Route::get('/ganancias', [ordersController::class, 'showProfits'])->name('ganancias');
+
+
+    // menu
+    Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
+    Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
 });
+
+
 Route::middleware('employee')->group(function () {
     //orders
     Route::get('/orders', [ordersController::class, 'getOrdersOnline'])->name('orders');

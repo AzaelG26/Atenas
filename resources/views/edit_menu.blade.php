@@ -58,7 +58,7 @@
                         &nbsp; &nbsp;<span class="fs-4 subtitle-edit-menu">{{$category->name}}</span>
                     </div>
                     <table class="table table-bordered border-dark">
-                        <thead>
+                        <thead style="border: 1px solid gray;">
                             <tr>
                                 <th class="head">Platillo</th>
                                 <th class="head">Descripción</th>

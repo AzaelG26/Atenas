@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'dashboard')</title>
+
+    {{-- ICONO DEL NEGOCIO --}}
+    <link rel="icon" href="LOGO_ATENAS_high_quality_transparent.png">
+
+
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
    
@@ -251,6 +257,7 @@
                     </a>
                 </li>
                 @endif
+
                 @if (Auth::user()->people)                            
                     @if (Auth::user()->people->employees)
                     <li>
@@ -272,6 +279,15 @@
                         </a>
                     </li>
                     @endif
+                @endif
+
+                @if (optional(optional(Auth::user()->people)->employees)->admin == true)
+                <li>
+                    <a  class="links nav-link {{ request()->routeIs('ganancias') ? 'active' : '' }}" href="{{route('ganancias')}}">
+                        <img width="20" height="17" src="https://img.icons8.com/windows/32/ce9d22/statistics.png" alt="statistics"/>
+                        Ganancias
+                    </a>
+                </li>
                 @endif
 
                 <li style="border-top:1px solid#be952c">                     

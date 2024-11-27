@@ -8,8 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     {{-- Para íconos de redes sociales --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-        
-    <style>
+    <link rel="icon" href="LOGO_ATENAS_high_quality_transparent.png">
+
+<style>
         html {
             scroll-behavior: smooth;
         }
@@ -669,8 +670,7 @@
             // Si se desliza hacia abajo, ocultar la barra de navegación
             if (scrollTop > lastScrollTop) {
                 
-                navbar.style.top = "-200px"; // Ajusta este valor si es necesario
-
+                navbar.style.top = "-200px"; 
             } else {
                 // Si se desliza hacia arriba, mostrar la barra de navegación
                 navbar.style.top = "0";

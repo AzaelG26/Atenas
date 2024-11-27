@@ -18,15 +18,24 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        if (!$user->people->employees) {
-            return redirect()->route('profile.edit')->with('error', 'No tienes permisos para acceder a esta página.');
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Primero debes iniciar sesión.');
         }
+
+        // if (!$user->people) {
+        //     return redirect()->route('formPersonalData')->with('error', 'Debes ingresar tus datos personales.');
+        // }
+
+        if (!(optional($user->people)->employees)) {
+            return back()->with('error', 'No tienes permisos para acceder a esta página.');
+        }
+
 
         $check = $user->people->employees->admin == true;
         if ($check) {
             return  $next($request);
         } else {
-            return redirect()->route('profile.edit')->with('error', 'No tienes permisos para acceder a esta página.');
+            return back()->with('error', 'No tienes permisos para acceder a esta página.');
         }
     }
 }

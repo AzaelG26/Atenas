@@ -10,10 +10,96 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 
 class ordersController extends Controller
 {
+
+    public function showProfits(Request $request)
+    {
+
+        // Falta que muestre por pagado en línea pero aun estamos en eso, hay error en tipo de dato en el status
+        $ventas = Order::with('orderDetail.menu', 'folio')
+            ->where('status', 'Paid')
+            ->orderBy('updated_at', 'asc');
+
+        $ventasOnline = OnlineOrder::with([
+            'onlineOrderDetails.folio',
+            'onlineOrderDetails.menu',
+        ])->orderBy('updated_at', 'asc');
+
+        if ($mes = $request->input('mes')) {
+            $ventas = $ventas->whereMonth('updated_at', $mes);
+            $ventasOnline = $ventasOnline->whereMonth('updated_at', $mes);
+        }
+        if ($anio = $request->input('anio')) {
+            $ventas = $ventas->whereYear('updated_at', $anio);
+            $ventasOnline = $ventasOnline->whereYear('updated_at', $anio);
+        }
+        $ventas = $ventas->get();
+        $ventasOnline = $ventasOnline->get();
+
+
+
+        $totalFisico = $ventas->sum('total_price');
+        $totalOnline = $ventasOnline->sum('total_price');
+
+        $minOrders = Order::min('updated_at');
+        $minOnlineOrders = OnlineOrder::min('updated_at');
+
+        $fechaMasAntigua = min($minOrders, $minOnlineOrders);
+
+        $fechaActual = Carbon::now()->year; /*Este seria el año actual en el servidor*/
+
+        $anioMasAntiguo = Carbon::parse($fechaMasAntigua)->year; //parsear los años más antiguos de las dos tablas de orders
+
+
+
+        $anios = range($fechaActual, $anioMasAntiguo); // aqui se generan en orden descendente
+
+        $ventas_anio_y_mes = $ventasOnline->groupBy(function ($date) {
+            return Carbon::parse($date->updated_at)->format('Y-m');
+        });
+
+        $totalPorMesAnio = [];
+        $YearsMonths = []; // Para las categorías (meses y años)
+
+        foreach ($ventas_anio_y_mes as $yearMonth => $ventasgrafica) {
+            $totalPorMesAnio[] = $ventasgrafica->sum('total_price'); //Suma que se le asignaa cada Año-mes
+            $YearsMonths[] = Carbon::parse($ventasgrafica->first()->updated_at)->format('F Y');
+        }
+
+
+        $datosGrafica = [
+            'categories' => $YearsMonths,
+            'seriesOnline' => $totalPorMesAnio,
+        ];
+
+        // en linea
+        $fisicoVentasAnioMEs = $ventas->groupBy(function ($date) {
+            return Carbon::parse($date->updated_at)->format('Y-m');
+        });
+
+        $fisicoTotalMesAnio = [];
+        $anioMes = []; // Para las categorías (meses y años)
+
+        foreach ($fisicoVentasAnioMEs as $FisicoAnioMes => $FisicoVentasgrafica) {
+            $fisicoTotalMesAnio[] = $FisicoVentasgrafica->sum('total_price'); //Suma que se le asignaa cada Año-mes
+            $anioMes[] = Carbon::parse($FisicoVentasgrafica->first()->updated_at)->format('F Y');
+        }
+
+
+        $FisicoDatosGrafica = [
+            'categoriesFisico' => $anioMes,
+            'seriesFisico' => $fisicoTotalMesAnio,
+        ];
+
+        // dd($FisicoDatosGrafica);
+
+        // dd($datosGrafica);
+        return view('profits', compact(['ventas', 'ventasOnline', 'totalOnline', 'totalFisico', 'anios', 'datosGrafica', 'FisicoDatosGrafica']));
+    }
 
     public function getOrdersOnline()
     {
