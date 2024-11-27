@@ -47,7 +47,6 @@ class PeopleController extends Controller
             return redirect()->route('personas.create')->with('error', 'Ya existe un registro de tus datos personales.');
         }
 
-        
         $validated = $request->validate([
             'name' => 'required|string|min:4|max:90',
             'maternal_lastname' => 'required|string|max:50',
@@ -83,7 +82,6 @@ class PeopleController extends Controller
     {
         $user_id = Auth::user()->id;
 
-       
         $validated = $request->validate([
             'name' => 'nullable|string|min:4|max:90',
             'maternal_lastname' => 'nullable|string|max:50',
@@ -107,6 +105,8 @@ class PeopleController extends Controller
                 return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
             }
         }
+
+
 
         $people->name = $request->input('name');
         $people->maternal_lastname = $request->input('maternal_lastname');

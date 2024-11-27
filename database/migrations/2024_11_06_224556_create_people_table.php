@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('name', 100);
-            $table->string('maternal_lastname', 50);
             $table->string('paternal_lastname', 50);
+            $table->string('maternal_lastname', 50);
             $table->string('gender')->checkIn(['Male', 'Female', 'Other']);;
             $table->string('cellphone_number', 20);
             $table->date('birthdate')->nullable();

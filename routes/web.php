@@ -9,8 +9,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\ordersController;
-use App\Http\Controllers\PedidoController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,7 +27,14 @@ Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
+
+
+
+
+
+
+// rutas para añadir empleados
+Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
 
@@ -52,21 +58,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
     Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
     Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
-
-    Route::post('/profile/deactivate', [ProfileController::class, 'deactivateAccount'])->name('profile.deactivate');
-    Route::post('/reseñas', [ReseñaController::class, 'store'])->name('reseñas.store'); 
-    Route::get('/reseñas', [ReseñaController::class, 'index'])->name('reseñas');
-    Route::get('/orders-history', [OrderController::class, 'history'])->name('ordershistory');
-   
-
-    Route::get('/showreseñas', [ReseñaController::class, 'show'])->name('showreseñas');
-   
-
-    Route::get('/historial', [PedidoController::class, 'mostrarHistorial'])->name('historial');
-    
-    Route::get('/pedidos/{id}', [PedidoController::class, 'detalle'])->name('pedidos.detalle');
-
 });
+
+
 
 
 require __DIR__ . '/auth.php';

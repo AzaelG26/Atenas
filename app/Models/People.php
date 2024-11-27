@@ -14,8 +14,8 @@ class People extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'maternal_lastname',
         'paternal_lastname',
+        'maternal_lastname',
         'gender',
         'cellphone_number',
         'birthdate',
@@ -29,5 +29,8 @@ class People extends Model
     {
         return $this->hasMany(Address::class, 'id_client', 'id');
     }
-
+    public function employees()
+    {
+        return $this->hasOne(Employee::class, 'id_people');
+    }
 }
