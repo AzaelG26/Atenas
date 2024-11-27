@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\People;
+use App\Models\Cart;
 
 class User extends Authenticatable
 {
@@ -17,6 +18,7 @@ class User extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
+     * 
      */
 
     /**
@@ -56,8 +58,14 @@ class User extends Authenticatable
 
     public function pedidos()
     {
-        return $this->hasMany(Pedido::class);  // Verifica que la relación sea 'hasMany'
+        return $this->hasMany(Pedido::class);
     }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
 
     /**
      * The attributes that should be cast.

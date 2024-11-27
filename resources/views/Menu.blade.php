@@ -62,48 +62,63 @@
                     </div>
                 </div>
 
-                    <!-- Modal para detalles del producto -->
-                    <div class="modal fade" id="modal{{ $menu->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $menu->id }}" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel{{ $menu->id }}">{{ $menu->name }}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <div class="modal fade" id="modal{{ $menu->id_menu }}" tabindex="-1" aria-labelledby="modalLabel{{ $menu->id_menu }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel{{ $menu->id_menu }}">{{ $menu->name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="path/to/image.jpg" alt="{{ $menu->name }}" class="img-fluid">
+                                <p>{{ $menu->description }}</p>
+                                <h6 class="mt-3">Precio: MX${{ $menu->price }}.00</h6>
+                                <p>Stock disponible: <strong id="stock{{ $menu->id_menu }}">{{ $menu->stock->stock }}</strong></p>
+
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-secondary" onclick="decreaseQuantity('{{ $menu->id_menu }}')">-</button>
+                                    <input type="number" id="quantity{{ $menu->id_menu }}" class="form-control mx-2 text-center" value="1" min="1" max="{{ $menu->stock->stock }}" readonly style="width: 70px;">
+                                    <button class="btn btn-primary" onclick="increaseQuantity('{{ $menu->id_menu }}', '{{ $menu->stock->stock }}')">+</button>
                                 </div>
-                                <div class="modal-body">
-                                    <img src="path/to/image.jpg" alt="{{ $menu->name }}" class="img-fluid">
-                                    <p>{{ $menu->description }}</p>
-                                    <h6 class="mt-3">Precio: MX${{ $menu->price }}.00</h6>
-                                    <button class="btn btn-primary" onclick="addToCart('{{ $menu->name }}', '{{ $menu->price }}')">Agregar al Carrito</button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                </div>
+
+                                <button class="btn btn-success mt-3" 
+                                    onclick="addToCart('{{ $menu->name }}', '{{ $menu->price }}', '{{ $menu->id_menu }}')">
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
-                @endforeach
-            </div>
-        @endforeach
-    </div>
+                </div>
+            @endforeach
+        </div>
+    @endforeach
 </div>
 
-<!-- Modal del Carrito -->
-<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body" id="cart-items">
-                <!-- Aquí se mostrarán los elementos del carrito -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Carrito de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="cart-items">
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="clearCart()" class="btn btn-danger mt-3">Vaciar Carrito</button>
+                    <button type="button" onclick="confirmCart()" class="btn btn-success mt-3">Confirmar Carrito</button>
+                    <button type="button" class="btn btn-secondary" id="btn-cerrar-modal" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+
             </div>
         </div>
     </div>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     @if (session('success'))
         <script>

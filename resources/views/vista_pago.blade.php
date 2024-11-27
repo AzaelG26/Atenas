@@ -40,33 +40,36 @@
     @endif
 
     @if (!empty($carrito))
-        <div class="table-responsive">
-            <table class="table table-dark table-hover mt-4">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio Unitario</th>
-                        <th>Cantidad</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php $grandTotal = 0; @endphp
-                    @foreach ($carrito as $item)
-                        @php 
-                            $subtotal = $item['price']; 
-                            $grandTotal += $subtotal;
-                        @endphp
+    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-dark table-hover mt-4">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php 
+                    $grandTotal = 0; 
+                    $counter = 1; // Contador para numerar los productos
+                @endphp
+                @foreach ($carrito as $item)
+                    @php 
+                        $subtotal = $item['price'] * $item['quantity']; 
+                        $grandTotal += $subtotal;
+                    @endphp
+                    @for ($i = 1; $i <= $item['quantity']; $i++)
                         <tr>
                             <td>{{ $item['name'] }}</td>
                             <td>MX${{ number_format($item['price'], 2) }}</td>
-                            <td>1</td>
-                            <td>MX${{ number_format($subtotal, 2) }}</td>
+                            <td>MX${{ number_format($item['price'], 2) }}</td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    @endfor
+                @endforeach
+            </tbody>
+        </table>
+    </div>
         <h3 class="text-end text-light mt-4">Total: MX${{ number_format($total, 2) }}</h3>
         
         
@@ -98,16 +101,15 @@
                     @enderror
                 </div>
             </div>
-            <button type="submit" class="btn btn-success btn-lg w-100">Simular Pago</button>
+            <button type="submit" onclick="clearCart()" class="btn btn-success btn-lg w-100">Simular Pago</button>
         </form>
     </div>
 </div>
-    @else
-        <p class="text-center text-light mt-4">El carrito está vacío.</p>
+@else
+@endif
         <div class="text-center mt-4">
             <a href="{{ route('menu') }}" class="btn btn-primary btn-lg">Regresar al Menú</a>
         </div>
-    @endif
 </div>
 @endsection
 
