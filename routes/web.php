@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ordercontroller;
 use App\Http\Controllers\ReseñaController;
-use App\Http\Controllers\Auth\PeopleController;
+
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
