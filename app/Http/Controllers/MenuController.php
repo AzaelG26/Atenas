@@ -23,14 +23,14 @@ class MenuController extends Controller
 
     public function postCarro(Request $request)
     {
-        // Recupera el carrito desde el request o de la sesión
+        // con esto recuperamos el carrito desde la sesion
         $carrito = session('carrito', []);
 
         if (!is_array($carrito)) {
             return redirect()->back()->withErrors(['error' => 'El formato del carrito no es válido.']);
         }
 
-        // Calcula el total del carrito
+        // con esto calculamos el total del carro
         $total = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
 
         // Recupera la dirección seleccionada
@@ -46,7 +46,6 @@ class MenuController extends Controller
                 ->first();
         }
 
-        // Redirige si no se seleccionó una dirección válida
         if (!$selectedAddress) {
             return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
         }
@@ -56,7 +55,7 @@ class MenuController extends Controller
 
     public function showEditionMenu()
     {
-        // Trae las categorías con sus menús y stock
+        // con esto traemos las categorias con su stock correspondiente 
         $categorias = Category::with(['menu' => function ($query) {
             $query->with('stock');
         }])->get();
@@ -66,7 +65,6 @@ class MenuController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validación de los datos
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -74,7 +72,7 @@ class MenuController extends Controller
             'stock' => 'required|integer',
         ]);
 
-        // Actualización del menú y su stock
+        // aqui se actualiza el menu y el stock
         $menu = Menu::findOrFail($id);
         $menu->name = $request->input('name');
         $menu->description = $request->input('description');
@@ -89,11 +87,11 @@ class MenuController extends Controller
 
     public function vistaPago(Request $request)
     {
-        // Recupera el carrito desde la sesión
+        //recuperamos el carrito desde la misma sesion
         $carrito = session('carrito', []);
         $total = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
 
-        // Recupera la dirección seleccionada desde la sesión
+        //aqui vamos a recuperar la direccion seleccionada por el mono desde la sesion
         $selectedAddress = session('selectedAddress');
 
         return view('vista_pago', compact('carrito', 'total', 'selectedAddress'));
@@ -107,7 +105,7 @@ class MenuController extends Controller
         'card_number' => ['required', 'digits:16'],
         'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
         'cvv' => ['required', 'digits:3'],
-        'selectedAddress' => ['required', 'exists:address,id_address'], // Validar que la dirección exista
+        'selectedAddress' => ['required', 'exists:address,id_address'], 
     ]);
 
     $carrito = session('carrito', []);
@@ -122,25 +120,23 @@ class MenuController extends Controller
     try {
         DB::beginTransaction();
 
-        // Llamar al procedimiento RegisterPaymentAndOrder con la dirección seleccionada
         $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?, ?)', [
-            1,  // payment_method_id
-            $totalPrice,  // payment_amount
-            'Completed',  // payment_status
-            'Pedido de Comida',  // order_name
-            'Orden realizada desde el sitio web.',  // order_notes
-            Auth::id(),  // person_id
-            $totalPrice,  // total_price
-            $selectedAddressId, // Dirección seleccionada
+            1,  
+            $totalPrice,  
+            'Completed',  
+            'Pedido de Comida',  
+            'Orden realizada desde el sitio web.',  
+            Auth::id(),  // esto es para recuperar el id de la persona
+            $totalPrice,  
+            $selectedAddressId, 
         ]);
 
         $paymentAndOrderData = collect($paymentAndOrderResult)->first();
         $newOrderId = $paymentAndOrderData->OrderID;
 
-        // Actualizar el estado de la orden a "Paid"
         DB::update('UPDATE online_orders SET status = ? WHERE id_online_order = ?', ['Paid', $newOrderId]);
 
-        // Registrar los detalles de la orden
+        // registramos los detalles de la orden
         foreach ($carrito as $item) {
             DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
                 $newOrderId,
@@ -150,12 +146,12 @@ class MenuController extends Controller
             ]);
         }
 
-        // Generar folio después de que la orden haya sido pagada
+        // con este procedimiento se hace el folio de la orden 
         DB::select('CALL GenerateFolioAfterOrderPaid(?)', [$newOrderId]);
 
         DB::commit();
 
-        // Vaciar el carrito en la sesión
+        // con esto se vacia el carro de la sesion
         session()->forget('carrito');
 
         return redirect()->route('menu')->with('success', "Pago procesado exitosamente.");
