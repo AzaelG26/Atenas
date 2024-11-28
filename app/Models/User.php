@@ -26,6 +26,7 @@ class User extends Authenticatable
      * 
      */
     protected $table = 'users';
+    protected $primaryKey = "id";
 
     protected $fillable = [
         'name',
@@ -36,7 +37,8 @@ class User extends Authenticatable
         'remember_token',
         'created_at',
         'updated_at',
-        'active'
+        'active',
+        'google_id',
     ];
 
     /**
@@ -52,6 +54,11 @@ class User extends Authenticatable
     public function people()
     {
         return $this->hasOne(People::class);
+    }
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class);
     }
 
     public function cart()

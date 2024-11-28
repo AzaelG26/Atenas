@@ -29,5 +29,8 @@ class People extends Model
     {
         return $this->hasMany(Address::class, 'id_client', 'id');
     }
-
+    public function employees()
+    {
+        return $this->hasOne(Employee::class, 'id_people');
+    }
 }

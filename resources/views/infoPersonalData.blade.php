@@ -147,27 +147,27 @@
 
                     <div class="col-sm-6">                                           
                         <label for="paternal_lastname" style="color: white" class="form-label">Apellido paterno:</label> <br>
-                        <input class="input" id="paternal_lastname" type="text" value="{{old('name', $people->paternal_lastname)}}" disabled>                    
+                        <input class="input" id="paternal_lastname" type="text" value="{{old('paternal_lastname', $people->paternal_lastname)}}" disabled>                    
                     </div>
 
                     <div class="col-sm-6">                                           
                         <label for="maternal_lastname" style="color: white" class="form-label">Apellido materno:</label> <br>
-                        <input class="input" id="maternal_lastname" type="text" value="{{old('name', $people->maternal_lastname)}}" disabled>                    
+                        <input class="input" id="maternal_lastname" type="text" value="{{old('maternal_lastname', $people->maternal_lastname)}}" disabled>                    
                     </div>
 
                     <div class="col-sm-6">                                           
                         <label for="gender" style="color: white" class="form-label">Genero:</label> <br>
-                        <input class="input" id="gender" type="text" value="{{old('name', $people->gender)}}" disabled>                  
+                        <input class="input" id="gender" type="text" value="{{old('gender', $people->gender)}}" disabled>                  
                     </div>
 
                     <div class="col-sm-6">                                           
                         <label for="cellphone_number" style="color: white" class="form-label">Teléfono:</label> <br>
-                        <input class="input" id="cellphone_number" type="text" value="{{old('name', $people->cellphone_number)}}" disabled>                    
+                        <input class="input" id="cellphone_number" type="text" value="{{old('cellphone_number', $people->cellphone_number)}}" disabled>                    
                     </div>
 
                     <div class="col-sm-6">                                           
                         <label for="birthdate" style="color: white" class="form-label">Fecha de nacimiento:</label> <br>
-                        <input class="input" id="birthdate" type="text" value="{{old('name', $people->birthdate)}}" disabled>                    
+                        <input class="input" id="birthdate" type="text" value="{{old('birthdate', $people->birthdate)}}" disabled>                    
                     </div>
                 </div>
                 
@@ -199,7 +199,7 @@
                         </div>  
                         
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Apellido paterno" class="input" name="paternal_lastname" type="text" value="{{ old('name', $people->paternal_lastname) }}">            
+                            <input placeholder="Apellido paterno" class="input" name="paternal_lastname" type="text" value="{{ old('paternal_lastname', $people->paternal_lastname) }}">            
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                                 @error('paternal_lastname') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -208,7 +208,7 @@
                         </div>  
                         
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Apellido materno" class="input" name="maternal_lastname" type="text" value="{{ old('name', $people->maternal_lastname) }}">            
+                            <input placeholder="Apellido materno" class="input" name="maternal_lastname" type="text" value="{{ old('maternal_lastname', $people->maternal_lastname) }}">            
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                                 @error('maternal_lastname') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)red">{{ $message }}</div>

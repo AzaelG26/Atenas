@@ -78,8 +78,7 @@
                                 <div class="d-flex align-items-center">
                                     <button class="btn btn-secondary" onclick="decreaseQuantity('{{ $menu->id_menu }}')">-</button>
                                     <input type="number" id="quantity{{ $menu->id_menu }}" class="form-control mx-2 text-center" value="1" min="1" max="{{ $menu->stock->stock }}" readonly style="width: 70px;">
-                                    <button class="btn btn-primary" onclick="increaseQuantity('{{ $menu->id_menu }}', '{{ $menu->stock->stock }}')" data-menu-id="{{ $menu->id_menu }}">+</button>
-
+                                    <button class="btn btn-primary" onclick="increaseQuantity('{{ $menu->id_menu }}', '{{ $menu->stock->stock }}')">+</button>
                                 </div>
 
                                 <button class="btn btn-success mt-3" 
@@ -109,7 +108,7 @@
                 
                 </div>
                 <div class="modal-footer">
-                    <button onclick="clearCart()" class="btn btn-danger">Vaciar Carro</button>
+                    <button type="button" onclick="clearCart()" class="btn btn-danger mt-3">Vaciar Carrito</button>
                     <button type="button" onclick="confirmCart()" class="btn btn-success mt-3">Confirmar Carrito</button>
                     <button type="button" class="btn btn-secondary" id="btn-cerrar-modal" data-bs-dismiss="modal">Cerrar</button>
                 </div>
@@ -127,6 +126,129 @@
         </script>
     @endif
 
+    @if (session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+        @endif
+
 @endsection
 
 
+@section('scripts')
+<script>
+// Inicializa el carrito desde localStorage
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+// Actualiza la cantidad de elementos en el carrito
+function updateCartCount() {
+    document.getElementById('cart-count').textContent = cart.length;
+}
+
+// Agrega un producto al carrito
+function addToCart(name, price) {
+    if (isNaN(price)) {
+        console.error(`Error: El precio no es un número. Precio: ${price}`);
+        return;
+    }
+    cart.push({ name, price: parseFloat(price) });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    alert(`${name} añadido al carrito.`);
+}
+
+// Muestra los productos en el carrito dentro del modal
+function toggleCart() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+    } else {
+        cart.forEach((item, index) => {
+            total += item.price;
+            const itemRow = document.createElement('div');
+            itemRow.classList.add('cart-item');
+            itemRow.innerHTML = `
+                <p>${item.name} - MX$${item.price.toFixed(2)}</p>
+                <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
+            `;
+            cartItemsContainer.appendChild(itemRow);
+        });
+        cartItemsContainer.innerHTML += `<h5>Total: MX$${total.toFixed(2)}</h5>`;
+    }
+
+    const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+    cartModal.show();
+}
+
+// Elimina un producto del carrito
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    toggleCart();
+    updateCartCount();
+}
+
+// Al cargar la página, inicializa el contador del carrito
+document.addEventListener('DOMContentLoaded', function () {
+    updateCartCount();
+});
+</script>
+
+<script>
+  function toggleSideMenu() {
+    const sideMenu = document.getElementById("sideMenu");
+    const openButton = document.getElementById("openMenuButton");
+    const closeButton = document.getElementById("closeMenuButton");
+
+    // Alternar la clase "show" para mostrar/ocultar el menú
+    sideMenu.classList.toggle("show");
+
+    // Mostrar u ocultar los botones según el estado del menú y el ancho de pantalla
+    if (window.innerWidth <= 992) {
+        if (sideMenu.classList.contains("show")) {
+            openButton.style.display = "none";
+            closeButton.style.display = "block";
+        } else {
+            openButton.style.display = "block";
+            closeButton.style.display = "none";
+        }
+    }
+}
+
+// Asegúrate de ocultar los botones en pantallas grandes al redimensionar
+window.addEventListener('resize', () => {
+    const openButton = document.getElementById("openMenuButton");
+    const closeButton = document.getElementById("closeMenuButton");
+    if (window.innerWidth > 992) {
+        openButton.style.display = "none";
+        closeButton.style.display = "none";
+    } else if (!document.getElementById("sideMenu").classList.contains("show")) {
+        openButton.style.display = "block";
+        closeButton.style.display = "none";
+    }
+});
+
+ // Función para desplazarse suavemente hasta la categoría
+ function scrollToCategory(event, categoryId) {
+      event.preventDefault(); // Evita el salto instantáneo
+      const categoryElement = document.getElementById(categoryId);
+      if (categoryElement) {
+          window.scrollTo({
+              top: categoryElement.offsetTop - 80, // Ajusta la posición según la altura del menú superior
+              behavior: 'smooth' // Habilita desplazamiento suave
+          });
+      }
+  }
+
+</script>
+@endsection

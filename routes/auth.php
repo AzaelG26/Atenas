@@ -63,7 +63,4 @@ Route::middleware('auth')->group(function () {
     Route::post('/informacion-personal', [PeopleController::class, 'store'])->name('personas.store');
     Route::get('/form-personalData', [PeopleController::class, 'formularioPersonas'])->name('formPersonalData');
     Route::put('/informacion-personal/{id}', [PeopleController::class, 'update'])->name('personas.update');
-
-
-    Route::get('/orders', [ordersController::class, 'getOrdersOnline'])->name('orders');
 });

@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'dashboard')</title>
+
+    {{-- ICONO DEL NEGOCIO --}}
+    <link rel="icon" href="LOGO_ATENAS_high_quality_transparent.png">
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
    
@@ -20,7 +28,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
 
-    <style>
+<style>
         body {
             margin: 0;
             background-color:#0C1011;
@@ -40,6 +48,7 @@
             color:#be952c;
             font-size: 17px;
             height: 50px;
+            transition: all 0.2s ease;            
         }
         .nav-item  {
             color: #be952c;                         
@@ -78,22 +87,15 @@
         } */
                  
         .nav-link:hover{
-            color:#ce9d22;
+            color:#ce9d22 !important;
             /* filter: drop-shadow(0px 0px 1px rgb(151, 124, 116)); */
-            font-size: 18px;
             background-color: #2929294b;
-
-
         } 
         
-        .nav-link.active {
-            
+        .links.active {        
             background-color: #2929294b;
         }
-        body{
-            background-color:#0C1011;
-        }
-         .input {
+        .input {
         background-color: #212121;
         max-width: 400px;
         width: 100%;
@@ -203,10 +205,9 @@
         font-weight: 600;
         }
 
-
+        
     </style>
-        @stack('styles')
-   
+    @stack('styles')
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark">
@@ -216,7 +217,7 @@
             </button>            
         </div>
     </nav>
-    {{--  --}}
+
     <div style="background-color: rgba(12, 12, 12, 0.616); width:20em" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
         <div class="offcanvas-header" style="border-bottom:1px solid #be952c; display: flex; justify-content:space-between; align-items:center;">
             <a href="/" title="Toca para volver al inicio" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
@@ -236,39 +237,70 @@
                         <ion-icon name="person-sharp"></ion-icon> Usuario 
                     </a>                    
                 </li>
-
                 <li>
                     <a class="links nav-link {{ request()->routeIs('personas.create') ? 'active' : '' }}" href="{{route('personas.create')}}">
                         <i class="bi bi-person-vcard"></i> Datos personales 
                     </a>
                 </li>
+                @if (optional(optional(Auth::user()->people)->employees)->admin == true)
                 <li>
                     <a  class="links nav-link {{ request()->routeIs('employee.create') ? 'active' : '' }}" href="{{route('employee.create')}}">
                         <img width="15" height="15" src="https://img.icons8.com/glyph-neue/64/ce9d22/cook-male.png" alt="cook-male"/>
                          Nuevo empleado
                     </a>
                 </li>
+                @endif
+
+                @if (Auth::user()->people)                            
+                    @if (Auth::user()->people->employees)
+                    <li>
+                        <a class="links nav-link {{ request()->routeIs('orders') ? 'active' : '' }}" href="{{route('orders')}}" >
+                            <i>
+                                <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/purchase-order.png" alt="purchase-order"/>
+                            </i> ordenes 
+                        </a>                                    
+                    </li>
+                    @endif
+                @endif
+                @if (Auth::user()->people)                            
+                    <li>
+                        <a class="links nav-link {{ request()->routeIs('ordershistory') ? 'active' : '' }}" href="{{route('ordershistory')}}" >
+                            <i>
+                                <img width="18" height="18" src="https://img.icons8.com/dotty/80/ce9d22/activity-history.png" alt="activity-history"/>
+                            </i> Historial de compras 
+                        </a>                                    
+                    </li>
+                
+                @endif
+
+                @if (Auth::user()->people)                            
+                    @if(Auth::user()->people->employees)
+                    <li>
+                        <a class="links nav-link {{ request()->routeIs('formOrders') ? 'active' : '' }}"   href="{{route('formOrders')}}">
+                            <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/signing-a-document.png" alt="signing-a-document"/>
+                            Realizar una orden
+                        </a>
+                    </li>
+                    @endif
+                @endif
+
+                @if (optional(optional(Auth::user()->people)->employees)->admin == true)
                 <li>
-                    <a class="links nav-link" {{ request()->routeIs('orders') ? 'active' : '' }} href="{{route('orders')}}" >
-                        <i>
-                            <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/purchase-order.png" alt="purchase-order"/>
-                        </i> ordenes 
-                    </a>                                    
+                    <a  class="links nav-link {{ request()->routeIs('ganancias') ? 'active' : '' }}" href="{{route('ganancias')}}">
+                        <img width="20" height="17" src="https://img.icons8.com/windows/32/ce9d22/statistics.png" alt="statistics"/>
+                        Ganancias
+                    </a>
                 </li>
+                @endif
+
                 <li style="border-top:1px solid#be952c">                     
                     <div class="dropdown" data-bs-theme="dark">
-                        <a>
-                            
-                        </a>
+                        <a></a>
                         <button style="width:100%; border:none; color:#be952c" class="btn dropdown-toggle" type="button" id="dropdownMenuButtonDark" data-bs-toggle="dropdown" aria-expanded="false">
                             {{Auth::user()->name}} 
                         </button>
                         <ul style="width:100%;" class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
                             <li><a class="dropdown-item" style="color:#be952c" href="/">Ir a inicio</a></li>
-                            <li><a class="dropdown-item" style="color:#be952c" href="#">Action</a></li>
-                            <li><a class="dropdown-item" style="color:#be952c" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" style="color:#be952c" href="#">Something else here</a></li>
-                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf                                                                                                                    
@@ -294,6 +326,5 @@
 
     
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
