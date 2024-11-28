@@ -21,6 +21,12 @@ class OnlineOrder extends Model
         'status',
     ];
 
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'id_address', 'id_address');
+    }
+
+
     public function people()
     {
         return $this->belongsTo(People::class, 'id_people');
