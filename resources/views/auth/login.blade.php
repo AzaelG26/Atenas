@@ -625,59 +625,57 @@
 
     <script>
             
-                const formReg = document.getElementById('second-card');
-                const formSesion = document.getElementById('first-card');
-                const cont = document.getElementById('cont');
+           const formReg = document.getElementById('second-card');
+const formSesion = document.getElementById('first-card');
+const cont = document.getElementById('cont');
 
-                function mostrarFormularioRegister() {
-                    if (formReg && formSesion) {
-                        const formRegDisplay = window.getComputedStyle(formReg).display;
-                        const formSesionDisplay = window.getComputedStyle(formSesion).display;
-                        
-                        if (formRegDisplay === 'none' && formSesionDisplay === 'block') {
-                            formSesion.style.opacity = '0';
-                            formSesion.style.visibility = 'hidden';
-                            formSesion.style.transition = 'opacity 0.5s ease, visibility 0s 0.5s'; // Atrasamos la visibilidad
-                            
-                            setTimeout(() => {
-                                formSesion.style.display = 'none';
-                                cont.style.display = 'flex';
-                                cont.style.transition = 'all 0.5s ease';
-                                formReg.style.display = 'block';
-                                formReg.style.opacity = '1';
-                                formReg.style.visibility = 'visible';
-                            }, 500); // Espera a que termine la animación
-                        }
-                        else if (formRegDisplay === 'block' && formSesionDisplay === 'none') {
-                            formReg.style.opacity = '0';
-                            formReg.style.visibility = 'hidden';
-                            formReg.style.transition = 'opacity 0.5s ease, visibility 0s 0.5s';
-                            
-                            setTimeout(() => {
-                                formReg.style.display = 'none';
-                                cont.style.display = 'flex';
-                                cont.style.transition = 'all 0.5s ease';
-                                formSesion.style.display = 'block';
-                                formSesion.style.opacity = '1';
-                                formSesion.style.visibility = 'visible';
-                            }, 500);
-                        }
-                    }
-                }
+function mostrarFormularioRegister() {
+    if (formReg && formSesion) {
+        const formRegDisplay = window.getComputedStyle(formReg).display;
+        const formSesionDisplay = window.getComputedStyle(formSesion).display;
 
+        if (formRegDisplay === 'none' && formSesionDisplay === 'block') {
+            formSesion.style.opacity = '0';
+            formSesion.style.visibility = 'hidden';
+            formSesion.style.transition = 'opacity 0.5s ease, visibility 0s 0.5s'; // Atrasamos la visibilidad
 
-                // Escuchar cambios en el tamaño de la pantalla
-                window.addEventListener('resize', () => {
-                    if (formReg && formSesion) {
-                        formReg.removeAttribute('style');
-                        formSesion.removeAttribute('style');
-                        
-                    }
-                });
-        
-                window.addEventListener('load', function() {
-                    document.getElementById('loader').style.display = 'none';
-                });
+            setTimeout(() => {
+                formSesion.style.display = 'none';
+                cont.style.display = 'flex';
+                cont.style.transition = 'all 0.5s ease';
+                formReg.style.display = 'block';
+                formReg.style.opacity = '1';
+                formReg.style.visibility = 'visible';
+            }, 500); // Espera a que termine la animación
+        }
+        else if (formRegDisplay === 'block' && formSesionDisplay === 'none') {
+            formReg.style.opacity = '0';
+            formReg.style.visibility = 'hidden';
+            formReg.style.transition = 'opacity 0.5s ease, visibility 0s 0.5s';
+
+            setTimeout(() => {
+                formReg.style.display = 'none';
+                cont.style.display = 'flex';
+                cont.style.transition = 'all 0.5s ease';
+                formSesion.style.display = 'block';
+                formSesion.style.opacity = '1';
+                formSesion.style.visibility = 'visible';
+            }, 500);
+        }
+    }
+}
+
+// No modificar estilos al redimensionar para no resetear las animaciones
+window.addEventListener('resize', () => {
+    if (formReg && formSesion) {
+        // Aquí no removemos los estilos de display ni visibilidad
+    }
+});
+
+window.addEventListener('load', function() {
+    document.getElementById('loader').style.display = 'none';
+});
+
     </script>
 
     @if (session('status'))

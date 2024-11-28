@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ordercontroller;
 use App\Http\Controllers\ReseñaController;
-use App\Http\Controllers\Auth\PeopleController;
+
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
@@ -94,7 +94,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 
     // Rutas para direcciones
-    Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
+    Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses');
     Route::post('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
     Route::get('/buscar-direcciones', [AddressController::class, 'buscarDirecciones'])->name('buscar.direcciones');
     Route::get('/get-neighborhoods', [AddressController::class, 'getNeighborhoodsByPostalCode'])->name('get.neighborhoods');
