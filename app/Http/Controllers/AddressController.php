@@ -85,7 +85,7 @@ class AddressController extends Controller
         if ($user) {
             $idClient = $user;
         } else {
-            return redirect()->route('addresses.form')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
+            return redirect()->route('addresses')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
         }
 
         $idNeighborhood = $request->input('id_neighborhood');
@@ -106,10 +106,10 @@ class AddressController extends Controller
 
             $result = DB::select('SELECT @id_address AS id_address');
 
-            return redirect()->route('addresses.form')
+            return redirect()->route('addresses')
                 ->with('success', 'Dirección registrada exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('addresses.form')->with('error', 'Error al registrar la dirección: ' . $e->getMessage());
+            return redirect()->route('addresses')->with('error', 'Error al registrar la dirección: ' . $e->getMessage());
         }
     }
 
@@ -139,7 +139,7 @@ class AddressController extends Controller
         }
 
         if (!$selectedAddress) {
-            return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
+            return redirect()->route('addresses')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
         }
 
         return view('post_carro', compact('carrito', 'total', 'selectedAddress'));
