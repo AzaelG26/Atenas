@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PeopleController extends Controller
+class PeopleControllerAlv extends Controller
 {
     public function formularioPersonas()
     {

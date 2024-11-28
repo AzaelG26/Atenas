@@ -9,7 +9,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\Auth\PeopleController;
+use App\Http\Controllers\Auth\PeopleControllerAlv;
 use App\Http\Controllers\ordersController;
 use Illuminate\Support\Facades\Route;
 
@@ -59,8 +59,8 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::get('/informacion-personal', [PeopleController::class, 'create'])->name('personas.create');
-    Route::post('/informacion-personal', [PeopleController::class, 'store'])->name('personas.store');
-    Route::get('/form-personalData', [PeopleController::class, 'formularioPersonas'])->name('formPersonalData');
-    Route::put('/informacion-personal/{id}', [PeopleController::class, 'update'])->name('personas.update');
+    Route::get('/informacion-personal', [PeopleControllerAlv::class, 'create'])->name('personas.create');
+    Route::post('/informacion-personal', [PeopleControllerAlv::class, 'store'])->name('personas.store');
+    Route::get('/form-personalData', [PeopleControllerAlv::class, 'formularioPersonas'])->name('formPersonalData');
+    Route::put('/informacion-personal/{id}', [PeopleControllerAlv::class, 'update'])->name('personas.update');
 });
