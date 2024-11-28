@@ -120,9 +120,6 @@ return new class extends Migration
             END
         ');
 
-        DB::unprepared('
-
-        ');
     }
 
     /**
@@ -132,6 +129,10 @@ return new class extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP TRIGGER IF EXISTS register_address');
+        DB::unprepared('DROP PROCEDURE IF EXISTS register_address');
+        DB::unprepared('DROP PROCEDURE IF EXISTS UpdateOrderWithFolio');
+        DB::unprepared('DROP PROCEDURE IF EXISTS GenerateFolioAfterOrderPaid');
+        DB::unprepared('DROP PROCEDURE IF EXISTS RegisterOrderDetails');
+        DB::unprepared('DROP PROCEDURE IF EXISTS RegisterPaymentAndOrder');
     }
 };
