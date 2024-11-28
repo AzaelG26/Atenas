@@ -61,7 +61,10 @@
         <div class="text-center mt-4">
             <a href="{{ route('addresses.form') }}" class="btn btn-success btn-lg">Seleccionar direccion</a>
             <a href="{{ route('menu') }}" class="btn btn-primary btn-lg">Regresar al Menú</a>
-            <a href="{{ route('vista.pago') }}" class="btn btn-warning btn-lg">Proceder al Pago</a>
+            <a href="{{ route('vista.pago', ['selectedAddress' => $selectedAddress->id_address ?? null]) }}" class="btn btn-warning btn-lg">
+                Proceder al Pago
+            </a>
+
         </div>
     @else
         <p class="text-center text-light mt-4">El carrito está vacío.</p>

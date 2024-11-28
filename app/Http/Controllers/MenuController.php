@@ -23,17 +23,9 @@ class MenuController extends Controller
 
     public function postCarro(Request $request)
     {
-        // con esto recuperamos el carrito desde la sesion
         $carrito = session('carrito', []);
-
-        if (!is_array($carrito)) {
-            return redirect()->back()->withErrors(['error' => 'El formato del carrito no es válido.']);
-        }
-
-        // con esto calculamos el total del carro
         $total = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
 
-        // Recupera la dirección seleccionada
         $selectedAddressId = $request->input('selectedAddress');
         $selectedAddress = null;
 
@@ -44,14 +36,17 @@ class MenuController extends Controller
                 })
                 ->with(['neighborhood', 'neighborhood.postalCode'])
                 ->first();
-        }
 
-        if (!$selectedAddress) {
-            return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
+            if ($selectedAddress) {
+                session(['selectedAddress' => $selectedAddressId]);
+            } else {
+                return redirect()->route('addresses.form')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
+            }
         }
 
         return view('post_carro', compact('carrito', 'total', 'selectedAddress'));
     }
+
 
     public function showEditionMenu()
     {
@@ -87,29 +82,41 @@ class MenuController extends Controller
 
     public function vistaPago(Request $request)
     {
-        //recuperamos el carrito desde la misma sesion
         $carrito = session('carrito', []);
         $total = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
-
-        //aqui vamos a recuperar la direccion seleccionada por el mono desde la sesion
-        $selectedAddress = session('selectedAddress');
-
+    
+        $selectedAddressId = session('selectedAddress');
+        $selectedAddress = null;
+    
+        if ($selectedAddressId) {
+            $selectedAddress = Address::where('id_address', $selectedAddressId)
+                ->whereHas('client', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->with(['neighborhood', 'neighborhood.postalCode'])
+                ->first();
+        }
+    
+        if (!$selectedAddress) {
+            return redirect()->route('addresses.form')->withErrors(['error' => 'Por favor seleccione una dirección válida.']);
+        }
+    
         return view('vista_pago', compact('carrito', 'total', 'selectedAddress'));
     }
+    
 
 
 
-    public function procesarPago(Request $request)
+
+public function procesarPago(Request $request)
 {
     $validatedData = $request->validate([
         'card_number' => ['required', 'digits:16'],
         'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
         'cvv' => ['required', 'digits:3'],
-        'selectedAddress' => ['required', 'exists:address,id_address'], 
     ]);
 
     $carrito = session('carrito', []);
-
     if (empty($carrito)) {
         return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
     }
@@ -117,26 +124,38 @@ class MenuController extends Controller
     $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
     $selectedAddressId = $request->input('selectedAddress');
 
+    // Verificar que la dirección pertenezca al usuario autenticado
+    $selectedAddressId = $request->input('selectedAddress');
+    $selectedAddress = Address::where('id_address', $selectedAddressId)
+        ->whereHas('client', function ($query) {
+            $query->where('user_id', Auth::id());
+        })
+        ->with(['neighborhood', 'neighborhood.postalCode'])
+        ->firstOrFail();
+
+    if (!$selectedAddress) {
+        return redirect()->route('vista.pago')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
+    }
+
     try {
         DB::beginTransaction();
 
         $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?, ?)', [
-            1,  
-            $totalPrice,  
-            'Completed',  
-            'Pedido de Comida',  
-            'Orden realizada desde el sitio web.',  
-            Auth::id(),  // esto es para recuperar el id de la persona
-            $totalPrice,  
-            $selectedAddressId, 
-        ]);
+            1,
+            $totalPrice,
+            'Completed',
+            'Pedido de Comida',
+            'Orden realizada desde el sitio web.',
+            Auth::id(),
+            $totalPrice,
+            $selectedAddressId,
+        ]);        
 
         $paymentAndOrderData = collect($paymentAndOrderResult)->first();
         $newOrderId = $paymentAndOrderData->OrderID;
 
         DB::update('UPDATE online_orders SET status = ? WHERE id_online_order = ?', ['Paid', $newOrderId]);
 
-        // registramos los detalles de la orden
         foreach ($carrito as $item) {
             DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
                 $newOrderId,
@@ -146,12 +165,16 @@ class MenuController extends Controller
             ]);
         }
 
-        // con este procedimiento se hace el folio de la orden 
         DB::select('CALL GenerateFolioAfterOrderPaid(?)', [$newOrderId]);
+
+        // Obtén el ID del folio generado (puedes modificar el procedimiento para devolverlo si es necesario).
+        $folioId = DB::table('folios')->orderByDesc('created_at')->value('id_folio');
+
+        DB::select('CALL UpdateOrderWithFolio(?)', [$folioId]);
+
 
         DB::commit();
 
-        // con esto se vacia el carro de la sesion
         session()->forget('carrito');
 
         return redirect()->route('menu')->with('success', "Pago procesado exitosamente.");
@@ -161,5 +184,6 @@ class MenuController extends Controller
         return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
     }
 }
+
 
 }
