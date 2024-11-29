@@ -5,12 +5,12 @@
 @push('styles')
     <style>
         body {
-            background-color: #121212; /* Fondo oscuro para toda la página */
-            color: #f1f1f1; /* Texto en color blanco suave */
+            background-color: #121212;
+            color: #f1f1f1; 
         }
 
         .container {
-            background-color: #2c2f33; /* Fondo gris oscuro para el contenedor */
+            background-color: #2c2f33;
             border-radius: 10px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
             padding: 30px;
@@ -20,12 +20,12 @@
 
         h2 {
             font-family: 'Roboto', sans-serif;
-            color: #f1f1f1; /* Color blanco para el título */
+            color: #f1f1f1; 
         }
 
         .card {
             border-radius: 10px;
-            background-color: #4caf50; /* Fondo verde suave para la tarjeta */
+            background-color: #4caf50; 
             color: white;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
         }
@@ -45,28 +45,24 @@
         }
 
         .btn-primary {
-            background-color: #007bff; /* Fondo azul para el botón */
+            background-color: #007bff; 
             border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
+            padding: 12px 25px;
+            font-size: 1.1rem;
             color: white;
             border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            width: 100%;
         }
 
         .btn-primary:hover {
-            background-color: #0056b3; /* Azul más oscuro al pasar el cursor */
+            background-color: #0056b3; 
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            font-size: 1rem;
-            color: #f1f1f1; /* Color dorado para el enlace */
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
+        .btn-primary:focus {
+            outline: none;
         }
     </style>
 @endpush
@@ -74,7 +70,7 @@
 @section('content')
     <div class="container">
         <h2 class="text-center">¡Aquí están los detalles de tu Pedido #{{ $pedido->id }}!</h2>
-        <p class="text-center">Fecha del Pedido: {{ $pedido->created_at->format('d-m-Y') }}</p>
+        <p class="text-center">Fecha de Tu Pedido: {{ $pedido->created_at->format('d-m-Y') }}</p>
 
         <div class="card">
             <div class="card-body">
@@ -84,6 +80,6 @@
             </div>
         </div>
 
-        <a href="{{ route('historial') }}" class="back-link">Volver al Historial de Pedidos</a>
+        <a href="{{ route('historial') }}" class="btn-primary">Volver al Historial de Pedidos</a>
     </div>
 @endsection

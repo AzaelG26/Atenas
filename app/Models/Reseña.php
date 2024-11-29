@@ -9,7 +9,7 @@ class Reseña extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['contenido', 'usuario_id'];
+    protected $fillable = ['contenido', 'usuario_id', 'folio','rating'];
 
     public function usuario()
     {

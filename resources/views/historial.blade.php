@@ -4,129 +4,140 @@
 
 @push('styles')
     <style>
+        /* Estilos para la vista del historial */
         body {
-            background-color: #f1f1f1; /* Fondo claro y suave */
-            color: #333; /* Texto oscuro para mejor contraste */
+            background-color: #f7f7f7;
+            color: #333;
             font-family: 'Arial', sans-serif;
         }
 
         .container {
-            background-color: #ffffff; /* Fondo blanco para el contenedor */
-            border-radius: 10px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
             padding: 30px;
             max-width: 900px;
-            margin: 20px auto;
+            margin: 30px auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
-            color: #333; /* Títulos en un gris oscuro */
             font-size: 2rem;
-            font-weight: 600;
-        }
-
-        p {
-            font-size: 1.1rem;
-            color: #555; /* Texto más claro para la información */
+            color: #333;
+            text-align: center;
             margin-bottom: 20px;
-        }
-
-        .alert {
-            background-color: #f8d7da; /* Fondo suave para la alerta */
-            color: #721c24; /* Texto en color rojo para el mensaje */
-            border-radius: 10px;
-            padding: 15px;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
         }
 
         .table {
             width: 100%;
-            margin-top: 30px;
+            margin-top: 20px;
             border-collapse: collapse;
         }
 
         .table th, .table td {
-            padding: 15px;
+            padding: 12px 20px;
             text-align: center;
             border: 1px solid #ddd;
         }
 
         .table th {
-            background-color: #007bff; /* Fondo azul para las cabeceras */
-            color: white;
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
         }
 
         .table td {
-            background-color: #f9f9f9; /* Fondo claro para las celdas */
-        }
-
-        .btn-info {
-            background-color: #17a2b8; /* Botón de información */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
+            background-color: #f9f9f9;
             font-size: 1rem;
         }
 
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
         .btn-info:hover {
-            background-color: #138496; /* Hover en el botón */
+            background-color: #138496;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
         }
 
         .back-link {
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 30px;
             text-decoration: none;
+            color: #007bff;
             font-size: 1rem;
-            color: #007bff; /* Color azul para el enlace */
+            text-align: center;
         }
 
         .back-link:hover {
             text-decoration: underline;
         }
+
+        /* Estilos para el botón de volver */
+        .btn-back {
+            display: block;
+            margin-top: 30px;
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .btn-back:hover {
+            background-color: #e64a19;
+        }
     </style>
 @endpush
 
 @section('content')
-    <div class="container">
-        <h2 class="text-center">Historial de Pedidos</h2>
-        <p class="text-center">Revisa los pedidos realizados.</p>
+<div class="container">
+    <h2>Historial de Pedidos</h2>
 
-        @if($pedidos->isEmpty())
-            <div class="alert alert-info text-center" role="alert">
-                <strong>No tienes pedidos anteriores.</strong> Realiza un pedido para comenzar tu historial.
-            </div>
-        @else
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
-                            <th>Total</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($pedidos as $pedido)
-                            <tr>
-                                <td>{{ $pedido->id }}</td>
-                                <td>{{ $pedido->created_at->format('d-m-Y') }}</td>
-                                <td>{{ ucfirst($pedido->estado) }}</td>
-                                <td>${{ number_format($pedido->total, 2) }}</td>
-                                <td>
-                                    <a href="{{ route('pedidos.detalle', $pedido->id) }}" class="btn btn-info">Ver Detalles</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @endif
+    @if($pedidos->isEmpty())
+        <div class="alert-info">
+            <strong>No tienes pedidos registrados.</strong> Realiza un pedido para comenzar tu historial.
+        </div>
+    @else
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($pedidos as $pedido)
+                    <tr>
+                        <td>{{ $pedido->created_at->format('d-m-Y') }}</td>
+                        <td>{{ ucfirst($pedido->estado) }}</td>
+                        <td>${{ number_format($pedido->total, 2) }}</td>
+                        <td>
+                            <a href="{{ route('historial.detalle', $pedido->id) }}" class="btn-info">Ver Detalles</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 
-        <a href="{{ route('home') }}" class="back-link">Volver a la página principal</a>
-    </div>
+    <!-- Botón para volver a la página principal -->
+    <a href="{{ route('Menu') }}" class="back-link">Volver al Menu</a>
+</div>
 @endsection

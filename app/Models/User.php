@@ -29,6 +29,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'email_verified_at',
         'password',
@@ -55,7 +56,7 @@ class User extends Authenticatable
 
     public function pedidos()
     {
-        return $this->hasMany(Pedido::class);  // Verifica que la relación sea 'hasMany'
+        return $this->hasMany(Pedido::class, 'user_id');
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-// app/Models/Pedido.php
+
 namespace App\Models;
 
 
