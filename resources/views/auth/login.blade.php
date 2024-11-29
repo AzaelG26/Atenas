@@ -77,6 +77,7 @@
             position: relative;
             width: 100%;
         }
+        
 
         .input-icon i {
             position: absolute;
@@ -548,7 +549,7 @@
                                     <div class="col-md-12 input-icon">
                                         <i class="bi bi-person-fill" style="top:50%"></i>  <!-- Icono de usuario -->
                                         <input type="text" placeholder="Name" class="form-control" id="name" name="name" autocomplete="name">
-                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
+                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; ; width:100%; flex-wrap:nowrap;">
                                             @error('name')
                                                 {{ $message }}
                                             @enderror

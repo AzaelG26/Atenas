@@ -30,4 +30,9 @@ class Address extends Model
     {
         return $this->belongsTo(Neighborhood::class, 'id_neighborhood');
     }
+
+    public function onlineOrder()
+    {
+        return $this->hasMany(Address::class, 'id_address', 'id_address');
+    }
 }

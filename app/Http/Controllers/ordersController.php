@@ -18,7 +18,6 @@ class ordersController extends Controller
 
     public function showProfits(Request $request)
     {
-        // Falta que muestre por pagado en línea pero aun estamos en eso, hay error en tipo de dato en el status
         $ventas = Order::with('orderDetail.menu', 'folio')
             ->where('status', 'Completed')
             ->orderBy('updated_at', 'asc');
@@ -103,13 +102,13 @@ class ordersController extends Controller
             'onlineOrderDetails.folio',
             'onlineOrderDetails.menu',
             'people',
-        ])->orderBy('updated_at', 'asc')->get();
+        ])->whereIn('status', ['Paid', 'In Process'])->orderBy('updated_at', 'asc')->get();
 
 
         $orders = Order::with([
             'orderDetail.menu',
             'folio',
-        ])->orderBy('updated_at', 'asc')->get();
+        ])->whereIn('status', ['Pending', 'In Process'])->orderBy('updated_at', 'asc')->get();
 
         // dd($order->diner_name);
 
@@ -122,7 +121,25 @@ class ordersController extends Controller
         return view('makeorder', compact('menuItems'));
     }
 
-    public function getMenuOrder() {}
+    public function getCompletedOrders()
+    {
+        $onlineCompleted = OnlineOrder::with([
+            'onlineOrderDetails.folio',
+            'onlineOrderDetails.menu',
+            'people',
+        ])->where('status', 'Completed')->orderBy('updated_at', 'asc')->get();
+
+        $localCompleted = Order::with([
+            'orderDetail.menu',
+            'folio',
+        ])->where('status', 'Completed')->orderBy('updated_at', 'asc')->get();
+
+        return view('completedOrders', compact('onlineCompleted', 'localCompleted'));
+    }
+    public function getHistorialOrders()
+    {
+        return view('historialOrders');
+    }
 
     /**
      * Display a listing of the resource.
@@ -227,9 +244,43 @@ class ordersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateLine(Request $request, $id)
     {
-        //
+        $onlineOrder = OnlineOrder::findOrFail($id);
+        $request->validate([
+            'status' => 'required|in:Pending,Canceled,In Process,Completed'
+        ]);
+        $onlineOrder->status = $request->status;
+        $onlineOrder->save();
+
+        if ($onlineOrder->status == 'Canceled') {
+            return redirect()->route('orders')->with('success', 'Se ha cancelado la orden');
+        } else if ($onlineOrder->status == 'In Process') {
+            return redirect()->route('orders')->with('success', 'La orden ha sido atendida');
+        } else if ($onlineOrder->status == 'Completed') {
+            return redirect()->route('orders')->with('success', 'La orden ha sido Completada');
+        }
+    }
+    public function updateFisicas(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+
+        $request->validate([
+            'status' => 'required|in:Pending,Canceled,In Process,Completed'
+        ]);
+
+        $order->status = $request->status;
+        $order->save();
+
+
+
+        if ($order->status == 'Canceled') {
+            return redirect()->route('orders')->with('success', 'Se ha cancelado la orden');
+        } else if ($order->status == 'In Process') {
+            return redirect()->route('orders')->with('success', 'La orden ha sido atendida');
+        } else if ($order->status == 'Completed') {
+            return redirect()->route('orders')->with('success', 'La orden ha sido Completada');
+        }
     }
 
     /**

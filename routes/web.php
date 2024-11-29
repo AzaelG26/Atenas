@@ -128,9 +128,13 @@ Route::middleware('admin')->group(function () {
 Route::middleware('employee')->group(function () {
     //orders
     Route::get('/orders', [ordersController::class, 'getOrdersOnline'])->name('orders');
+    Route::get('/orders/completadas', [ordersController::class, 'getCompletedOrders'])->name('orders.completed');
+    Route::get('/orders/historial', [ordersController::class, 'getHistorialOrders'])->name('orders.historial');
     // Ordenes fisico
     Route::get('/realizar-orden', [ordersController::class, 'formMakeOrder'])->name('formOrders');
     Route::post('/realizar-orden', [ordersController::class, 'create'])->name('makeOrders');
+    Route::put('/orders/{id}/enfisico', [ordersController::class, 'updateFisicas'])->name('orders.updateFisicas');
+    Route::put('/orders/{id}/enlinea', [ordersController::class, 'updateLine'])->name('orders.updateLine');
 });
 
 
