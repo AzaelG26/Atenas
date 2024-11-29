@@ -32,24 +32,25 @@ return new class extends Migration
             IN order_name VARCHAR(255), 
             IN order_notes TEXT, 
             IN person_id BIGINT, 
-            IN total_price BIGINT
+            IN total_price BIGINT, 
+            IN address_id BIGINT -- Nuevo parámetro
         )
         BEGIN
             DECLARE new_payment_id BIGINT;
             DECLARE new_order_id BIGINT;
-            
+
             -- Insertar el pago
             INSERT INTO payments (id_payment_method, amount, status, payment_date, created_at, updated_at) 
             VALUES (payment_method_id, payment_amount, payment_status, NOW(), NOW(), NOW());
-            
+
             SET new_payment_id = LAST_INSERT_ID();
-            
-            -- Insertar la orden online
-            INSERT INTO online_orders (order_name, notes, id_people, total_price, id_payment, status, created_at, updated_at) 
-            VALUES (order_name, order_notes, person_id, total_price, new_payment_id, "Pending", NOW(), NOW());
-            
+
+            -- Insertar la orden online con la dirección asociada
+            INSERT INTO online_orders (order_name, notes, id_people, total_price, id_payment, status, id_address, created_at, updated_at) 
+            VALUES (order_name, order_notes, person_id, total_price, new_payment_id, "Pending", address_id, NOW(), NOW());
+
             SET new_order_id = LAST_INSERT_ID();
-            
+
             -- Devolver IDs generados
             SELECT 
                 new_payment_id AS PaymentID, 
@@ -100,24 +101,33 @@ return new class extends Migration
         ');
 
         DB::unprepared('
-        CREATE PROCEDURE UpdateOrderWithFolio(id_folio BIGINT)
-            BEGIN
-                DECLARE order_id BIGINT;
+        CREATE PROCEDURE UpdateOrderWithFolio(IN folio_id BIGINT)
+        BEGIN
+            DECLARE order_id BIGINT;
+            DECLARE folio_identifier VARCHAR(20);
 
-                -- Obtener el ID de la orden correspondiente al folio recién generado
-                -- Limitar a una sola fila para evitar más de una fila en el resultado
+            -- Verificar si existe un folio con el ID proporcionado
+            SELECT identifier INTO folio_identifier
+            FROM folios
+            WHERE id_folio = folio_id
+            LIMIT 1;
+
+            -- Si el folio existe, asignarlo a una orden pendiente
+            IF folio_identifier IS NOT NULL THEN
                 SELECT id_online_order INTO order_id
                 FROM online_orders
-                WHERE id_folio IS NULL  -- Asegúrate de que la orden no tenga un folio ya asignado
-                LIMIT 1;  -- Limitar a una sola fila
+                WHERE id_folio IS NULL
+                LIMIT 1;
 
-                -- Si se encuentra la orden, actualizarla con el ID del nuevo folio
                 IF order_id IS NOT NULL THEN
                     UPDATE online_orders
-                    SET id_folio = id_folio
+                    SET id_folio = folio_id
                     WHERE id_online_order = order_id;
                 END IF;
-            END
+            END IF;
+        END;
+
+
         ');
 
     }

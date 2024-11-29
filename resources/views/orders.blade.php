@@ -85,7 +85,9 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        Card footer
+                        <button class="btn btn-danger" title="Cancelar orden">
+                          <i class="bi bi-x-circle"></i> Cancelar
+                        </button>
                     </div>
                 </div>
                 @endforeach
@@ -121,8 +123,19 @@
                                     @endif
                                 @endforeach                    
                             </div>
-                            <div class="card-footer">
-                                Card footer
+                            <div class="card-footer" style="display: flex; justify-content:space-around;">                                                                    
+                                <button class="btn btn-danger" style="display:flex; justify-content:center; align-items:center; width: 30%; height:40px" title="Cancelar orden">
+                                    <i class="bi bi-trash"></i> <p></p>
+                                </button>
+
+                                <button class="btn btn-success" style="display:flex; justify-content:center; align-items:center; width: 30%; height:40px"tle="Atender esta orden">
+                                    <i class="bi bi-check-circle"></i> <p></p>
+                                </button>
+
+                                <button class="btn btn-dark" style="display:flex; justify-content:center; align-items:center; width: 30%; height:40px"tle="Marcar como completada">
+                                    <i class="bi bi-check2-square"></i> <p></p>
+                                </button>
+
                             </div>
                         </div>
                     @endforeach

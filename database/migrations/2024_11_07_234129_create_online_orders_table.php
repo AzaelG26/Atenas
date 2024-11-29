@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('total_price');
             $table->unsignedBigInteger('id_payment');
             $table->foreign('id_payment')->references('id_payment')->on('payments')->onDelete('cascade');
-            $table->enum('status', ['Pending', 'In Process', 'Completed', 'Paid', 'Delivered'])->nullable(false);
+            $table->enum('status', ['Pending', 'Canceled', 'In Process', 'Completed', 'Paid', 'Delivered'])->nullable(false);
             $table->unsignedBigInteger('id_folio')->nullable();
             $table->foreign('id_folio')->references('id_folio')->on('folios');
             $table->timestamps();
