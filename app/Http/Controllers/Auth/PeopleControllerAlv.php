@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PeopleController extends Controller
+class PeopleControllerAlv extends Controller
 {
     public function formularioPersonas()
     {
@@ -40,10 +40,10 @@ class PeopleController extends Controller
     {
         $user_id = Auth::User()->id;
 
-      
+
         $check = People::where('user_id', $user_id)->first();
         if ($check) {
-        
+
             return redirect()->route('personas.create')->with('error', 'Ya existe un registro de tus datos personales.');
         }
 
@@ -63,7 +63,7 @@ class PeopleController extends Controller
             return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
         }
 
-      
+
         $people = new People();
         $people->name = $request->input('name');
         $people->maternal_lastname = $request->input('maternal_lastname');
@@ -74,7 +74,7 @@ class PeopleController extends Controller
         $people->user_id = $user_id;
         $people->save();
 
-    
+
         return redirect()->route('personas.create')->with('success', 'Se agregaron tus datos con éxito');
     }
 
@@ -93,7 +93,7 @@ class PeopleController extends Controller
 
         $people = People::where('user_id', $user_id)->where('id', $id)->first();
         if (!$people) {
-            
+
             return redirect()->route('personas.create')->with('error', 'No se encontró la persona.');
         }
 
@@ -116,7 +116,7 @@ class PeopleController extends Controller
         $people->birthdate = $request->input('birthdate');
         $people->save();
 
-     
+
         return redirect()->route('personas.create')->with('success', 'Datos actualizados correctamente.');
     }
 }

@@ -21,11 +21,13 @@ class EmployeeMiddleware
         if (!$user) {
             return redirect()->route('login')->with('error', 'inicia sesión.');
         }
-
+        if (!(optional($user->people)->employees)) {
+            return back()->with('error', 'No tienes permisos para acceder a esta página.');
+        }
         $user->people->employees;
 
         if (!$user) {
-            return redirect()->route('profile.edit')->with('error', 'No tienes permisos para acceder a esta página.');
+            return back()->with('error', 'No tienes permisos para acceder a esta página.');
         }
 
         return $next($request);

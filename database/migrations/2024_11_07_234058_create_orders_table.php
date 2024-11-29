@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('id_order');
             $table->string('diner_name', 100);
             $table->integer('total_price')->nullable(false);
-            $table->enum('status', ['Pending', 'In Process', 'Completed'])->nullable(false);
+            $table->enum('status', ['Pending', 'Canceled', 'In Process', 'Completed'])->nullable(false);
             $table->unsignedBigInteger('id_employee')->nullable();
             $table->unsignedBigInteger('id_payment')->nullable();
             $table->unsignedBigInteger('id_folio')->nullable();

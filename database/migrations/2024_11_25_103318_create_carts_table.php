@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUserIdColumnToOrdersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class AddUserIdColumnToOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            
-            $table->unsignedBigInteger('user_id')->after('id_order'); 
+        Schema::create('carts', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->json('items')->nullable(); // Guardar los productos del carrito en formato JSON
+            $table->timestamps();
 
-          
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -29,13 +30,6 @@ class AddUserIdColumnToOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function (Blueprint $table) 
-        {
- 
- $table->dropForeign(['user_id']);
- $table->dropColumn('user_id');
-
-        
-        });
+        Schema::dropIfExists('carts');
     }
-}
+};

@@ -2,6 +2,7 @@
 
 @section('title', 'Añadir Empleado')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 @section('styles')
     <style>    
@@ -18,39 +19,39 @@
             &nbsp; &nbsp;<span class="fs-4 subtitle-user">Registro de empleado</span>
         </div>
         <div>
-<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
-<i class="bi bi-search"></i>
-Buscar usuario
-</button>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="bi bi-search"></i>
+            Buscar usuario
+            </button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="modal-title fs-5 input-group" style="margin-left: 10px" id="exampleModalLabel">
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                <div class="form-floating">                    
-                    <input type="text" class="form-control" id="busqueda" placeholder="Buscar usuario">
-                    <label for="floatingInputGroup1">Buscar usuario</label>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title fs-5 input-group" style="margin-left: 10px" id="exampleModalLabel">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <div class="form-floating">                    
+                                <input type="text" class="form-control" id="busqueda" placeholder="Buscar usuario">
+                                <label for="floatingInputGroup1">Buscar usuario</label>
+                            </div>
+                        </div>    
+
+                    <button type="button" class="btn btn-secondary" style="margin-left: 10px; background-color:#212529" data-bs-dismiss="modal">Cerrar</button>
                 </div>
-            </div>    
+                <div class="modal-body">
+                    <p style="color:black; margin-left:15px;">Selecciona un usuario</p>
 
-        <button type="button" class="btn btn-secondary" style="margin-left: 10px; background-color:#212529" data-bs-dismiss="modal">Cerrar</button>
-      </div>
-      <div class="modal-body">
-        <p style="color:black; margin-left:15px;">Selecciona un usuario</p>
-
-        <ul id="resultados" class="list-group" style="display: block;">
-                {{-- Aqui estaran los resultados de la busqueda, apareceran debajo de la barra de busqueda --}}
-        </ul>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-                            
+                    <ul id="resultados" class="list-group" style="display: block;">
+                            {{-- Aqui estaran los resultados de la busqueda, apareceran debajo de la barra de busqueda --}}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                </div>
+                </div>
+            </div>
+            </div>
+                                        
             
         </div>
         <br>
@@ -60,7 +61,7 @@ Buscar usuario
                     
 
                 <br>
-                <br>                    
+                <br>  
 
                 <div class="col-md-8 input-icon">
                     <input placeholder="Nombre(s)" class="input" name="personal_name" type="text" disabled>            
@@ -147,6 +148,9 @@ Buscar usuario
         @csrf
         
         <div class="container py-4">
+                <div class="pb-3 mb-4 title-user-form">
+                    &nbsp; &nbsp;<span class="fs-4 subtitle-user">Datos unicos de empleado</span>
+                </div>                  
             <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
                 <div class="container-fluid py-5">                
 

@@ -138,6 +138,8 @@
             </div>    
         </div>
 
+        @if (Auth::user() && Auth::user()->google_id == null)
+            
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">
                 <form method="POST" action="{{ route('password.update') }}">
@@ -170,7 +172,8 @@
                 </form>
             </div>
         </div>
-
+        @endif        
+        
         <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
             <div class="container-fluid py-5">
                 <form method="POST" action="{{ route('profile.deactivate') }}" onsubmit="return confirm('¿Estás seguro de que deseas desactivar tu cuenta? Esta acción no eliminará tu cuenta permanentemente.')">

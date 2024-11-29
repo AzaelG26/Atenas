@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\People;
+use App\Models\Cart;
 
 class User extends Authenticatable
 {
@@ -17,6 +18,7 @@ class User extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
+     * 
      */
 
     /**
@@ -24,7 +26,7 @@ class User extends Authenticatable
      * 
      */
     protected $table = 'users';
-    protected $primaryKey="id";
+    protected $primaryKey = "id";
 
     protected $fillable = [
         'name',
@@ -36,7 +38,8 @@ class User extends Authenticatable
         'remember_token',
         'created_at',
         'updated_at',
-        'active'
+        'active',
+        'google_id',
     ];
 
     /**
@@ -56,8 +59,14 @@ class User extends Authenticatable
 
     public function pedidos()
     {
-        return $this->hasMany(Pedido::class, 'user_id');
+        return $this->hasMany(Pedido::class);
     }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
 
     /**
      * The attributes that should be cast.

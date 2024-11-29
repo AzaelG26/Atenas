@@ -40,74 +40,79 @@
     @endif
 
     @if (!empty($carrito))
-        <div class="table-responsive">
-            <table class="table table-dark table-hover mt-4">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio Unitario</th>
-                        <th>Cantidad</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php $grandTotal = 0; @endphp
-                    @foreach ($carrito as $item)
-                        @php 
-                            $subtotal = $item['price']; 
-                            $grandTotal += $subtotal;
-                        @endphp
+    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-dark table-hover mt-4">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php 
+                    $grandTotal = 0; 
+                    $counter = 1; // Contador para numerar los productos
+                @endphp
+                @foreach ($carrito as $item)
+                    @php 
+                        $subtotal = $item['price'] * $item['quantity']; 
+                        $grandTotal += $subtotal;
+                    @endphp
+                    @for ($i = 1; $i <= $item['quantity']; $i++)
                         <tr>
                             <td>{{ $item['name'] }}</td>
                             <td>MX${{ number_format($item['price'], 2) }}</td>
-                            <td>1</td>
-                            <td>MX${{ number_format($subtotal, 2) }}</td>
+                            <td>MX${{ number_format($item['price'], 2) }}</td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    @endfor
+                @endforeach
+            </tbody>
+        </table>
+    </div>
         <h3 class="text-end text-light mt-4">Total: MX${{ number_format($total, 2) }}</h3>
         
         
         <div class="card bg-light mt-4">
     <div class="card-header">Información de Pago</div>
     <div class="card-body">
-        <form method="POST" action="{{ route('procesar.pago') }}" id="paymentForm">
-            @csrf
-            <div class="mb-3">
-                <label for="cardNumber" class="form-label">Número de Tarjeta</label>
-                <input type="text" id="cardNumber" name="card_number" class="form-control" placeholder="1234 5678 9012 3456" required maxlength="16" minlength="16">
-                @error('card_number')
+    <form method="POST" action="{{ route('procesar.pago') }}" id="paymentForm">
+        @csrf
+        <input type="hidden" name="selectedAddress" value="{{ $selectedAddress->id_address ?? '' }}">
+        
+        <div class="mb-3">
+            <label for="cardNumber" class="form-label">Número de Tarjeta</label>
+            <input type="text" id="cardNumber" name="card_number" class="form-control" placeholder="1234 5678 9012 3456" required maxlength="16" minlength="16">
+            @error('card_number')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="expiryDate" class="form-label">Fecha de Expiración (MM/YY)</label>
+                <input type="text" id="expiryDate" name="expiry_date" class="form-control" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/\d{2}$">
+                @error('expiry_date')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="expiryDate" class="form-label">Fecha de Expiración (MM/YY)</label>
-                    <input type="text" id="expiryDate" name="expiry_date" class="form-control" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/\d{2}$">
-                    @error('expiry_date')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="cvv" class="form-label">CVV</label>
-                    <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required maxlength="3" minlength="3">
-                    @error('cvv')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+            <div class="col-md-6 mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required maxlength="3" minlength="3">
+                @error('cvv')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
-            <button type="submit" class="btn btn-success btn-lg w-100">Simular Pago</button>
-        </form>
+        </div>
+        <button type="submit" onclick="clearCart()" class="btn btn-success btn-lg w-100">Simular Pago</button>
+    </form>
+
     </div>
 </div>
-    @else
-        <p class="text-center text-light mt-4">El carrito está vacío.</p>
+@else
+@endif
         <div class="text-center mt-4">
             <a href="{{ route('menu') }}" class="btn btn-primary btn-lg">Regresar al Menú</a>
         </div>
-    @endif
 </div>
 @endsection
 
