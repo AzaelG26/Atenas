@@ -1,5 +1,5 @@
 @extends('layout.sidebar')    
-@section('title', 'Historial de pedidos')
+@section('title', 'Historial de ventas')
 <script src="/docs/5.3/assets/js/color-modes.js"></script>
 
 @push('styles')
@@ -23,7 +23,7 @@
         <div class="container py-4">
 
             <div class="pb-3 mb-4 title-orders" style="display: flex; justify-content:space-between;">
-                <span class="fs-4 subtitle-orders"> &nbsp; &nbsp;Ordenes completadas</span>      
+                <span class="fs-4 subtitle-orders"> &nbsp; &nbsp;<i class="bi bi-clock-history"></i> Historial de ventas</span>      
             </div>
         </div>
     </main>

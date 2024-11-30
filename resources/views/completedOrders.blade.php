@@ -1,5 +1,8 @@
 @extends('layout.sidebar')    
 @section('title', 'Ordenes completadas')
+    {{-- ICONO DEL NEGOCIO --}}
+<link rel="icon" href="LOGO_ATENAS_high_quality_transparent.png">
+
 <script src="/docs/5.3/assets/js/color-modes.js"></script>
 
 @push('styles')
@@ -26,7 +29,7 @@
                 <span class="fs-4 subtitle-orders"> &nbsp; &nbsp;Ordenes completadas</span>      
 
                 <a href="{{route('orders')}}" style="text-decoration:none;">
-                    <button type="button" title="Regresar a ordenes" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <button type="button" title="Regresar a ordenes" class="btn btn-warning" >
                         <i class="bi bi-box-arrow-left"></i> Regresar
                     </button>  
                 </a>
