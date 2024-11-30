@@ -69,17 +69,17 @@
 
 @section('content')
     <div class="container">
-        <h2 class="text-center">¡Aquí están los detalles de tu Pedido #{{ $pedido->id }}!</h2>
-        <p class="text-center">Fecha de Tu Pedido: {{ $pedido->created_at->format('d-m-Y') }}</p>
+        <h2 class="text-center">¡Aquí están los detalles de tu Pedido #{{ $order->id_order }}!</h2>
+        <p class="text-center">Fecha de Tu Pedido: {{ $order->created_at->format('d-m-Y') }}</p>
 
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Estado: {{ ucfirst($pedido->estado) }}</h5>
-                <p class="card-text">Total: ${{ number_format($pedido->total, 2) }}</p>
-                <p class="card-text">Pedido realizado por: {{ $pedido->user->name }}</p>
+                <h5 class="card-title">Estado: {{ ucfirst($order->status) }}</h5>
+                <p class="card-text">Total: ${{ number_format($order->total_price, 2) }}</p>
+                <p class="card-text">Pedido realizado por: {{ $order->employee->name }}</p>
             </div>
         </div>
 
-        <a href="{{ route('historial') }}" class="btn-primary">Volver al Historial de Pedidos</a>
+        <a href="{{ route('orders.index') }}" class="btn-primary">Volver al Historial de Pedidos</a>
     </div>
 @endsection

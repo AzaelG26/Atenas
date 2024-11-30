@@ -4,7 +4,6 @@
 
 @push('styles')
     <style>
-        /* Estilos para la vista del historial */
         body {
             background-color: #f7f7f7;
             color: #333;
@@ -85,7 +84,6 @@
             text-decoration: underline;
         }
 
-        /* Estilos para el botón de volver */
         .btn-back {
             display: block;
             margin-top: 30px;
@@ -108,7 +106,7 @@
 <div class="container">
     <h2>Historial de Pedidos</h2>
 
-    @if($pedidos->isEmpty())
+    @if($orders->isEmpty())
         <div class="alert-info">
             <strong>No tienes pedidos registrados.</strong> Realiza un pedido para comenzar tu historial.
         </div>
@@ -123,13 +121,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($pedidos as $pedido)
+                @foreach($orders as $order)
                     <tr>
-                        <td>{{ $pedido->created_at->format('d-m-Y') }}</td>
-                        <td>{{ ucfirst($pedido->estado) }}</td>
-                        <td>${{ number_format($pedido->total, 2) }}</td>
+                        <td>{{ $order->created_at->format('d-m-Y') }}</td>
+                        <td>{{ ucfirst($order->status) }}</td>
+                        <td>${{ number_format($order->total_price, 2) }}</td>
                         <td>
-                            <a href="{{ route('historial.detalle', $pedido->id) }}" class="btn-info">Ver Detalles</a>
+                            <a href="{{ route('orders.show', $order->id_order) }}" class="btn-info">Ver Detalles</a>
                         </td>
                     </tr>
                 @endforeach
@@ -137,7 +135,6 @@
         </table>
     @endif
 
-    <!-- Botón para volver a la página principal -->
-    <a href="{{ route('Menu') }}" class="back-link">Volver al Menu</a>
+    <a href="{{ route('menu') }}" class="back-link">Volver al Menú</a>
 </div>
 @endsection

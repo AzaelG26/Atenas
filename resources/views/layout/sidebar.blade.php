@@ -152,6 +152,10 @@
                     </a>
                 </li>
                 <li>
+                <li>
+                    <a class="links nav-link {{ request()->routeIs('historial') ? 'active' : '' }}" href="{{route('historial')}}">
+                        <i class="bi bi-person-vcard"></i> Hiatorial de Pedidos 
+                    </a>
                     <a class="links nav-link" {{ request()->routeIs('orders') ? 'active' : '' }} href="{{route('orders')}}" >
                         <i>
                             <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/purchase-order.png" alt="purchase-order"/>
