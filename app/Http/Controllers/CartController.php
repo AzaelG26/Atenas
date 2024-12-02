@@ -4,21 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
 
 class CartController extends Controller
 {
     // Mostrar el contenido del carrito
     public function showCart()
     {
-        // Obtener el carrito del usuario autenticado
-        $cart = Auth::user()->cart;
+        $user = Auth::user();
 
-        // Si existe el carrito, decodificar sus items; si no, inicializar un arreglo vacío
-        $items = $cart ? json_decode($cart->items, true) : [];
+        // Obtener el carrito del usuario autenticado
+        $cart = $user->cart;
+
+        // Si no existe un carrito, crear uno vacío
+        if (!$cart) {
+            $cart = Cart::create([
+                'user_id' => $user->id,
+                'items' => json_encode([]),
+            ]);
+        }
+
+        // Decodificar los items del carrito
+        $items = json_decode($cart->items, true) ?? [];
 
         // Pasar la variable $items a la vista
         return view('cart.show', compact('items'));
     }
+
 
 
 

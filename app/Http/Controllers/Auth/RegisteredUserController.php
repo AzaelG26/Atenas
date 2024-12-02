@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Cart;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -43,6 +44,12 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'active' => $active,
+        ]);
+
+        // Crear el carrito vacío para el usuario
+        Cart::create([
+            'user_id' => $user->id,
+            'items' => json_encode([]), // Carrito vacío
         ]);
 
         event(new Registered($user));
