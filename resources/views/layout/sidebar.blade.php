@@ -153,8 +153,11 @@
                 </li>
                 <li>
                 <li>
-                    <a class="links nav-link {{ request()->routeIs('historial') ? 'active' : '' }}" href="{{route('historial')}}">
-                        <i class="bi bi-person-vcard"></i> Hiatorial de Pedidos 
+                <a class="links nav-link {{ request()->routeIs('historial') ? 'active' : '' }}" href="{{route('historial')}}">
+    <i class="bi bi-person-vcard"></i> Historial de Pedidos
+    {{ request()->routeIs('historial') ? ' (active)' : '' }}
+</a>
+
                     </a>
                     <a class="links nav-link" {{ request()->routeIs('orders') ? 'active' : '' }} href="{{route('orders')}}" >
                         <i>

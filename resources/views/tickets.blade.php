@@ -54,6 +54,33 @@
         .bg-info:hover {
             background-color: #138496 !important;
         }
+
+        /* Estilos para el botón de crear ticket */
+        .create-ticket-btn {
+            background-color: #ffc107;
+            color: #000;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .create-ticket-btn:hover {
+            background-color: #e0a800;
+            color: #fff;
+        }
+
+        /* Estilo de la etiqueta "Ver detalles" */
+        .badge {
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        .badge:hover {
+            background-color: #e0a800;
+            color: #fff;
+        }
+
     </style>
 @endpush
 
@@ -61,7 +88,8 @@
     <div class="container mt-5">
         <h1 class="display-4 text-center text-warning mb-4">Lista de Tickets</h1>
 
-        <a href="{{ route('tickets.create') }}" class="btn btn-warning text-dark mb-4">Crear un nuevo ticket</a>
+        <!-- Botón para crear un nuevo ticket -->
+        <a href="{{ route('tickets.create') }}" class="btn btn-warning text-dark mb-4 create-ticket-btn">Crear un nuevo ticket</a>
 
         <div class="list-group">
             @foreach($tickets as $ticket)

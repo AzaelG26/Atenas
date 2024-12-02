@@ -257,7 +257,7 @@
                 <div class="text-center">
                     <button type="submit" class="button" data-text="Enviar Reseña">
                         <span class="actual-text">&nbsp;Enviar Reseña&nbsp;</span>
-                        <span aria-hidden="true" class="hover-text">&nbsp;Enviar Reseña&nbsp;</span>
+                   
                     </button>
                 </div>
             </form>

@@ -1,5 +1,5 @@
 <?php
-use App\Http\Controllers\OrderController;
+
 use App\Http\Controllers\ReseñaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +16,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\OrderHistoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -103,9 +105,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
 
   
-   
-Route::get('/historial', [OrderController::class, 'mostrarHistorial'])->name('historial');
-Route::get('/historial/{id}', [OrderController::class, 'mostrarDetalle'])->name('historial.detalle');
+
+    
+    
+
+
+
+    Route::get('/historial', [OrderHistoryController::class, 'index'])->name('historial');
+    Route::get('/historial-pedidos', [OrderHistoryController::class, 'index'])->name('historial');
+
+    
 
 
     Route::get('/tickets', [SupportTicketController::class, 'index'])->name('tickets');

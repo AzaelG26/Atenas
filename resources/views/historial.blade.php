@@ -1,140 +1,87 @@
 @extends('layout.sidebar')
 
-@section('title', 'Historial de Pedidos')
+@section('title', 'Historial de Pedidos') <!-- Título dinámico -->
 
 @push('styles')
     <style>
-        body {
-            background-color: #f7f7f7;
-            color: #333;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 30px;
-            max-width: 900px;
-            margin: 30px auto;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
+        .title-style {
             font-size: 2rem;
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-
-        .table th, .table td {
-            padding: 12px 20px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        .table th {
-            background-color: #007bff;
-            color: #fff;
             font-weight: bold;
-        }
-
-        .table td {
-            background-color: #f9f9f9;
-            font-size: 1rem;
-        }
-
-        .btn-info {
-            background-color: #17a2b8;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .btn-info:hover {
-            background-color: #138496;
-        }
-
-        .alert-info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 30px;
-            text-decoration: none;
-            color: #007bff;
-            font-size: 1rem;
-            text-align: center;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        .btn-back {
-            display: block;
-            margin-top: 30px;
-            background-color: #ff5722;
-            color: white;
+            color: #fff;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
             padding: 10px 20px;
+            background-color: #131718;
+            border-left: 5px solid #ce9d22;
             border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            font-size: 1rem;
         }
 
-        .btn-back:hover {
-            background-color: #e64a19;
+        .table .head {
+            color: white;
+            background-color: rgb(22, 22, 22);
+        }
+
+        .table tbody tr:hover {
+            background-color: #1a1e21;
+        }
+
+        .badge {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+        }
+
+        .badge-warning {
+            background-color: #ffc107;
+        }
+
+        .badge-secondary {
+            background-color: #6c757d;
         }
     </style>
 @endpush
 
 @section('content')
-<div class="container">
-    <h2>Historial de Pedidos</h2>
+    <div class="container-fluid py-3">
+        <h1 class="title-style">Historial de Pedidos</h1>
 
-    @if($orders->isEmpty())
-        <div class="alert-info">
-            <strong>No tienes pedidos registrados.</strong> Realiza un pedido para comenzar tu historial.
-        </div>
-    @else
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                    <th>Total</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($orders as $order)
+        @if ($pedidos->isEmpty())
+            <div class="alert alert-warning" role="alert">
+                No hay pedidos para mostrar.
+            </div>
+        @else
+            <table class="table table-bordered border-dark">
+                <thead>
                     <tr>
-                        <td>{{ $order->created_at->format('d-m-Y') }}</td>
-                        <td>{{ ucfirst($order->status) }}</td>
-                        <td>${{ number_format($order->total_price, 2) }}</td>
-                        <td>
-                            <a href="{{ route('orders.show', $order->id_order) }}" class="btn-info">Ver Detalles</a>
-                        </td>
+                        <th class="head">Cliente</th>
+                        <th class="head">Estado</th>
+                        <th class="head">Fecha</th>
+                        <th class="head">Total</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
-
-    <a href="{{ route('menu') }}" class="back-link">Volver al Menú</a>
-</div>
+                </thead>
+                <tbody class="table-dark">
+                    @foreach ($pedidos as $pedido)
+                        <tr>
+                            <td>{{ $pedido->people->name ?? 'Cliente no disponible' }}</td>
+                            <td>
+                                <span class="badge 
+                                    @if ($pedido->status == 'Pendiente') badge-warning 
+                                    @elseif ($pedido->status == 'Completado') badge-success 
+                                    @else badge-secondary 
+                                    @endif">
+                                    {{ $pedido->status }}
+                                </span>
+                            </td>
+                            <td>{{ $pedido->formatted_date ?? 'Fecha no disponible' }}</td>
+                            <td>{{ $pedido->total_price ? '$' . number_format($pedido->total_price, 2) : 'Total no disponible' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
 @endsection

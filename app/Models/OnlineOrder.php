@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class OnlineOrder extends Model
 {
     use HasFactory;
-
+    public $timestamps = true;
     protected $table = 'online_orders';
     protected $primaryKey = 'id_online_order';  // Especificando la clave primaria
 

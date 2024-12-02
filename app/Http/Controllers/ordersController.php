@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 
 use App\Models\OnlineOrder;
 use App\Models\Order;
@@ -182,43 +183,26 @@ class ordersController extends Controller
         }
     }
 
-    public function mostrarHistorial()
+   
+    public function historialPedidos()
     {
-        $user = Auth::user(); // Obtener el usuario autenticado
-        
-        // Verificar si el usuario está autenticado
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Debes iniciar sesión primero.');
-        }
-
-        // Obtener las órdenes del usuario autenticado
-        $orders = Order::where('user_id', $user->id)
+        // Obtener pedidos físicos y online del usuario autenticado
+        $pedidosFisicos = Order::where('id_employee', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();
-
-        // Retornar la vista con las órdenes
-        return view('historial', compact('orders'));
+    
+        // Cambiar id_user por id_people en la consulta de pedidos online
+        $pedidosOnline = OnlineOrder::where('id_people', Auth::id()) // Cambiar a id_people
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        // Combinar ambos pedidos en una colección y ordenarlos por fecha
+        $pedidos = $pedidosFisicos->merge($pedidosOnline)->sortByDesc('created_at');
+    
+        return view('historial', compact('pedidos'));
     }
+    
 
-    // Método para mostrar los detalles de una orden específica
-    public function mostrarDetalle($id)
-    {
-        $user = Auth::user(); // Obtener el usuario autenticado
-
-        // Buscar la orden por ID, asegurándote de que pertenezca al usuario autenticado
-        $order = Order::where('id', $id)
-            ->where('user_id', $user->id)
-            ->with('items.product') // Cargar relaciones (si es necesario)
-            ->first();
-
-        // Si no se encuentra la orden, redirigir con un mensaje de error
-        if (!$order) {
-            return redirect()->route('historial')->with('error', 'La orden no existe o no te pertenece.');
-        }
-
-        // Retornar la vista con los detalles de la orden
-        return view('detalle', compact('order'));
-    }
     /**
      * Store a newly created resource in storage.
      *
