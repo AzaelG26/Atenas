@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reseña extends Model
+class review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['contenido', 'usuario_id'];
+    protected $fillable = ['review', 'usuario_id', 'satisfaction_level'];
 
     public function usuario()
     {

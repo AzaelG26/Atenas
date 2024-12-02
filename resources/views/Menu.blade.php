@@ -31,13 +31,15 @@
 @section('content')
 <div class="container-fluid mt-3">
     <div class="pb-1 mb-4" style="color: white; display: flex; justify-content:flex-end;">
-        @if (Auth::user()->people->employees->admin == true)            
-            <a href="{{route('edit.menu')}}" style="text-decoration: none; color:black">
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="bi bi-pencil-square"></i> Editar    
-                </button>
-            </a>
-        @endif
+        @if (optional(optional(optional(Auth::user())->people)->employees)->admin == true)
+
+    <a href="{{ route('edit.menu') }}" style="text-decoration: none; color:black">
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="bi bi-pencil-square"></i> Editar
+        </button>
+    </a>
+
+@endif
 
     </div>
 </div>
@@ -194,11 +196,32 @@ function toggleCart() {
 
 // Elimina un producto del carrito
 function removeFromCart(index) {
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    toggleCart();
+    cart.splice(index, 1); // Remueve el producto del array
+    localStorage.setItem('cart', JSON.stringify(cart)); // Actualiza localStorage
+
+    // Actualiza el DOM para eliminar el producto eliminado
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartItemElements = cartItemsContainer.getElementsByClassName('cart-item');
+    if (cartItemElements[index]) {
+        cartItemElements[index].remove(); // Elimina el elemento visual
+    }
+
+    // Recalcula y actualiza el total
+    let total = cart.reduce((acc, item) => acc + item.price, 0);
+    const totalElement = document.querySelector('#cart-items h5');
+    if (totalElement) {
+        totalElement.textContent = `Total: MX$${total.toFixed(2)}`;
+    }
+
+    // Actualiza el contador del carrito
     updateCartCount();
+
+    // Si el carrito está vacío, muestra el mensaje de carrito vacío
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+    }
 }
+
 
 // Al cargar la página, inicializa el contador del carrito
 document.addEventListener('DOMContentLoaded', function () {
