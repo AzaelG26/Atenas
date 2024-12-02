@@ -31,12 +31,14 @@
 @section('content')
 <div class="container-fluid mt-3">
     <div class="pb-1 mb-4" style="color: white; display: flex; justify-content:flex-end;">
-        
-        <a href="{{route('edit.menu')}}" style="text-decoration: none; color:black">
-            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="bi bi-pencil-square"></i> Editar    
-            </button>
-        </a>
+        @if (Auth::user()->people->employees->admin == true)            
+            <a href="{{route('edit.menu')}}" style="text-decoration: none; color:black">
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="bi bi-pencil-square"></i> Editar    
+                </button>
+            </a>
+        @endif
+
     </div>
 </div>
 
