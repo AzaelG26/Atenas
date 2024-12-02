@@ -20,28 +20,29 @@ class ordersController extends Controller
     {
         $ventas = Order::with('orderDetail.menu', 'folio')
             ->where('status', 'Completed')
-            ->orderBy('updated_at', 'asc');
+            ->orderBy('created_at', 'asc');
 
         $ventasOnline = OnlineOrder::with([
             'onlineOrderDetails.menu',
-        ])->orderBy('updated_at', 'asc');
+        ])->orderBy('created_at', 'asc');
 
         if ($mes = $request->input('mes')) {
-            $ventas = $ventas->whereMonth('updated_at', $mes);
-            $ventasOnline = $ventasOnline->whereMonth('updated_at', $mes);
+            $ventas = $ventas->whereMonth('created_at', $mes);
+            $ventasOnline = $ventasOnline->whereMonth('created_at', $mes);
         }
         if ($anio = $request->input('anio')) {
-            $ventas = $ventas->whereYear('updated_at', $anio);
-            $ventasOnline = $ventasOnline->whereYear('updated_at', $anio);
+            $ventas = $ventas->whereYear('created_at', $anio);
+            $ventasOnline = $ventasOnline->whereYear('created_at', $anio);
         }
+
         $ventas = $ventas->get();
         $ventasOnline = $ventasOnline->get();
 
         $totalFisico = $ventas->sum('total_price');
         $totalOnline = $ventasOnline->sum('total_price');
 
-        $minOrders = Order::min('updated_at');
-        $minOnlineOrders = OnlineOrder::min('updated_at');
+        $minOrders = Order::min('created_at');
+        $minOnlineOrders = OnlineOrder::min('created_at');
 
         $fechaMasAntigua = min($minOrders, $minOnlineOrders);
 
@@ -54,7 +55,7 @@ class ordersController extends Controller
         $anios = range($fechaActual, $anioMasAntiguo); // aqui se generan en orden descendente
 
         $ventas_anio_y_mes = $ventasOnline->groupBy(function ($date) {
-            return Carbon::parse($date->updated_at)->format('Y-m');
+            return Carbon::parse($date->created_at)->format('Y-m');
         });
 
         $totalPorMesAnio = [];
@@ -62,7 +63,7 @@ class ordersController extends Controller
 
         foreach ($ventas_anio_y_mes as $yearMonth => $ventasgrafica) {
             $totalPorMesAnio[] = $ventasgrafica->sum('total_price'); //Suma que se le asignaa cada Año-mes
-            $YearsMonths[] = Carbon::parse($ventasgrafica->first()->updated_at)->format('F Y');
+            $YearsMonths[] = Carbon::parse($ventasgrafica->first()->created_at)->format('F Y');
         }
 
 
@@ -73,7 +74,7 @@ class ordersController extends Controller
 
         // en linea
         $fisicoVentasAnioMEs = $ventas->groupBy(function ($date) {
-            return Carbon::parse($date->updated_at)->format('Y-m');
+            return Carbon::parse($date->created_at)->format('Y-m');
         });
 
         $fisicoTotalMesAnio = [];
@@ -81,7 +82,7 @@ class ordersController extends Controller
 
         foreach ($fisicoVentasAnioMEs as $FisicoAnioMes => $FisicoVentasgrafica) {
             $fisicoTotalMesAnio[] = $FisicoVentasgrafica->sum('total_price'); //Suma que se le asignaa cada Año-mes
-            $anioMes[] = Carbon::parse($FisicoVentasgrafica->first()->updated_at)->format('F Y');
+            $anioMes[] = Carbon::parse($FisicoVentasgrafica->first()->created_at)->format('F Y');
         }
 
 
@@ -102,13 +103,13 @@ class ordersController extends Controller
             'onlineOrderDetails.folio',
             'onlineOrderDetails.menu',
             'people',
-        ])->whereIn('status', ['Paid', 'In Process'])->orderBy('updated_at', 'asc')->get();
+        ])->whereIn('status', ['Paid', 'In Process'])->orderBy('created_at', 'asc')->get();
 
 
         $orders = Order::with([
             'orderDetail.menu',
             'folio',
-        ])->whereIn('status', ['Pending', 'In Process'])->orderBy('updated_at', 'asc')->get();
+        ])->whereIn('status', ['Pending', 'In Process'])->orderBy('created_at', 'asc')->get();
 
         // dd($order->diner_name);
 
@@ -127,18 +128,47 @@ class ordersController extends Controller
             'onlineOrderDetails.folio',
             'onlineOrderDetails.menu',
             'people',
-        ])->where('status', 'Completed')->orderBy('updated_at', 'asc')->get();
+        ])->where('status', 'Completed')->orderBy('created_at', 'asc')->get();
 
         $localCompleted = Order::with([
             'orderDetail.menu',
             'folio',
-        ])->where('status', 'Completed')->orderBy('updated_at', 'asc')->get();
+        ])->where('status', 'Completed')->orderBy('created_at', 'asc')->get();
 
         return view('completedOrders', compact('onlineCompleted', 'localCompleted'));
     }
     public function getHistorialOrders()
     {
-        return view('historialOrders');
+        $localHistorialOrders = Order::with([
+            'orderDetail.menu',
+            'folio',
+        ])->orderBy('created_at', 'asc')
+            ->get()
+            ->map(function ($order) {
+                $order->product_names = $order->orderDetail->map(function ($detail) {
+                    return $detail->menu->name;
+                })->implode(', ');
+
+                return $order;
+            });
+
+        $lineHistorialOrders = OnlineOrder::with([
+            'onlineOrderDetails.folio',
+            'onlineOrderDetails.menu',
+            'people' => function ($query) {
+                $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
+            }
+        ])->orderBy('created_at', 'asc')
+            ->get()
+            ->map(function ($order) {
+                $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
+                    return $detail->menu->name;
+                })->implode(', ');
+
+                return $order;
+            });
+
+        return view('historialOrders', compact(['localHistorialOrders', 'lineHistorialOrders']));
     }
 
     /**
@@ -261,6 +291,7 @@ class ordersController extends Controller
             return redirect()->route('orders')->with('success', 'La orden ha sido Completada');
         }
     }
+
     public function updateFisicas(Request $request, $id)
     {
         $order = Order::findOrFail($id);
@@ -282,6 +313,7 @@ class ordersController extends Controller
             return redirect()->route('orders')->with('success', 'La orden ha sido Completada');
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

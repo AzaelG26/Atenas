@@ -4,35 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Recuperar contraseña</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    {{-- Para íconos de redes sociales --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <title>Cambio de contraseña</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <style>
-        #body-forgot-password{
-            margin: 0;
-            background-color: #0C1011; /* Cambia a un color opaco para comprobar */
-            min-height: 100vh; 
-            max-width: 100vw;
-            overflow-x: auto;
-            position: relative; /* Necesario para posicionar contenido sobre el video */
-
-        }
-
-        
-
-        .container-forms{
-            display:flex;
-            flex-direction:row; 
+        body{
+            display: flex;
             justify-content: center;
-            align-items: center;
-            width:100%; 
-            /* padding: 50px; */
-            height:100vh;
+        }
+        #video{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            filter: blur(1px);
+            object-fit: cover; 
+            background-size: cover;            
+            background-attachment: fixed;
+            z-index: -1;
         }
 
-            
-      
 
 
         /* Para el cargador o loader */
@@ -117,51 +111,35 @@
             transform: translateY(0rem);
             }
         }
-        .container-form{ 
-            display: flex;           
-            padding: 30px;
-            height: auto;
-            background-color: rgba(14, 14, 14, 0.342);
-            border-radius: 20px; 
-        }
-        #video{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            filter: blur(1px);
-            object-fit: cover; 
-            background-size: cover;            
-            background-attachment: fixed;
-            z-index: -1;
-        }
-    </style>    
+
+    </style>
 </head>
-<body id="body-forgot-password">    
+<body> 
     <video autoplay muted loop playsinline id="video" >
         <source src="{{ asset('6899103_Dream_Scene_3840x2160.mp4') }}" type="video/mp4">
     </video>
-    <section id="cont">
-        <div class="container-forms">
-            <div class="container-form"> 
-                <div class="container" style="display: flex; flex-direction:column; justify-content:center; align-items:center; ">
-                    <img id="logo-atenas" style="cursor:-webkit-grabbing; margin-bottom:30px;" width="120px" src="{{ asset('LOGO_ATENAS_high_quality_transparent.png') }}" alt="logo_atenas">
-                    <h3 style="color: white; margin-bottom:30px;">Restablecer Contraseña</h3>
-                    
-                    <form method="POST" style="width:100%; text-align:center" action="{{ route('password.email') }}">
-                        @csrf
-                        <div class="mb-3" style="width: 100%; text-align:start">
-                            <label for="email" class="form-label" style="color: white;">Correo Electrónico</label>
-                            <input type="email" class="form-control" style="" id="email" name="email" required autofocus>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style=" margin-top:80px; width:100%">Enviar enlace de restablecimiento</button>
-                    </form> 
-                </div>               
-           
-            </div>
-        </div>        
-    </section>
+
+    <div class="card" style="background-color: rgba(14, 14, 14, 0.342); width:400px; margin-top:50px; border-radius:25px;">
+        <div class="card-body" style="color:white; display:flex; flex-direction:column; align-items:center">
+            <img id="logo-atenas" style="cursor:-webkit-grabbing; margin-bottom:30px;" width="120px" src="{{ asset('LOGO_ATENAS_high_quality_transparent.png') }}" alt="logo_atenas">
+            <h3 for="password" class="form-label">Nueva contraseña</h3>
+            <br>
+            <form method="POST" style="width: 90%" action="{{ route('password.modificar', ['id' => $user->id]) }}">
+                @csrf
+                <input type="hidden" name="id" value="{{ $user->id }}">
+                <div class="mb-3">
+                <label for="password" class="form-label" style="color:white; font-size: 15px">Nueva contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password_confirmation" class="form-label" style="color:white; font-size: 15px">Confirmar Contraseña</label>
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 80px;">Confirmar contraseña</button>
+            </form>            
+        </div>
+    </div>
+
 
     <div id="loader">
         <span class="l">
@@ -270,15 +248,14 @@
             </svg>
         </span>
     </div>
-    
+
 
     <script>
         window.addEventListener('load', function() {
             document.getElementById('loader').style.display = 'none';
         });
     </script>
-</body>
     
 
- 
-     
+</body>
+</html>

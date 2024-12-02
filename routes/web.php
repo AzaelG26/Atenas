@@ -71,6 +71,25 @@ Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->nam
 Route::get('/añadir-imagenes', [ImagenController::class, 'showAddImagesForm'])->name('imagenes.add');
 Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');
 
+
+// Ruta para mostrar el formulario de recuperación de contraseña
+Route::get('password/reset', [App\Http\Controllers\PasswordsController::class, 'showRequestForm'])
+    ->name('password.mostrar');
+
+// Ruta para enviar el enlace de restablecimiento de contraseña
+Route::post('password/email', [App\Http\Controllers\PasswordsController::class, 'sendResetMail'])
+    ->name('password.email');
+
+// Ruta para mostrar el formulario de restablecimiento de contraseña
+Route::get('password/reset/{id}', [App\Http\Controllers\PasswordsController::class, 'showResetForm'])
+    ->name('password.reset');
+
+// Ruta para actualizar la contraseña
+Route::post('password/reset/{id}', [App\Http\Controllers\PasswordsController::class, 'updatePassword'])
+    ->name('password.modificar');
+
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

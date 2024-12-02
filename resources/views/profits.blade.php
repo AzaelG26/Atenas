@@ -154,7 +154,7 @@
                         <div style="display: flex; justify-content:space-between; width:100%;">
                             <section class="filter-button">
                                 <br>
-                                <button class="btn btn-warning" id="grafica-fisico" onclick="mostrarGraficaFisico()">Ver gráfica</button>
+                                <button class="btn btn-warning" id="grafica-fisico" onclick="mostrarGraficaFisico()"></button>
                             </section>
 
                             <div class="card mb-3 card-total" style="width: 15rem;">
@@ -209,7 +209,7 @@
 
                             <section class="filter-button">
                                 <br>
-                                <button class="btn btn-warning" id="grafica-fisico" onclick="mostrarGraficaOnline()">Ver gráfica</button>
+                                <button class="btn btn-warning" id="grafica-line" onclick="mostrarGraficaOnline()"></button>
                             </section>
 
                             <div class="card mb-3 card-total" style="width: 15rem;">
@@ -265,15 +265,24 @@
    
 
     <script>
+        
+
+
+
         let contenedorGraficaFisico = document.getElementById('graficaOne');
         contenedorGraficaFisico.style.display = 'none'
-
+        const btnGrafica = document.getElementById('grafica-fisico');
+        btnGrafica.innerText = 'Ver gráfica'
         function mostrarGraficaFisico(){
+            
             if(contenedorGraficaFisico.style.display === 'none'){
                 contenedorGraficaFisico.style.display = 'block'
+                btnGrafica.innerText = 'Ocultar gráfica';
             }
             else if(contenedorGraficaFisico.style.display === 'block'){
                 contenedorGraficaFisico.style.display = 'none'
+                btnGrafica.innerText = 'Ver gráfica';
+
             }
             
 
@@ -347,13 +356,19 @@
 
         let contenedorGraficaOnline = document.getElementById('graficaTwo');
         contenedorGraficaOnline.style.display = 'none'
+        const btnGraficaLine = document.getElementById('grafica-line');
+        btnGraficaLine.innerText = 'Ver gráfica'
 
         function mostrarGraficaOnline(){
+            
+
             if(contenedorGraficaOnline.style.display === 'none'){
                 contenedorGraficaOnline.style.display = 'block'
+                btnGraficaLine.innerText = 'Ocultar gráfica'; // Cambia el texto del botón correcto            
             }
-            else if (contenedorGraficaOnline.style.display = 'block'){
+            else if (contenedorGraficaOnline.style.display === 'block'){
                 contenedorGraficaOnline.style.display = 'none'
+                btnGraficaLine.innerText = 'Ver gráfica'
             }
 
 
