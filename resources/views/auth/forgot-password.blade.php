@@ -153,7 +153,10 @@
                         @csrf
                         <div class="mb-3" style="width: 100%; text-align:start">
                             <label for="email" class="form-label" style="color: white;">Correo Electrónico</label>
-                            <input type="email" class="form-control" style="" id="email" name="email" required autofocus>
+                            <input type="email" class="form-control" id="email" name="email" required autofocus>
+                            @error('email')
+                                <div style="color: red;">{{ $message }}</div>
+                            @enderror
                         </div>
                         <button type="submit" class="btn btn-primary" style=" margin-top:80px; width:100%">Enviar enlace de restablecimiento</button>
                     </form> 
@@ -271,6 +274,19 @@
         </span>
     </div>
     
+     @if (session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>        
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+    @endif
+
 
     <script>
         window.addEventListener('load', function() {

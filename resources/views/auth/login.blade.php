@@ -59,7 +59,7 @@
         .second-card{
             display: block;
             border-top-right-radius: 15px; 
-            border-bottom-right-radius: 15px;
+            border-radius: 15px;
             height:100%; 
             width:25em; 
             background-color:rgba(255, 255, 255);
@@ -224,7 +224,7 @@
             
         }
         #link-register{
-            display: none;
+            display: block;
         }
 
         
@@ -235,9 +235,9 @@
             margin-bottom:40px;
         }
         @media (max-width: 1030px){
-            #link-register{
+            /* #link-register{
                 display: block;
-            }
+            } */
             .card-title{
                 margin-bottom: 20px;
             }
@@ -491,7 +491,7 @@
                                     <div class="col-md-8 input-icon">
                                         <i class="bi bi-lock-fill"> </i> <!-- Icono de candado -->
                                         <input type="password" placeholder="Password" class="form-control" id="password" name="password" autocomplete="current-password">
-                                        <p  class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%;flex-wrap:nowrap;">
+                                        <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%;flex-wrap:nowrap;">
                                             @error('password')
                                                 {{ $message }}
                                             @enderror
@@ -557,7 +557,7 @@
                                     </div>
                                 
                                     {{-- <label for="password" class="form-label">Password</label> --}}
-                                    <div class="col-md-8 input-icon">
+                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
                                         <i class="bi bi-envelope-fill" style="top:50%"></i>  <!-- Icono de Correo Electrónico -->
                                         <input type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus autocomplete="username">
                                         <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
@@ -567,7 +567,7 @@
                                         </p>
                                     </div>
 
-                                    <div class="col-md-8 input-icon">
+                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
                                         <i class="bi bi-lock-fill" style="top:50%"> </i> <!-- Icono de candado -->
                                         <input type="password" placeholder="Password" class="form-control" id="password" name="password" autocomplete="current-password">
                                         <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
@@ -577,7 +577,7 @@
                                         </p>
                                     </div>
 
-                                    <div class="col-md-8 input-icon">
+                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
                                         <i class="bi bi-lock-fill" style="top:50%"> </i> <!-- Icono de candado -->
                                         <input type="password" placeholder="Confirm Password" class="form-control" id="password_confirmation" name="password_confirmation"  autocomplete="new-password">
                                         <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
@@ -627,47 +627,32 @@
             
             const formReg = document.getElementById('second-card');
             const formSesion = document.getElementById('first-card');
-            const cont = document.getElementById('cont');
+            const errorMessages = document.querySelectorAll('.text-danger');
+            formReg.style.display = 'none';
+            formSesion.style.display = 'block';
 
             function mostrarFormularioRegister() {
-                if (formReg && formSesion) {
-                    const formRegDisplay = window.getComputedStyle(formReg).display;
-                    const formSesionDisplay = window.getComputedStyle(formSesion).display;
-
-                    if (formRegDisplay === 'none' && formSesionDisplay === 'block') {
-                        formSesion.style.opacity = '0';
-                        formSesion.style.visibility = 'hidden';
-                        formSesion.style.transition = 'opacity 0.5s ease, visibility 0s 0.5s'; // Atrasamos la visibilidad
-
-                        setTimeout(() => {
-                            formSesion.style.display = 'none';
-                            cont.style.display = 'flex';
-                            cont.style.transition = 'all 0.5s ease';
-                            formReg.style.display = 'block';
-                            formReg.style.opacity = '1';
-                            formReg.style.visibility = 'visible';
-                        }, 500); // Espera a que termine la animación
-                    }
-                    else if (formRegDisplay === 'block' && formSesionDisplay === 'none') {
-                        formReg.style.opacity = '0';
-                        formReg.style.visibility = 'hidden';
-                        formReg.style.transition = 'opacity 0.5s ease, visibility 0s 0.5s';
-
-                        setTimeout(() => {
-                            formReg.style.display = 'none';
-                            cont.style.display = 'flex';
-                            cont.style.transition = 'all 0.5s ease';
-                            formSesion.style.display = 'block';
-                            formSesion.style.opacity = '1';
-                            formSesion.style.visibility = 'visible';
-                        }, 500);
-                    }
+                if (formReg.style.display === 'none' && formSesion.style.display === 'block') {
+                    formReg.style.display = 'block';
+                    formSesion.style.display = 'none';
+                    
                 }
+                else if(formReg.style.display === 'block' && formSesion.style.display === 'none'){
+                    formReg.style.display = 'none';
+                    formSesion.style.display = 'block';
+                    
+                }                
+
+                errorMessages.forEach(function(errorMessage) { 
+                    errorMessage.innerText = ''; 
+
+                });
             }
 
     // No modificar estilos al redimensionar para no resetear las animaciones
     window.addEventListener('resize', () => {
         if (formReg && formSesion) {
+            formReg.style.borderRadius='15px';
             // Aquí no removemos los estilos de display ni visibilidad
         }
     });

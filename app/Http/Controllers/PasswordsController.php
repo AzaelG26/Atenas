@@ -32,7 +32,7 @@ class PasswordsController extends Controller
 
         $resetURL = URL::signedRoute('password.reset', ['id' => $user->id]);
 
-        Mail::to($user->email)->send(new RecuperarPasswordMail($resetURL));
+        Mail::to($user->email)->send(new RecuperarPasswordMail($resetURL, $user));
         return redirect()->route('login')->with('success', 'Hemos enviado un enlace para restablecer la contraseña a tu correo electrónico.');
     }
 

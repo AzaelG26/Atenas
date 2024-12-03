@@ -138,7 +138,7 @@
                                     </section>
                                     <section>
                                         <li>
-                                            <button id="btn-enviar" type="submit" class="btn btn-outline-success">Registrar</button>                                
+                                            <button id="btn-enviar" type="submit" class="btn btn-outline-warning">Registrar</button>                                
                                         </li> 
                                     </section>                                   
                                 </ul>

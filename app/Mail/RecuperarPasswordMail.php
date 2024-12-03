@@ -14,14 +14,16 @@ class RecuperarPasswordMail extends Mailable
     use Queueable, SerializesModels;
 
     public $resetUrl;
+    public $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($resetUrl)
+    public function __construct($resetUrl, $user)
     {
         $this->resetUrl = $resetUrl;
+        $this->user = $user;
     }
 
     /**
@@ -46,7 +48,7 @@ class RecuperarPasswordMail extends Mailable
         return $this->from('atenasfoodoficial@gmail.com', 'Atenas Oficial')
             ->subject('Restablecimiento de contraseña')
             ->view('mails.password_change')
-            ->with(['resetUrl' => $this->resetUrl]);
+            ->with(['resetUrl' => $this->resetUrl, 'user' => $this->user,]);
     }
 
     /**
