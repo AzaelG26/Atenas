@@ -138,7 +138,7 @@
                                     </section>
                                     <section>
                                         <li>
-                                            <button id="btn-enviar" type="submit" class="btn btn-primary">Registrar</button>                                
+                                            <button id="btn-enviar" type="submit" class="btn btn-outline-warning">Registrar</button>                                
                                         </li> 
                                     </section>                                   
                                 </ul>
@@ -155,7 +155,7 @@
                                                 <small class="text-danger">{{$message}}</small>
                                             @enderror
                                         </div>                        
-                                        <button type="button" id="btn-siguiente"  class="btn btn-primary"> siguiente<i class="bi bi-arrow-right"></i></button>
+                                        <button type="button" id="btn-siguiente"  class="btn btn-warning"> siguiente<i class="bi bi-arrow-right"></i></button>
                                     </div>
                                     
                                     <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab" style="display: flex; flex-wrap:wrap; justify-content:center">
