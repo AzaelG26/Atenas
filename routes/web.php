@@ -19,11 +19,8 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\OrderHistoryController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ordersController::class, 'getAllMenu']);
 
-// Dashboard
 Route::get('/dashboard', function () {
     return view('edit');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -53,6 +50,33 @@ Route::get('/google-callback-url', function () {
     Auth::login($user);
     return redirect('/profile');
 });
+
+
+// rutas para añadir empleados
+Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
+Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
+
+Route::get('/añadir-imagenes', [ImagenController::class, 'showAddImagesForm'])->name('imagenes.add');
+Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');
+
+
+// Ruta para mostrar el formulario de recuperación de contraseña
+Route::get('password/reset', [App\Http\Controllers\PasswordsController::class, 'showRequestForm'])
+    ->name('password.mostrar');
+
+// Ruta para enviar el enlace de restablecimiento de contraseña
+Route::post('password/email', [App\Http\Controllers\PasswordsController::class, 'sendResetMail'])
+    ->name('password.email');
+
+// Ruta para mostrar el formulario de restablecimiento de contraseña
+Route::get('password/reset/{id}', [App\Http\Controllers\PasswordsController::class, 'showResetForm'])
+    ->name('password.reset');
+
+// Ruta para actualizar la contraseña
+Route::post('password/reset/{id}', [App\Http\Controllers\PasswordsController::class, 'updatePassword'])
+    ->name('password.modificar');
+
 
 
 Route::middleware('auth')->group(function () {

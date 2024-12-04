@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link rel="icon" href="LOGO_ATENAS_high_quality_transparent.png">
 
+
+
 <style>
         html {
             scroll-behavior: smooth;
@@ -129,7 +131,7 @@
         }
 
         #interno-menu-index{
-            width: 100vw;
+            width: 90%;
             height: auto;
         }
 
@@ -203,11 +205,21 @@
             background-size: cover;            
             background-attachment: fixed;
             box-shadow: 0px 3px 10px rgba(39, 39, 39, 0.8);
-
+        }
+        #img-menu{
+            height: auto;
+            width: auto;
+            background-image: url('person-serving-food-restaurant.jpg'); 
+            /* filter: blur(5px); */
+            background-size: cover;            
+            background-attachment: fixed;
+            opacity: 0.5;
         }
         .subtitulos{
-            color: white;
-            font-family: "Karla", sans-serif;
+            font-family: "Lato", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            color: rgb(255, 255, 255);
         }
         .subtitulos:hover{
             color: #e0a91e;
@@ -256,21 +268,35 @@
         }
 
         .contenido-menu{
-            width:60%;
+            width:100%;
+            height: auto;
             display: flex;
             flex-direction:column;
             align-items:center; 
         }
 
+        .contenedor-platillos{
+            width: 33%;
+            padding-left: 10%
+        }
+        .platillos{
+            font-size: 17px; 
+            color:white; 
+            width:100%; 
+        }
+        .mapa{
+            width: 100%;
+        }
         /* Media query para pantallas pequeñas */
         @media (max-width: 1030px) {
-          
             #picture-menu{
                 display: none;
             }
-            .contenido-menu{
-                width: 100%;
+            .contenedor-platillos{
+                width: 50%;
+                padding-left: 5%
             }
+            
             .contenedor-about{
                 width: 95vw;
             }
@@ -378,6 +404,19 @@
             transform: translateY(0rem);
             }
         }
+        .btn-ordenar-menu{
+            padding: 10px;
+            color: white;
+            background-color: #e0a91e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        .btn-ordenar-menu:hover{
+            transform: translateY(2px);
+        }
 
 
       
@@ -390,6 +429,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Courgette&family=DynaPuff:wght@400..700&family=Karla:ital,wght@0,200..800;1,200..800&family=Monda:wght@400..700&family=Oleo+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body id="body">
     <div id="loader">
@@ -609,23 +655,46 @@
     <section id="container-menu-index">
         <div id="interno-menu-index">                
             <div class="card" style="height: auto; background-color: transparent; border:none;">
-                
+                {{-- <div class="card-header">
+                    <div style="display:flex; justify-content:center; align-items:center; height:100px; font-family: 'Monda', sans-serif;">
+                        <h2 class="subtitulos" style="cursor:context-menu;">Menú</h2>
+                    </div>                        
+                </div> --}}
                 <div  style="display:flex; flex-wrap:nowrap; background-color: transparent;">
-                    <div class="card-body content-about" style=" display:flex; background-color: #131718;   width:100vw;">
-
-                            <img src="front-view-man-putting-sauce-burger.png" id="picture-menu" style="heigt:auto; max-width:40%;" alt="food">
-
-                        <div class="contenido-menu" >
-                            <h2 class="subtitulos" style="cursor:context-menu;">Ménu</h2>
-                            <p>jjjsjsj</p>
-
-                        </div   
-
+                    <div class="card-body content-about" style=" display:flex; background-color: transparent;   width:80vw;">
+                            {{-- <img src="delicious-fried-chicken-fries.jpg" id="picture-menu" style="heigt:auto; max-width:40%;" alt="food"> --}}
+                        <div class="contenido-menu">
+                            <h2 class="subtitulos" style="cursor:context-menu; color:#e0a91e" >Contenido del menú</h2>
+                            <br>
+                            <br>
+                            <div style="width: 100%; display:flex; flex-wrap:wrap; overflow-y:auto;">
+                                @foreach ($menu as $food)
+                                <div class="contenedor-platillos">
+                                    <p class="platillos">{{$food->name}}</p>
+                                     <p style="font-size: 17px; color:#e0a91e; width:100%;"><span style="color: white;">............................</span> ${{$food->price}}</p>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <div id="img-menu">
+        <div style="height: 70vh; padding:30px;">
+            <div style="background-color:transparent; border:1px solid white; height:100%; display:flex;flex-direction:column; align-items:center; padding-top:90px;">
+                <h2 class="subtitulos" style="color: white;">¿Listo para ordenar?</h2>
+                <p style="color: white;">Haz click en el siguiente botón para elegir algo del menu.</p>
+                <a href="{{route('menu')}}" style="text-decoration: none; margin-top:30px">
+                    <button class="btn-ordenar-menu">
+                        Ver Menú y Ordenar
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <section id="container-resenias-index">
     <div id="interno-resenias-index">                

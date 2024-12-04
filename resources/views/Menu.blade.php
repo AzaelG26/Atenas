@@ -47,7 +47,7 @@
 
 @section('content')
 <div class="container-fluid mt-3">
-    <div class="pb-1 mb-4" style="color: white; display: flex; justify-content:flex-end;">
+    <div class="pb-1 mb-4" style="color: white; display: flex; justify-content:flex-end;">  
         @if (Auth::user()->people->employees->admin == true)            
             <a href="{{route('edit.menu')}}" style="text-decoration: none; color:black">
                 <button type="button" class="btn btn-warning">
@@ -184,7 +184,63 @@ function addToCart(name, price, id_menu) {
     alert(`${name} añadido al carrito.`);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// Muestra los productos en el carrito dentro del modal
+function toggleCart() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+    } else {
+        cart.forEach((item, index) => {
+            total += item.price;
+            const itemRow = document.createElement('div');
+            itemRow.classList.add('cart-item');
+            itemRow.innerHTML = `
+                <p>${item.name} - MX$${item.price.toFixed(2)}</p>
+                <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
+            `;
+            cartItemsContainer.appendChild(itemRow);
+        });
+        cartItemsContainer.innerHTML += `<h5>Total: MX$${total.toFixed(2)}</h5>`;
+    }
+
+    const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+    cartModal.show();
+}
+
+// Elimina un producto del carrito
+function removeFromCart(index) {
+    cart.splice(index, 1); // Remueve el producto del array
+    localStorage.setItem('cart', JSON.stringify(cart)); // Actualiza localStorage
+
+    // Actualiza el DOM para eliminar el producto eliminado
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartItemElements = cartItemsContainer.getElementsByClassName('cart-item');
+    if (cartItemElements[index]) {
+        cartItemElements[index].remove(); // Elimina el elemento visual
+    }
+
+    // Recalcula y actualiza el total
+    let total = cart.reduce((acc, item) => acc + item.price, 0);
+    const totalElement = document.querySelector('#cart-items h5');
+    if (totalElement) {
+        totalElement.textContent = `Total: MX$${total.toFixed(2)}`;
+    }
+
+    // Actualiza el contador del carrito
+    updateCartCount();
+
+    // Si el carrito está vacío, muestra el mensaje de carrito vacío
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+    }
+}
+
+
+// Al cargar la página, inicializa el contador del carrito
+document.addEventListener('DOMContentLoaded', function () {
     updateCartCount();
 });
 </script>
