@@ -19,12 +19,10 @@ class CheckDPuser
     {
         $user = Auth::user();
 
-        // Verifica si el usuario está autenticado
         if (!$user) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para acceder a esta página.');
         }
-
-        // Verifica si el usuario tiene datos personales
+        
         if (!$user->people) {
             return redirect()->route('formPersonalData')
                 ->with('error', 'Debes completar tus datos personales para continuar.');
