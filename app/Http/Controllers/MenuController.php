@@ -167,7 +167,6 @@ class MenuController extends Controller
 
             DB::select('CALL GenerateFolioAfterOrderPaid(?)', [$newOrderId]);
 
-            // Obtén el ID del folio generado (puedes modificar el procedimiento para devolverlo si es necesario).
             $folioId = DB::table('folios')->orderByDesc('created_at')->value('id_folio');
 
             DB::select('CALL UpdateOrderWithFolio(?)', [$folioId]);
