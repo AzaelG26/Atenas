@@ -17,7 +17,7 @@ return new class extends Migration
         DB::unprepared('
             CREATE PROCEDURE register_address(IN p_id_client BIGINT(20) UNSIGNED, IN p_id_neighborhood BIGINT(20) UNSIGNED, IN p_street VARCHAR(255), IN p_reference VARCHAR(255), IN p_interior_number VARCHAR(255), IN p_outer_number VARCHAR(255), OUT p_id_address BIGINT(20) UNSIGNED)
             BEGIN
-                INSERT INTO atenasofficial.address (id_client, id_neighborhood, street, reference, interior_number, outer_number, created_at, updated_at)
+                INSERT INTO address (id_client, id_neighborhood, street, reference, interior_number, outer_number, created_at, updated_at)
                 VALUES (p_id_client, p_id_neighborhood, p_street, p_reference, p_interior_number, p_outer_number, NOW(), NOW());
 
                 SET p_id_address = LAST_INSERT_ID();

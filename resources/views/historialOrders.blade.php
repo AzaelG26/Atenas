@@ -92,6 +92,9 @@
                                                         Estado de la compra
                                                     </th>
                                                     <th class="head">
+                                                        Folio
+                                                    </th>
+                                                    <th class="head">
                                                         Fecha de orden
                                                     </th>
                                                 </tr>
@@ -110,6 +113,9 @@
                                                     </td>
                                                     <td>
                                                         {{$line->status}}
+                                                    </td>
+                                                    <td>
+                                                        {{$line->folio->identifier}}
                                                     </td>
                                                     <td>
                                                         {{$line->created_at}}
