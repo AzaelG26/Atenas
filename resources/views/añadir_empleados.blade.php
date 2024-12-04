@@ -4,12 +4,125 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-@section('styles')
+@yield('styles')
     <style>    
+
+    .title-user-form{
+        border-bottom: 1px solid #ce9d22;
+    }
+    .subtitle-user{
+        color: white;
+    }
+    .subtitle-user:hover{
+        color: #ce9d22;
+        filter: drop-shadow(0px 0px 5px #ce9d22);
+    }
+    
+    /* inputs */    
+    .input {
+    background-color: #212121;
+    max-width: 400px;
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    /* text-align: center; */
+    border: 2px solid rgb(39, 39, 39);
+    color: white;
+    border-radius: 5px;
+    /* box-shadow: 3px 3px 2px rgb(249, 255, 85); */
+    }
+
+    .input:focus {
+    background-color: #363535;
+    outline-color: rgb(53, 53, 53);
+    box-shadow: 2px 3px 15px #fcc12d;
+    transition: .1s;
+    transition-property: box-shadow;
+    }
+
+    /* Style boton */
+    .btn-accept {
+        --hover-shadows: 1px 3px 3px #121212, 0px 0px 13px #303030b6;
+        --accent: rgb(13, 118, 136);
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        border: none;
+        height: 45px;
+        width: 10em;
+        border-radius: 1.1em;
+        background-color: #212121;
+        cursor: pointer;
+        color: white;
+        transition: box-shadow ease-in-out 0.3s, background-color ease-in-out 0.1s,
+            letter-spacing ease-in-out 0.1s, transform ease-in-out 0.1s;
+    }
+    .btn-accept:hover {
+        box-shadow: var(--hover-shadows);
+    }
+    .btn-accept:active {
+        box-shadow: var(--hover-shadows), var(--accent) 0px 0px 10px 5px;
+        background-color: var(--accent);
+        transform: scale(0.9);
+    }
+
+    /* Radios */
+    .radio-container {    
+    color: white;
+    }
+
+    .radio-wrapper {
+    margin-bottom: 10px;
+    }
+
+    .radio-button {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    }
+
+    .radio-button:hover {
+    transform: translateY(-2px);
+    }
+
+    .radio-button input[type="radio"] {
+    display: none;
+    }
+
+    .radio-checkmark {
+    display: inline-block;
+    position: relative;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    }
+
+    .radio-checkmark:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgb(13, 118, 136);
+    transition: all 0.2s ease-in-out;
+    }
+
+    .radio-button input[type="radio"]:checked ~ .radio-checkmark:before {
+    transform: translate(-50%, -50%) scale(1);
+    }
+
+    .radio-label {
+    font-size: 16px;
+    font-weight: 600;
+    }
+
       
         
     </style>
-@endsection
 
 
 @section('content')

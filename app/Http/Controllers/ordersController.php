@@ -18,6 +18,26 @@ use Illuminate\Support\Facades\Log;
 class ordersController extends Controller
 {
 
+    public function historySingle()
+    {
+        $pedidos = OnlineOrder::with([
+            'folio',
+            'onlineOrderDetails.menu',
+            'people' => function ($query) {
+                $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
+            }
+        ])->orderBy('created_at', 'asc')
+            ->paginate(20)
+            ->through(function ($order) {
+                $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
+                    return $detail->menu->name;
+                })->implode(', ');
+
+                return $order;
+            });
+        // dd($pedidos);
+        return view('historial', ['pedidos' => $pedidos]);
+    }
 
     public function showProfits(Request $request)
     {
@@ -103,7 +123,7 @@ class ordersController extends Controller
     public function getOrdersOnline()
     {
         $onlineOrder = OnlineOrder::with([
-            'onlineOrderDetails.folio',
+            'folio',
             'onlineOrderDetails.menu',
             'people',
         ])->whereIn('status', ['Paid', 'In Process'])->orderBy('created_at', 'asc')->get();
@@ -146,7 +166,7 @@ class ordersController extends Controller
             'orderDetail.menu',
             'folio',
         ])->orderBy('created_at', 'asc')
-            ->paginate(1)
+            ->paginate(20)
             ->through(function ($order) {
                 $order->product_names = $order->orderDetail->map(function ($detail) {
                     return $detail->menu->name;
@@ -155,15 +175,14 @@ class ordersController extends Controller
                 return $order;
             });
 
-        // Paginación para las órdenes en línea
         $lineHistorialOrders = OnlineOrder::with([
-            'onlineOrderDetails.folio',
+            'folio',
             'onlineOrderDetails.menu',
             'people' => function ($query) {
                 $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
             }
         ])->orderBy('created_at', 'asc')
-            ->paginate(1) // Paginar con 10 registros por página
+            ->paginate(20)
             ->through(function ($order) {
                 $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
                     return $detail->menu->name;

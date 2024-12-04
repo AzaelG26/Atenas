@@ -215,11 +215,16 @@
             background-attachment: fixed;
             opacity: 0.5;
         }
-        .subtitulos{
+        .subtitulos, .text-muted{
             font-family: "Lato", sans-serif;
             font-weight: 400;
             font-style: normal;
             color: rgb(255, 255, 255);
+        }
+        .text-muted{
+            text-align: center;
+            padding-top: 10%;
+            color: rgb(255, 0, 0) !important;            
         }
         .subtitulos:hover{
             color: #e0a91e;
@@ -419,7 +424,46 @@
         }
 
 
-      
+        /*  ESTRELLAS */
+        .star-rating {
+            direction: rtl; /* Para invertir el orden de las estrellas */
+            display: inline-block;
+            font-size: 30px;
+            position: relative;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: gray;
+            cursor: pointer;
+        }
+
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: gold;
+        }
+
+        .star-rating label:active {
+            transform: scale(0.9);
+        }
+
+        /* Para ocultar el select original */
+        select {
+            display: none;
+        }
+
+        .star-rating {
+            color: gold; /* Cambia el color a dorado para las estrellas llenas */
+            font-size: 1.5em; /* Tamaño de las estrellas */
+        }
+
+        .star-rating i {
+            margin-right: 3px; /* Espaciado entre las estrellas */
+        }
     </style>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -578,9 +622,8 @@
                                 <a class="nav-link" href="#container-contacto-index">Contacto</a>
                             </li>
                             <li class="nav-item" style="display: flex; margin-right:50px">
-
-    <a class="nav-link" href="#container-resenias-index">Reseñas</a>
-</li>
+                                <a class="nav-link" href="#container-resenias-index">Reseñas</a>
+                            </li>
 
                                 
                             </li>
@@ -618,9 +661,21 @@
                 </div>
                 <div class="card-body contenedor-about" style="display:flex;flex-wrap:nowrap;">
 
-                    <div class="card-body" style="background-image:url('series-images-from-series-images-from-series.jpg'); box-shadow: 0px 2px 15px rgb(0, 0, 0); width:25em; background-size: cover; margin:10px;"></div>
-                    <div class="card-body content-about" style="background-color: #131718; box-shadow: 0px 2px 15px rgb(0, 0, 0); margin:10px; width:40em;"></div>
-                    <div class="card-body" style="background-image:url('front-view-man-putting-hand-burger.jpg'); box-shadow: 0px 2px 15px rgb(0, 0, 0); width:25em; background-size: cover; margin:10px;"></div>
+                    <div class="card-body" style="width:20%; background-image:url('series-images-from-series-images-from-series.jpg'); box-shadow: 0px 2px 15px rgb(0, 0, 0); width:50em; background-size: cover; margin:10px;"></div>
+
+                    <div>
+                        <h2 style="color: #fff;  ">Atenas Food</h2>
+                        <p style="color: #ccc; line-height: 1.6; font-size: 1.1em;">
+                            En Atenas Food, nos especializamos en ofrecer comida rápida de alta calidad, con una experiencia que combina sabor, frescura y un servicio excepcional. Ubicados estratégicamente en Matamoros, Coahuila, somos el lugar ideal para disfrutar de una deliciosa comida en un ambiente acogedor y moderno.
+                        </p>
+                        <p style="color: #ccc; line-height: 1.6; font-size: 1.1em; margin-top: 1em;">
+                            Además de la comida, nos enorgullece brindar un servicio que te hará sentir como en casa. Nuestro equipo está dedicado a superar tus expectativas, asegurándose de que cada visita sea una experiencia memorable.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card-body" style="background-image:url('front-view-man-putting-hand-burger.jpg'); box-shadow: 0px 2px 15px rgb(0, 0, 0); width:50em; background-size: cover; margin:10px;"></div>
 
                 </div>
             </div>
@@ -695,36 +750,43 @@
             </div>
         </div>
     </div>
+    </section>
 
-    <section id="container-resenias-index">
+<section id="container-resenias-index">
     <div id="interno-resenias-index">                
-        <div class="card" style="height: 35em; background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-            <div class="card-header">
-                <!-- Contenedor Flex para alinear el título y el botón -->
+        <div class="card" style="height: 35em; background:transparent; border:none; ">
+            <div class="card-header" style="background:transparent; border:none">
                 <div style="display: flex; justify-content: space-between; align-items: center; height: 100px; font-family: 'Monda', sans-serif;">
-                    <!-- Título Reseñas -->
-                    <h2 class="subtitulos" style="cursor: context-menu;">Reseñas</h2>
-                    <!-- Botón para abrir el modal (este es el único botón) -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReviewModal">
-                        Agregar Reseña
+                    <p></p>
+                    <h2 class="subtitulos" style="cursor: context-menu; color:#e0a91e;">Reseñas</h2>
+                    <button type="button" class="btn btn-outline-success" style="border-radius: 100%;" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+                        <i class="bi bi-chat-dots" title="Comentar"></i> 
                     </button>
                 </div>                        
             </div>
-            <div class="card-body">
-    <h5 class="card-title">Reseñas</h5>
-    <!-- Mostrar las reseñas -->
-    @foreach ($reseñas as $reseña)
-        <div class="mb-3">
-            <h6>{{ $reseña->folio }}</h6> <!-- Título o folio de la reseña -->
-            <p class="card-text">{{ $reseña->contenido }}</p> <!-- Contenido de la reseña -->
-            <p class="card-text">Calificación: {{ $reseña->rating }} estrellas</p> <!-- Calificación -->
-        </div>
-    @endforeach
-</div>
-
+            <div class="card-body" style="overflow-y: auto; padding: 50px; border-radius:20px; background:#131718; box-shadow: 0px 10px 15px rgb(0, 0, 0)">
+                @forelse ($reseñas as $reseña)
+                    <div class="wrapper" style="margin-bottom: 20px; background-color: #131313da; padding: 15px; border-radius: 8px;">
+                        <div class="title" style="margin-bottom: 10px;">
+                            {{-- <p class="heading" style="color: #fff; font-size: 1.2em;">{{ $reseña->folio }}</p> --}}
+                            <p class="desc" style="color: #aaa;">{{ $reseña->contenido }}</p>
+                        </div>
+                        <div class="color chinese-black" style="background-color: #141414; color: #e1e1e1; padding: 10px; border-radius: 5px;">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <span class="star-rating">
+                                    <i class="bi bi-star{{ $i <= $reseña->rating ? '-fill' : '' }}"></i>
+                                </span>
+                            @endfor
+                        </div>
+                    </div>
+                @empty
+                    <h2 class="text-muted"><strong><i class="bi bi-exclamation-circle"></i> No hay reseñas disponibles.</strong></h2>
+                @endforelse
+            </div>
         </div>
     </div>
 </section>
+
 
 <!-- Modal de agregar reseña -->
 <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
@@ -740,6 +802,9 @@
                     <div class="mb-3">
                         <label for="folio" class="form-label">Folio</label>
                         <input type="text" class="form-control" id="folio" name="folio" required>
+                        @error('folio')
+                            <p style="color: red">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="contenido" class="form-label">Contenido</label>
@@ -747,15 +812,26 @@
                     </div>
                     <div class="mb-3">
                         <label for="rating" class="form-label">Calificación</label>
-                        <select class="form-control" id="rating" name="rating" required>
-                            <option value="1">1 estrella</option>
-                            <option value="2">2 estrellas</option>
-                            <option value="3">3 estrellas</option>
-                            <option value="4">4 estrellas</option>
-                            <option value="5">5 estrellas</option>
-                        </select>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="5 estrellas">&#9733;</label>
+
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="4 estrellas">&#9733;</label>
+
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="3 estrellas">&#9733;</label>
+
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="2 estrellas">&#9733;</label>
+
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="1 estrella">&#9733;</label>
+
+                            <input type="hidden" id="ratingValue" name="rating" value="" />
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Agregar reseña</button>
+                    <button type="submit" class="btn btn-primary">Confirmar reseña</button>
                 </form>
             </div>
         </div>
@@ -805,6 +881,11 @@
             // Actualizamos la posición previa del scroll
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Evita números negativos
         });
+        document.querySelectorAll('.star-rating input').forEach((input) => {
+            input.addEventListener('change', function() {
+                document.getElementById('ratingValue').value = this.value;
+            });
+        });
 
         // Asegurar que la barra de navegación esté visible al refrescar la página
         window.addEventListener('load', function() {
@@ -817,5 +898,18 @@
         </script>        
     @endif
 
+    @if (session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+    @endif
 </body>
 </html>

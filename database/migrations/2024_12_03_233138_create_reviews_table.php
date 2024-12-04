@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('folio');
             $table->string('contenido');
             $table->integer('rating');
-            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

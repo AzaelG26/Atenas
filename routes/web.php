@@ -23,7 +23,7 @@ Route::get('/showreview/{id}', [ReviewController::class, 'index'])->name('showre
 Route::post('/review/store', [ReviewController::class, 'store'])->name('review.store');
 
 Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
-Route::get('/', [ReviewController::class, 'index']);
+Route::get('/', [ReviewController::class, 'index'])->name('welcome');
 
 
 Route::get('/dashboard', function () {
@@ -95,29 +95,28 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['auth', 'hasPersonalData', 'validate.method'])->group(function () {
 
-    Route::get('/menu', [MenuController::class, 'index'])->name('menu');
-    Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
-    Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
-    Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
+        Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+        Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
+        Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
+        Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
 
 
-    Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
-    Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
+        Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
+        Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
 
 
-    Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
-    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
-    Route::delete('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+        Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+        Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+        Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+        Route::delete('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+        Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 
-    Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
-    Route::get('/buscar-direcciones', [AddressController::class, 'buscarDirecciones'])->name('buscar.direcciones');
-    Route::get('/get-neighborhoods', [AddressController::class, 'getNeighborhoodsByPostalCode'])->name('get.neighborhoods');
-    Route::post('/register-address', [AddressController::class, 'registerAddress'])->name('register.address');
-    Route::get('/user-addresses', [AddressController::class, 'userAddresses'])->name('user.addresses');
-    Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
-
+        Route::get('/form_direcciones', [AddressController::class, 'showForm'])->name('addresses.form');
+        Route::get('/buscar-direcciones', [AddressController::class, 'buscarDirecciones'])->name('buscar.direcciones');
+        Route::get('/get-neighborhoods', [AddressController::class, 'getNeighborhoodsByPostalCode'])->name('get.neighborhoods');
+        Route::post('/register-address', [AddressController::class, 'registerAddress'])->name('register.address');
+        Route::get('/user-addresses', [AddressController::class, 'userAddresses'])->name('user.addresses');
+        Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
     });
 
 
@@ -125,7 +124,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/historial-pedidos', [OrderHistoryController::class, 'index'])->name('historial');
+    Route::get('/historial-pedidos', [ordersController::class, 'historySingle'])->name('historial');
 });
 
 

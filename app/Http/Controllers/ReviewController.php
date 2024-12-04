@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Folio;
 use App\Models\Menu;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -44,16 +45,20 @@ class ReviewController extends Controller
             'rating' => 'required|integer|min:1|max:5',
         ]);
 
+        $folio = Folio::where('identifier', $request->folio)->exists();
+
+        if ($folio == false) {
+            return redirect()->route('welcome')->with('error', 'El folio ingresado es inválido');
+        }
 
         $review = Review::create([
             'folio' => $request->folio,
             'contenido' => $request->contenido,
             'rating' => $request->rating,
-            'usuario_id' => auth()->id(),
         ]);
 
 
-        return redirect()->route('showreview', ['id' => $review->id])
+        return redirect()->route('welcome', ['id' => $review->id])
             ->with('success', '¡Gracias por tu review!');
     }
 }
