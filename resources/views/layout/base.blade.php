@@ -23,17 +23,32 @@
     <footer class="py-5" style="color: white; background-color:#101516; width:100%; border-top:1px solid yellow;">
     <div class="row">
       <div class="col-6 col-md-2 mb-3">
-        <h5>Section</h5>
+        <h5>Cuenta</h5>
         <ul class="nav flex-column">
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Home</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Features</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Pricing</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">FAQs</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">About</a></li>
+          <li class="nav-item mb-2"><a href="{{route('password.mostrar')}}" class="nav-link p-0">Recuperar contraseña</a></li>
+          <li class="nav-item mb-2"><a href="{{route('register')}}" class="nav-link p-0">Registrarme</a></li>
+          <li class="nav-item mb-2"><a href="{{route('personas.create')}}" class="nav-link p-0">Información personal</a></li>
+          {{-- <li class="nav-item mb-2"><a href="#" class="nav-link p-0">FAQs</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">About</a></li> --}}
         </ul>
       </div>
 
       <div class="col-6 col-md-2 mb-3">
+        <h5>Esado de cuenta</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Mis pedidos</a></li>
+          {{-- <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Features</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Pricing</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">FAQs</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">About</a></li> --}}
+        </ul>
+        <h5>Nosotros</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#container-conocenos-index" class="nav-link p-0">Acerca de nosotros</a></li>
+          </ul>
+      </div>
+
+      {{-- <div class="col-6 col-md-2 mb-3">
         <h5>Section</h5>
         <ul class="nav flex-column">
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Home</a></li>
@@ -42,20 +57,9 @@
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0">FAQs</a></li>
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0">About</a></li>
         </ul>
-      </div>
+      </div> --}}
 
-      <div class="col-6 col-md-2 mb-3">
-        <h5>Section</h5>
-        <ul class="nav flex-column">
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Home</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Features</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Pricing</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">FAQs</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0">About</a></li>
-        </ul>
-      </div>
-
-      <div class="col-md-5 offset-md-1 mb-3">
+      <div class="col-md-6 offset-md-1 mb-3">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2626.0207569556997!2d-103.24203932293464!3d25.533978707918646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x868fc73c5ed16169%3A0x307b4a1c36875901!2sAtenas%20Food!5e0!3m2!1ses!2smx!4v1731618615256!5m2!1ses!2smx" width="400" height="200" style="border:0;" allowfullscreen="" loading="lazy" class="mapa" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>

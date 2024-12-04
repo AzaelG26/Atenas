@@ -284,6 +284,9 @@
             color:white; 
             width:100%; 
         }
+        .mapa{
+            width: 100%;
+        }
         /* Media query para pantallas pequeñas */
         @media (max-width: 1030px) {
             #picture-menu{

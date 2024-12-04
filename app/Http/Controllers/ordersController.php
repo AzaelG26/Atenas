@@ -18,7 +18,6 @@ class ordersController extends Controller
     // Para el menu del welcome
     public function getAllMenu()
     {
-        // 
         $menu = Menu::all();
         return view('welcome', compact('menu'));
     }
