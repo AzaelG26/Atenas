@@ -1,6 +1,6 @@
 @extends('layout.sidebar')
 
-@section('title', 'Historial de Pedidos') <!-- Título dinámico -->
+@section('title', 'Historial de Pedidos') 
 
 @push('styles')
     <style>

@@ -40,9 +40,9 @@
         }
 
         .form-control::placeholder {
-            color: #cfae57; /* Un color menos brillante */
+            color: #cfae57; 
             font-style: italic;
-            opacity: 0.7; /* Menos opacidad para hacer el placeholder más sutil */
+            opacity: 0.7; 
         }
 
         .form-control:focus {
@@ -74,7 +74,7 @@
 
 @section('content')
     <div class="container-fluid py-4">
-        <h1 class="title-style">Crear un Nuevo Ticket</h1> <!-- Título estilizado -->
+        <h1 class="title-style">Crear un Nuevo Ticket</h1>
 
         <div class="form-container">
             <form action="{{ route('tickets.store') }}" method="POST">

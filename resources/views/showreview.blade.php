@@ -5,17 +5,27 @@
 @section('content')
     <div class="container mt-4">
         <h1 class="mb-4" style="font-size: 2rem; color: #be952c;">¡Ve nuestras reseñas!</h1>
-        
-        <div class="list-group">
-            @foreach($reseñas as $reseña)
-                <div class="list-group-item p-4 mb-3" style="background-color: #333; color: #fff; border-radius: 10px; border: 1px solid #444;">
-                    <p style="font-size: 1.2rem; font-style: italic;">"{{ $reseña->contenido }}"</p>
-                    <div class="d-flex justify-content-between">
-                        <small class="text-muted" style="font-size: 1rem;">Por: Usuario #{{ $reseña->usuario_id }}</small>
-                        <span class="badge rounded-pill" style="background-color: #be952c;">¡Gracias por tu reseña!</span>
-                    </div>
 
-                    <!-- Mostrar las estrellas basadas en el rating -->
+        <div class="list-group">
+        <div class="card-body">
+    <h5 class="card-title">Reseñas</h5>
+    
+    
+    @foreach($reseñas as $reseña)
+        <div class="mb-3">
+            <h6><strong>{{ $reseña->folio }}</strong></h6> 
+            <p class="card-text">{{ $reseña->contenido }}</p>
+            <p class="card-text">Calificación: {{ $reseña->rating }} estrellas</p> 
+        </div>
+    @endforeach
+
+   
+    @if($reseñas->isEmpty())
+        <p class="card-text">No hay reseñas disponibles en este momento.</p>
+    @endif
+</div>
+
+                    
                     <div class="mt-2">
                         @for($i = 1; $i <= 5; $i++)
                             @if($reseña->rating >= $i)

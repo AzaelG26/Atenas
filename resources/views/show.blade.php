@@ -1,147 +1,143 @@
 @extends('layout.sidebar')
 
-@section('title', 'Detalles del Ticket')
+@section('title', 'Detalles Soporte ')
 
 @push('styles')
     <style>
         body {
-            background-color: #000;
-            color: #ffc107;
-        }
-
-        .btn-warning, .btn-primary {
-            background-color: #ffc107;
-            color: #000;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-warning:hover, .btn-primary:hover {
-            background-color: #e0a800;
+            background-color: #121212;
             color: #fff;
+            font-family: 'Arial', sans-serif;
         }
 
-        .card {
-            background-color: #333;
-            color: #ffc107;
-            border-radius: 8px;
-            border: none;
-            margin-top: 20px;
-        }
-
-        .card-header {
-            background-color: #444;
-            color: #ffc107;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
-        .card-body {
-            background-color: #333;
-            color: #ffc107;
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
             padding: 20px;
+            background-color: #1f1f1f;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .card-footer {
-            background-color: #444;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
             color: #ffc107;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            padding: 15px;
+            margin: 0;
         }
 
-        .table {
+        .details-table {
             width: 100%;
-            background-color: #444;
-            color: #ffc107;
+            margin-top: 10px;
             border-collapse: collapse;
         }
 
-        .table th, .table td {
-            padding: 15px;
+        .details-table th,
+        .details-table td {
+            padding: 10px 15px;
             text-align: left;
-            border: 1px solid #555;
         }
 
-        .table th {
-            background-color: #555;
+        .details-table th {
+            background-color: #343a40;
             color: #ffc107;
+            font-weight: bold;
+            border-bottom: 2px solid #ffc107;
         }
 
-        .table td {
-            background-color: #333;
+        .details-table td {
+            background-color: #1f1f1f;
+            border-bottom: 1px solid #333;
         }
 
         .badge {
-            background-color: #28a745;
-            color: white;
-            font-size: 1rem;
+            background-color: #ffc107;
+            color: #000;
+            font-size: 0.85rem;
             font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
         }
 
         .badge-secondary {
             background-color: #6c757d;
-            color: white;
+            color: #fff;
         }
 
-        .badge-success {
-            background-color: #28a745;
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .badge:hover {
-            background-color: #218838;
+        .btn {
+            background-color: #ffc107;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .text-warning {
-            color: #ffc107 !important;
+        .btn:hover {
+            background-color: #e0a800;
+            color: #fff;
         }
-
     </style>
 @endpush
 
 @section('content')
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h1 class="card-title">Detalles del Ticket</h1>
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <tr>
-                    <th>Asunto</th>
-                    <td>{{ $ticket->subject }}</td>
-                </tr>
-                <tr>
-                    <th>Mensaje</th>
-                    <td>{{ $ticket->message }}</td>
-                </tr>
-                <tr>
-                    <th>Estado</th>
-                    <td>
-                        <span class="badge 
-                            {{ $ticket->status === 'abierto' ? 'badge-success' : 'badge-secondary' }}">
-                            {{ ucfirst($ticket->status) }}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Creado en</th>
-                    <td>{{ $ticket->created_at->format('d/m/Y H:i') }}</td>
-                </tr>
-                <tr>
-                    <th>Teléfono del Usuario</th>
-                    <td>{{ $ticket->phone ?? 'No disponible' }}</td>
-                </tr>
-                <tr>
-                    <th>Correo Electrónico</th>
-                    <td>{{ $ticket->email ?? 'No disponible' }}</td>
-                </tr>
-            </table>
-        </div>
-        <div class="card-footer">
-            <a href="{{ route('tickets') }}" class="btn btn-primary">Volver a la lista de tickets</a>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1>Detalles Soporte </h1>
+    </div>
+
+    <table class="details-table">
+        <tr>
+            <th>Asunto</th>
+            <td>{{ $ticket->subject }}</td>
+        </tr>
+        <tr>
+            <th>Mensaje</th>
+            <td>{{ $ticket->message }}</td>
+        </tr>
+        <tr>
+            <th>Estado</th>
+            <td>
+                <span class="badge {{ $ticket->status === 'abierto' ? '' : 'badge-secondary' }}">
+                    {{ ucfirst($ticket->status) }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>Creado en</th>
+            <td>{{ $ticket->created_at->format('d/m/Y H:i') }}</td>
+        </tr>
+        <tr>
+            <th>Teléfono</th>
+            <td>{{ $ticket->phone ?? 'No disponible' }}</td>
+        </tr>
+        <tr>
+            <th>Correo</th>
+            <td>{{ $ticket->email ?? 'No disponible' }}</td>
+        </tr>
+    </table>
+
+    <div class="btn-container">
+        <a href="{{ route('tickets') }}" class="btn">Volver</a>
     </div>
 </div>
 @endsection

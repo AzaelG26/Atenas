@@ -1,6 +1,6 @@
 @extends('layout.sidebar')
 
-@section('title', 'Historial de Auditoría') <!-- Título dinámico -->
+@section('title', 'Historial de Auditoría') 
 
 @push('styles')
     <style>
@@ -52,7 +52,7 @@
 
 @section('content')
 <div class="container-fluid py-3">
-    <h1 class="title-style">Historial de Auditoría</h1> <!-- Título estilizado -->
+    <h1 class="title-style">Historial de Auditoría</h1>
 
     <div class="card shadow-lg">
         <div class="card-header text-center">

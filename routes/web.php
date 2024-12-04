@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ReseñaController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
@@ -18,17 +18,6 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\OrderHistoryController;
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Aquí es donde puedes registrar las rutas web para tu aplicación. Estas
-| rutas se cargan mediante el RouteServiceProvider y todas ellas serán
-| asignadas al grupo de middleware "web".
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -77,9 +66,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/auditoria', [AuditoriaController::class, 'index'])->name('auditoria');
 
    
-    Route::post('/reseñas', [ReseñaController::class, 'store'])->name('reseñas.store');
-    Route::get('/reseñas', [ReseñaController::class, 'index'])->name('reseñas');
-    Route::get('/showreseñas', [ReseñaController::class, 'show'])->name('showreseñas');
+    Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
+    Route::get('/showreview/{id}', [ReviewController::class, 'index'])->name('showreview');
+    Route::post('/review/store', [ReviewController::class, 'store'])->name('review.store');
+  
+Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
+Route::get('/', [ReviewController::class, 'index']);
 
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
     Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
@@ -111,7 +103,6 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/historial', [OrderHistoryController::class, 'index'])->name('historial');
     Route::get('/historial-pedidos', [OrderHistoryController::class, 'index'])->name('historial');
 
     
@@ -143,7 +134,7 @@ Route::middleware('admin')->group(function () {
     Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
 
     Route::get('/ganancias', [ordersController::class, 'showProfits'])->name('ganancias');
-
+        
 
     Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
     Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');

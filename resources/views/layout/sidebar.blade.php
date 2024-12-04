@@ -130,8 +130,7 @@
                     </a>                    
                 </li>
                 <li>
-                    <a class="links nav-link {{ request()->routeIs('showreseñas') ? 'active' : '' }}" href="{{ route('showreseñas') }}">
-                        <i class="bi bi-ticket"></i> Ver Reseñas
+                   
                     </a>
                 </li>
           

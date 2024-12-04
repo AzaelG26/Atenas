@@ -1,6 +1,6 @@
 @extends('layout.sidebar')
 
-@section('title', 'Añadir reseña')
+@section('title', 'Añadir Reseña')
 
 @push('styles')
 <style>
@@ -33,14 +33,13 @@
         display: none;
     }
 
-    /* Estilo para inputs */
     .container {
         display: flex;
         flex-direction: column;
         gap: 20px;
         position: relative;
         color: white;
-        margin-bottom: 30px; /* Separación entre campos */
+        margin-bottom: 30px;
     }
 
     .container .label {
@@ -82,11 +81,10 @@
         transform: translateY(-35px);
     }
 
-    /* Ajuste del diseño de estrellas */
     .radio {
         display: flex;
         justify-content: center;
-        gap: 10px; /* Espaciado entre estrellas */
+        gap: 10px;
         flex-direction: row-reverse;
     }
 
@@ -119,102 +117,18 @@
         fill: #ff9e0b;
         filter: drop-shadow(0 0 15px rgba(255, 158, 11, 0.9));
     }
-
-    /* Separación adicional entre inputs y estrellas */
-    .form-section {
-        margin-bottom: 30px;
-    }
-
-    /* Estilo de los títulos con el botón */
-    h1, h2 {
-        cursor: pointer;
-        position: relative;
-        display: inline-block;
-        font-size: 2rem;
-        color: transparent;
-        background-image: linear-gradient(
-            90deg,
-            hsla(0 0% 100% / 1) 0%,
-            hsla(0 0% 100% / 0) 120%
-        );
-        background-clip: text;
-    }
-
-    /* Diseño del botón aplicado al título */
-    h1:hover, h2:hover {
-        color: hsl(0, 0%, 100%);
-        animation: path 1.5s linear 0.5s infinite;
-    }
-
-    @keyframes path {
-        0%, 34%, 71%, 100% {
-            transform: scale(1);
-        }
-        17% {
-            transform: scale(1.2);
-        }
-        49% {
-            transform: scale(1.2);
-        }
-        83% {
-            transform: scale(1.2);
-        }
-
-        /* === removing default button style ===*/
-        .button {
-          margin: 0;
-          height: auto;
-          background: transparent;
-          padding: 0;
-          border: none;
-          cursor: pointer;
-          position: relative;
-          font-size: 2em;
-          font-family: Arial, sans-serif;
-          text-transform: uppercase;
-          color: transparent;
-          letter-spacing: 3px;
-          text-decoration: none;
-          -webkit-text-stroke: 1px rgba(255,255,255,0.6);
-        }
-
-        /* Styling for the hover text */
-        .button .hover-text {
-          position: absolute;
-          content: attr(data-text);
-          color: #37FF8B;
-          width: 0%;
-          overflow: hidden;
-          border-right: 6px solid #37FF8B;
-          transition: 0.5s;
-          -webkit-text-stroke: 1px rgba(255,255,255,0.6);
-        }
-
-        /* This is for the visible text */
-        .button .actual-text {
-          position: relative;
-          color: transparent;
-          -webkit-text-stroke: 1px rgba(255,255,255,0.6);
-        }
-
-        /* Hover effect */
-        .button:hover .hover-text {
-          width: 100%;
-          filter: drop-shadow(0 0 23px #37FF8B);
-        }
-    }
 </style>
 @endpush
 
 @section('content')
 <header class="bg-dark text-center py-3">
-    <h1 class="text-warning">Reseñas</h1>
+    <h1 class="text-warning">Reviews</h1>
 </header>
 
 <section class="container mt-5">
     <div class="row">
         <div class="col-md-6 offset-md-3">
-            <h2 class="text-warning text-center">Agrega tu reseña</h2>
+            <h2 class="text-warning text-center">Agrega tu Reseña</h2>
 
             {{-- Mostrar mensaje de éxito solo si existe --}}
             @if(session('success'))
@@ -223,22 +137,23 @@
                 </div>
             @endif
 
-            <form action="{{ route('reseñas.store') }}" method="POST" class="mt-4">
+            <form action="{{ route('review.store') }}" method="POST" class="mt-4">
+
                 @csrf
 
-                <!-- Campo de Folio -->
+          
                 <div class="container">
                     <input type="text" id="folio" name="folio" class="input" placeholder=" " required>
                     <label for="folio" class="label">Folio (para calificar la comida):</label>
                 </div>
 
-                <!-- Texto de Reseña -->
+           
                 <div class="container">
                     <textarea id="contenido" name="contenido" class="input" rows="4" placeholder=" " required></textarea>
-                    <label for="contenido" class="label">Reseña:</label>
+                    <label for="contenido" class="label">Review:</label>
                 </div>
 
-                <!-- Calificación con estrellas -->
+          
                 <div class="mb-3">
                     <label class="form-label text-white">Calificación:</label>
                     <div class="radio">
@@ -253,12 +168,9 @@
                     </div>
                 </div>
 
-                <!-- Botón de Envío -->
+              
                 <div class="text-center">
-                    <button type="submit" class="button" data-text="Enviar Reseña">
-                        <span class="actual-text">&nbsp;Enviar Reseña&nbsp;</span>
-                   
-                    </button>
+                    <button type="submit" class="btn-primary">Enviar Review</button>
                 </div>
             </form>
         </div>
