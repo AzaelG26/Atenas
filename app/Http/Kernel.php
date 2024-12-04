@@ -67,6 +67,5 @@ class Kernel extends HttpKernel
         'employee' => \App\Http\Middleware\EmployeeMiddleware::class,
         'hasPersonalData' => \App\Http\Middleware\CheckDPuser::class,
         'check.post.method' => \App\Http\Middleware\CheckPostMethod::class,
-        'validate.method' => \App\Http\Middleware\ValidateHttpMethod::class,
     ];
 }

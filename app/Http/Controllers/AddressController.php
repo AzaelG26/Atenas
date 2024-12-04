@@ -103,14 +103,15 @@ class AddressController extends Controller
                 $interiorNumber,
                 $outerNumber
             ]);
-
+        
             $result = DB::select('SELECT @id_address AS id_address');
-
-            return redirect()->route('addresses')
+        
+            return redirect()->route('addresses.form')
                 ->with('success', 'Dirección registrada exitosamente.');
+
         } catch (\Exception $e) {
-            return redirect()->route('addresses')->with('error', 'Error al registrar la dirección: ' . $e->getMessage());
-        }
+            return redirect()->route('addresses.form')->with('error', 'Error al registrar la dirección: ' . $e->getMessage());
+        }        
     }
 
 
