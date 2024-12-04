@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
+
+use Carbon\Carbon;
+
 use App\Models\OnlineOrder;
 use App\Models\Order;
-use App\Models\Menu;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
 
 
 class ordersController extends Controller
 {
-    // Para el menu del welcome
-    public function getAllMenu()
-    {
-        $menu = Menu::all();
-        return view('welcome', compact('menu'));
-    }
+
 
     public function showProfits(Request $request)
     {
@@ -117,7 +114,6 @@ class ordersController extends Controller
             'folio',
         ])->whereIn('status', ['Pending', 'In Process'])->orderBy('created_at', 'asc')->get();
 
-        // dd($order->diner_name);
 
         return view('orders', compact(['onlineOrder', 'orders']));
     }
@@ -194,11 +190,21 @@ class ordersController extends Controller
      */
     public function create(Request $request)
     {
-
         try {
+            // Inicia la transacción
             DB::beginTransaction();
 
-            $menuItems = $request->input('menu_items');
+            // Validar los datos de entrada
+            $validated = $request->validate([
+                'diner_name' => 'required|max:100', // Campo obligatorio con un límite de caracteres
+                'menu_items.*.id_menu' => 'required|exists:menu,id_menu', // Asegura que los IDs existan en la tabla 'menu'
+                'menu_items.*.quantity' => 'required|integer|min:1', // La cantidad debe ser un entero mayor o igual a 1
+                'menu_items.*.notes' => 'nullable|string', // Opcional, si está presente debe ser texto
+                'menu_items.*.specifications' => 'nullable|string', // Opcional, si está presente debe ser texto
+            ]);
+
+            // Calcular el precio total
+            $menuItems = $validated['menu_items']; // Usa los datos validados
             $totalPrice = 0;
 
             foreach ($menuItems as $item) {
@@ -206,71 +212,42 @@ class ordersController extends Controller
                 $totalPrice += $menuItem->price * $item['quantity'];
             }
 
+            // Obtener el empleado autenticado
             $employee = Auth::user()->people->employees->id_employee;
 
-            $validated = $request->validate([
-                'diner_name' => 'required|max:100',
-                'menu_items.*.quantity' => 'integer|min:1',
-                'menu_items.*.notes' => 'nullable|string',
-                'menu_items.*.specifications' => 'nullable|string',
-            ]);
-
-            // dd($request);
+            // Crear la orden
             $order = new Order();
-            $order->diner_name = $request->input('diner_name');
+            $order->diner_name = $validated['diner_name']; // Usa el valor validado
             $order->status = 'Pending';
             $order->id_employee = $employee;
             $order->total_price = $totalPrice;
             $order->save();
-            // dd($order::all());
 
+            // Crear los detalles de la orden
             foreach ($menuItems as $item) {
                 $orderDetail = new OrderDetail();
-                $orderDetail->id_order = $order->id_order;  // Relacionar con la orden creada
+                $orderDetail->id_order = $order->id_order; // Relacionar con la orden creada
                 $orderDetail->id_menu = $item['id_menu'];
                 $orderDetail->quantity = $item['quantity'];
-                $orderDetail->notes = $item['notes'];
-                $orderDetail->specifications = $item['specifications'];
+                $orderDetail->notes = $item['notes'] ?? null;
+                $orderDetail->specifications = $item['specifications'] ?? null;
                 $orderDetail->save();
             }
 
+            // Confirmar la transacción
             DB::commit();
+
+            // Redireccionar con éxito
             return redirect()->route('formOrders')->with('success', 'Orden y platillos guardados con éxito.');
         } catch (\Exception $e) {
+            // Revertir la transacción en caso de error
             DB::rollBack();
 
-            return redirect()->route('formOrders')->with('error', 'Hubo un error al crear la orden. Error: ' . $e->getMessage());
+            // Redireccionar con error
+            return redirect()->route('formOrders')->with('error', 'Hubo un error al crear la orden: ' . $e->getMessage());
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
@@ -313,16 +290,16 @@ class ordersController extends Controller
         $order->save();
 
         if ($order->status == 'Completed') {
-            // Llamar al procedimiento almacenado
             DB::statement('CALL GenerateFolioAfterOrderCompleted(?)', [$order->id_order]);
+            return redirect()->route('orders')->with('success', 'La orden ha sido Completada');
         }
 
         if ($order->status == 'Canceled') {
             return redirect()->route('orders')->with('success', 'Se ha cancelado la orden');
-        } else if ($order->status == 'In Process') {
+        }
+
+        if ($order->status == 'In Process') {
             return redirect()->route('orders')->with('success', 'La orden ha sido atendida');
-        } else if ($order->status == 'Completed') {
-            return redirect()->route('orders')->with('success', 'La orden ha sido Completada');
         }
     }
 

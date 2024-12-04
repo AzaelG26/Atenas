@@ -144,8 +144,7 @@
                             De: {{ $orden->diner_name }}
                         </h5>
                         <div class="card-body" style="overflow-y: auto;">                    
-                                <h5 class="card-title">
-                                
+                                <h5 class="card-title">                                
                                     @if($orden->folio)
                                         <p>Folio: {{ $orden->folio->identifier }}</p>
                                     @else

@@ -3,25 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use App\Notifications\AccountDeactivated;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
+use App\Notifications\AccountDeactivated;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Mostrar la página de edición de perfil.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request)
     {
         return view('profile.edit', [
             'user' => $request->user(),
@@ -29,11 +24,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Actualizar la información del perfil del usuario.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
@@ -44,110 +38,68 @@ class ProfileController extends Controller
             'username' => [
                 'required',
                 'string',
-                'min:4', 
+                'min:4',
                 'max:255',
                 Rule::unique('users')->ignore($request->user()->id),
             ],
             'gender' => 'required|in:Male,Female,Other',
             'birthdate' => 'required|date_format:d/m/Y',
             'cellphone_number' => 'required|string|max:15',
-            'password' => 'required_if:email,' . $request->user()->email, 
-        ], [
-            'username.min' => 'El nombre de usuario debe tener al menos 4 caracteres.', 
         ]);
 
         $user = $request->user();
 
-        
-        if ($user->email !== $request->input('email')) {
-           
+        if ($user->email !== $validated['email']) {
             if (!Hash::check($request->input('password'), $user->password)) {
                 return redirect()->route('profile.edit')->withErrors(['password' => 'La contraseña es incorrecta para confirmar el cambio de correo electrónico.']);
-        }
-            
+            }
+
             $user->email_verified_at = null;
         }
 
-       
-        $birthdate = $request->input('birthdate');
-        try {
-            $formattedBirthdate = Carbon::createFromFormat('d/m/Y', $birthdate)->format('Y-m-d');
-        } catch (\Exception $e) {
-            return redirect()->route('profile.edit')->withErrors(['birthdate' => 'Fecha de nacimiento inválida. Debe estar en formato dd/mm/yyyy.']);
-        }
-// 
+        $formattedBirthdate = Carbon::createFromFormat('d/m/Y', $validated['birthdate'])->format('Y-m-d');
         $age = Carbon::parse($formattedBirthdate)->diffInYears(Carbon::now());
+
         if ($age < 18) {
             return redirect()->route('profile.edit')->withErrors(['birthdate' => 'Debes ser mayor de 18 años.']);
         }
 
-        $user->fill([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'username' => $request->input('username'),
-            'gender' => $request->input('gender'),
+        $user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'username' => $validated['username'],
+            'gender' => $validated['gender'],
             'birthdate' => $formattedBirthdate,
-            'cellphone_number' => $request->input('cellphone_number'),
+            'cellphone_number' => $validated['cellphone_number'],
         ]);
 
-       
-        $user->save();
-
-       
-        session()->flash('status', '¡Los datos se actualizaron correctamente!');
-
-        return redirect()->route('profile.edit');
+        return redirect()->route('profile.edit')->with('status', '¡Perfil actualizado con éxito!');
     }
 
     /**
-     * Delete the user's account.
+     * Desactivar la cuenta del usuario.
      */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current-password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/')->with('status', 'Tu cuenta ha sido eliminada exitosamente');
-    }
-
-    /**
-     * Deactivate the user's account.
-     */
-    public function deactivateAccount(Request $request): RedirectResponse
+    public function deactivateAccount(Request $request)
     {
         $user = $request->user();
-        $user->active = 0; 
-        $user->save();
+        $user->update(['active' => false]); // Cambiar el estado a inactivo (false)
 
-        
+        // Notificar al usuario sobre la desactivación
         $user->notify(new AccountDeactivated($user));
 
-       
-        dd('Correo enviado a: ' . $user->email);
-
+        // Cerrar sesión automáticamente
         Auth::logout();
 
-        return redirect('/')->with('status', 'Tu cuenta ha sido desactivada. Podrás activarla nuevamente al iniciar sesión o contactar al administrador.');
+        return redirect('/')->with('status', 'Tu cuenta ha sido desactivada. Podrás activarla nuevamente iniciando sesión o contactando al administrador.');
     }
 
     /**
-     * Activate a user's account.
+     * Activar la cuenta del usuario (para uso del administrador).
      */
-    public function activateAccount($userId): RedirectResponse
+    public function activateAccount($userId)
     {
         $user = User::findOrFail($userId);
-        $user->active = 1; //activar la cuenta del tilin
-        $user->save();
+        $user->update(['active' => true]); // Cambiar el estado a activo (true)
 
         return redirect()->back()->with('status', 'La cuenta ha sido activada.');
     }

@@ -147,7 +147,7 @@
     if (!valid) {
         e.preventDefault(); 
     } else {
-        // Limpia el carrito al procesar el pago
+       
         localStorage.removeItem('cart');
         updateCartCount();
     }

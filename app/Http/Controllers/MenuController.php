@@ -17,7 +17,7 @@ class MenuController extends Controller
         $categorias = Category::with(['menu' => function ($query) {
             $query->with('stock');
         }])->get();
-
+      
         return view('Menu', compact('categorias'));
     }
 

@@ -546,7 +546,7 @@
         </span>
     </div>
 
-    
+
     
     <div id="img">
         {{-- <img src="LOGO_ATENAS.jpg" alt="sjjj"> --}}
@@ -578,7 +578,10 @@
                                 <a class="nav-link" href="#container-contacto-index">Contacto</a>
                             </li>
                             <li class="nav-item" style="display: flex; margin-right:50px">
-                                <a class="nav-link" href="{{route('reseñas')}}">Reseñas</a>
+
+    <a class="nav-link" href="#container-resenias-index">Reseñas</a>
+</li>
+
                                 
                             </li>
                             
@@ -694,18 +697,71 @@
     </div>
 
     <section id="container-resenias-index">
-        <div id="interno-resenias-index">                
-            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                <div class="card-header">
-                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Reseñas</h2></div>                        
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                </div>
+    <div id="interno-resenias-index">                
+        <div class="card" style="height: 35em; background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
+            <div class="card-header">
+                <!-- Contenedor Flex para alinear el título y el botón -->
+                <div style="display: flex; justify-content: space-between; align-items: center; height: 100px; font-family: 'Monda', sans-serif;">
+                    <!-- Título Reseñas -->
+                    <h2 class="subtitulos" style="cursor: context-menu;">Reseñas</h2>
+                    <!-- Botón para abrir el modal (este es el único botón) -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+                        Agregar Reseña
+                    </button>
+                </div>                        
+            </div>
+            <div class="card-body">
+    <h5 class="card-title">Reseñas</h5>
+    <!-- Mostrar las reseñas -->
+    @foreach ($reseñas as $reseña)
+        <div class="mb-3">
+            <h6>{{ $reseña->folio }}</h6> <!-- Título o folio de la reseña -->
+            <p class="card-text">{{ $reseña->contenido }}</p> <!-- Contenido de la reseña -->
+            <p class="card-text">Calificación: {{ $reseña->rating }} estrellas</p> <!-- Calificación -->
+        </div>
+    @endforeach
+</div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Modal de agregar reseña -->
+<div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReviewModalLabel">Agregar una reseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('review.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="folio" class="form-label">Folio</label>
+                        <input type="text" class="form-control" id="folio" name="folio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contenido" class="form-label">Contenido</label>
+                        <textarea class="form-control" id="contenido" name="contenido" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Calificación</label>
+                        <select class="form-control" id="rating" name="rating" required>
+                            <option value="1">1 estrella</option>
+                            <option value="2">2 estrellas</option>
+                            <option value="3">3 estrellas</option>
+                            <option value="4">4 estrellas</option>
+                            <option value="5">5 estrellas</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar reseña</button>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</div>
+
 
 
     <section id="container-contacto-index">
