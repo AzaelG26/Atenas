@@ -20,15 +20,20 @@ class ordersController extends Controller
 
     public function historySingle()
     {
+        $usuario = optional(Auth::user()->people)->id;
+        // dd($usuario);
         $pedidos = OnlineOrder::with([
             'folio',
+            'people',
             'onlineOrderDetails.menu',
             'people' => function ($query) {
                 $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
             }
-        ])->orderBy('created_at', 'asc')
-            ->paginate(20)
-            ->through(function ($order) {
+        ])
+            ->where('id_people', $usuario)
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->map(function ($order) {
                 $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
                     return $detail->menu->name;
                 })->implode(', ');
@@ -36,6 +41,7 @@ class ordersController extends Controller
                 return $order;
             });
         // dd($pedidos);
+
         return view('historial', ['pedidos' => $pedidos]);
     }
 
@@ -47,7 +53,9 @@ class ordersController extends Controller
 
         $ventasOnline = OnlineOrder::with([
             'onlineOrderDetails.menu',
-        ])->orderBy('created_at', 'asc');
+        ])
+            ->where('status', 'Completed')
+            ->orderBy('created_at', 'asc');
 
         if ($mes = $request->input('mes')) {
             $ventas = $ventas->whereMonth('created_at', $mes);
@@ -210,20 +218,18 @@ class ordersController extends Controller
     public function create(Request $request)
     {
         try {
-            // Inicia la transacción
             DB::beginTransaction();
 
-            // Validar los datos de entrada
             $validated = $request->validate([
-                'diner_name' => 'required|max:100', // Campo obligatorio con un límite de caracteres
-                'menu_items.*.id_menu' => 'required|exists:menu,id_menu', // Asegura que los IDs existan en la tabla 'menu'
-                'menu_items.*.quantity' => 'required|integer|min:1', // La cantidad debe ser un entero mayor o igual a 1
-                'menu_items.*.notes' => 'nullable|string', // Opcional, si está presente debe ser texto
-                'menu_items.*.specifications' => 'nullable|string', // Opcional, si está presente debe ser texto
+                'diner_name' => 'required|max:100',
+                'menu_items.*.id_menu' => 'required|exists:menu,id_menu',
+                'menu_items.*.quantity' => 'required|integer|min:1',
+                'menu_items.*.notes' => 'nullable|string',
+                'menu_items.*.specifications' => 'nullable|string',
             ]);
 
             // Calcular el precio total
-            $menuItems = $validated['menu_items']; // Usa los datos validados
+            $menuItems = $validated['menu_items'];
             $totalPrice = 0;
 
             foreach ($menuItems as $item) {
@@ -231,21 +237,19 @@ class ordersController extends Controller
                 $totalPrice += $menuItem->price * $item['quantity'];
             }
 
-            // Obtener el empleado autenticado
             $employee = Auth::user()->people->employees->id_employee;
 
-            // Crear la orden
             $order = new Order();
-            $order->diner_name = $validated['diner_name']; // Usa el valor validado
+            $order->diner_name = $validated['diner_name'];
             $order->status = 'Pending';
             $order->id_employee = $employee;
             $order->total_price = $totalPrice;
             $order->save();
 
-            // Crear los detalles de la orden
+            // detalles de la orden
             foreach ($menuItems as $item) {
                 $orderDetail = new OrderDetail();
-                $orderDetail->id_order = $order->id_order; // Relacionar con la orden creada
+                $orderDetail->id_order = $order->id_order; // Relacion con la orden creada
                 $orderDetail->id_menu = $item['id_menu'];
                 $orderDetail->quantity = $item['quantity'];
                 $orderDetail->notes = $item['notes'] ?? null;
@@ -253,16 +257,16 @@ class ordersController extends Controller
                 $orderDetail->save();
             }
 
-            // Confirmar la transacción
+
             DB::commit();
 
-            // Redireccionar con éxito
+
             return redirect()->route('formOrders')->with('success', 'Orden y platillos guardados con éxito.');
         } catch (\Exception $e) {
-            // Revertir la transacción en caso de error
+
             DB::rollBack();
 
-            // Redireccionar con error
+
             return redirect()->route('formOrders')->with('error', 'Hubo un error al crear la orden: ' . $e->getMessage());
         }
     }
