@@ -618,9 +618,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#container-menu-index">Menú</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#container-contacto-index">Contacto</a>
-                            </li>
+                            
                             <li class="nav-item" style="display: flex; margin-right:50px">
                                 <a class="nav-link" href="#container-resenias-index">Reseñas</a>
                             </li>
@@ -837,22 +835,7 @@
         </div>
     </div>
 </div>
-
-
-
-    <section id="container-contacto-index">
-        <div id="interno-contacto-index">                
-            <div class="card" style="height: 35em;background-color: #131718; box-shadow: 0px 1px 10px rgba(29, 29, 29, 0.911);">
-                <div class="card-header">
-                    <div style="display:flex; justify-content:center; align-items:center;height:100px; font-family: 'Monda', sans-serif;"><h2 class="subtitulos" style="cursor:context-menu;">Contacto</h2></div>                        
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
     <section style=" margin-top:300px; width:100%;">
         @include('layout.base')
