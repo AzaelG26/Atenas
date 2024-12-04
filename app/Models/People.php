@@ -33,4 +33,9 @@ class People extends Model
     {
         return $this->hasOne(Employee::class, 'id_people');
     }
+
+    public function onlineOrders() {
+        return $this->hasMany(OnlineOrder::class, 'id_people');
+
+    }
 }

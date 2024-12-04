@@ -123,6 +123,14 @@ class MenuController extends Controller
         return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
     }
 
+    $user = auth()->user()->people?->id;
+
+        if ($user) {
+            $idClient = $user;
+        } else {
+            return redirect()->route('addresses')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
+        }
+
     $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
     $selectedAddressId = $request->input('selectedAddress');
 
@@ -139,17 +147,18 @@ class MenuController extends Controller
 
     $receiverName = $request->input('receiver_name');
     $notes = $request->input('notes');
+    $specifications = $request->input('specifications');
 
     try {
         DB::beginTransaction();
-
+        
         $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?, ?)', [
             1,
             $totalPrice,
             'Completed',
             $receiverName,
             $notes,
-            Auth::id(),
+            $idClient,
             $totalPrice,
             $selectedAddressId,
         ]);
@@ -159,12 +168,18 @@ class MenuController extends Controller
 
         DB::update('UPDATE online_orders SET status = ? WHERE id_online_order = ?', ['Paid', $newOrderId]);
 
+        $specifications = $request->input('specifications', []);
+            foreach ($carrito as $index => &$item) {
+                $item['specifications'] = $specifications[$index] ?? null;
+            }
+
+
         foreach ($carrito as $item) {
             DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
                 $newOrderId,
                 $item['menuId'],
                 $item['quantity'] ?? 1,
-                $item['specifications'] ?? null,
+                $item['specifications'],
             ]);
         }
 

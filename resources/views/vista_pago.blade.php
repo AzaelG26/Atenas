@@ -40,32 +40,7 @@
     @endif
 
     @if (!empty($carrito))
-<div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-    <table class="table table-dark table-hover mt-4">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Precio Unitario</th>
-                <th>Subtotal</th>
-                <th>Detalle</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($carrito as $index => $item)
-            <tr>
-                <td>{{ $item['name'] }}</td>
-                <td>MX${{ number_format($item['price'], 2) }}</td>
-                <td>MX${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
-                <td>
-                    <div class="detail-input mt-2">
-                        <input type="text" name="specifications[{{ $index }}]" class="form-control mb-2" placeholder="Escriba un detalle (opcional)">
-                    </div>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+    
 
 
 
@@ -78,6 +53,33 @@
     <form method="POST" action="{{ route('procesar.pago') }}" id="paymentForm">
     @csrf
     <input type="hidden" name="selectedAddress" value="{{ $selectedAddress->id_address ?? '' }}">
+
+    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-dark table-hover mt-4">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                    <th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($carrito as $index => $item)
+                <tr>
+                    <td>{{ $item['name'] }}</td>
+                    <td>MX${{ number_format($item['price'], 2) }}</td>
+                    <td>MX${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
+                    <td>
+                        <div class="detail-input mt-2">
+                            <input type="text" name="specifications[{{ $index }}]" class="form-control mb-2" placeholder="Escriba un detalle (opcional)">
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <div class="mb-3">
         <label for="receiverName" class="form-label">Nombre del Receptor</label>
