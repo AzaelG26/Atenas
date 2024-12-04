@@ -68,7 +68,6 @@
             @foreach ($categoria->menu as $menu)
                 <div class="col-md-4">
                     <div class="card menu-card">
-                        <img src="path/to/image.jpg" class="card-img-top" alt="{{ $menu->name }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $menu->name }}</h5>
                             <p class="card-text">{{ $menu->description }}</p>
@@ -86,7 +85,6 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                             </div>
                             <div class="modal-body">
-                                <img src="path/to/image.jpg" alt="{{ $menu->name }}" class="img-fluid mb-3">
                                 <p>{{ $menu->description }}</p>
                                 <h6>Precio: MX${{ $menu->price }}.00</h6>
                                 <p>Stock disponible: 
@@ -165,84 +163,3 @@
 @endsection
 
 
-@section('scripts')
-<script>
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-function updateCartCount() {
-    document.getElementById('cart-count').textContent = cart.length;
-}
-
-function addToCart(name, price, id_menu) {
-    if (!name || isNaN(price)) {
-        console.error(`Error al agregar al carrito: datos inválidos. Nombre: ${name}, Precio: ${price}`);
-        return;
-    }
-    const quantity = parseInt(document.getElementById(`quantity${id_menu}`).value) || 1;
-    cart.push({ name, price: parseFloat(price), quantity });
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-    alert(`${name} añadido al carrito.`);
-}
-
-// Muestra los productos en el carrito dentro del modal
-function toggleCart() {
-    const cartItemsContainer = document.getElementById('cart-items');
-    cartItemsContainer.innerHTML = '';
-    let total = 0;
-
-    if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
-    } else {
-        cart.forEach((item, index) => {
-            total += item.price;
-            const itemRow = document.createElement('div');
-            itemRow.classList.add('cart-item');
-            itemRow.innerHTML = `
-                <p>${item.name} - MX$${item.price.toFixed(2)}</p>
-                <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
-            `;
-            cartItemsContainer.appendChild(itemRow);
-        });
-        cartItemsContainer.innerHTML += `<h5>Total: MX$${total.toFixed(2)}</h5>`;
-    }
-
-    const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
-    cartModal.show();
-}
-
-// Elimina un producto del carrito
-function removeFromCart(index) {
-    cart.splice(index, 1); // Remueve el producto del array
-    localStorage.setItem('cart', JSON.stringify(cart)); // Actualiza localStorage
-
-    // Actualiza el DOM para eliminar el producto eliminado
-    const cartItemsContainer = document.getElementById('cart-items');
-    const cartItemElements = cartItemsContainer.getElementsByClassName('cart-item');
-    if (cartItemElements[index]) {
-        cartItemElements[index].remove(); // Elimina el elemento visual
-    }
-
-    // Recalcula y actualiza el total
-    let total = cart.reduce((acc, item) => acc + item.price, 0);
-    const totalElement = document.querySelector('#cart-items h5');
-    if (totalElement) {
-        totalElement.textContent = `Total: MX$${total.toFixed(2)}`;
-    }
-
-    // Actualiza el contador del carrito
-    updateCartCount();
-
-    // Si el carrito está vacío, muestra el mensaje de carrito vacío
-    if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
-    }
-}
-
-
-// Al cargar la página, inicializa el contador del carrito
-document.addEventListener('DOMContentLoaded', function () {
-    updateCartCount();
-});
-</script>
-@endsection

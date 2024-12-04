@@ -95,21 +95,17 @@ class CartController extends Controller
         if (!$cart) {
             return response()->json(['message' => 'El carrito está vacío'], 400);
         }
-    
-        $items = json_decode($cart->items, true);
-        $index = $request->input('index'); // El índice del producto a eliminar
-    
-        if (isset($items[$index])) {
-            unset($items[$index]); // Elimina el producto del array
-            $items = array_values($items); // Reorganiza los índices
-            $cart->items = json_encode($items);
-            $cart->save();
-        }
-    
-        return response()->json(['message' => 'Producto eliminado del carrito', 'cart' => $items]);
-    }
-    
 
+        $items = json_decode($cart->items, true);
+        $menuId = $request->input('menuId');
+
+        $items = array_filter($items, fn($item) => $item['menuId'] !== $menuId);
+
+        $cart->items = json_encode(array_values($items));
+        $cart->save();
+
+        return response()->json(['message' => 'Producto eliminado del carrito']);
+    }
 
     // Vaciar el carrito
     public function clearCart(Request $request)

@@ -118,7 +118,7 @@
     </div>
 @endif
 
-<div class="container mt-4">
+<div class="container mt-4" style="color:#ffca28">
     <h2>Gestionar Direcciones</h2>
 
     <div class="form-check">

@@ -291,47 +291,31 @@
 
     // Función para eliminar un producto por unidad del carrito
     function removeFromCart(index) {
-    // Eliminar el producto en el carrito local
-    cart.splice(index, 1);
+        cart.splice(index, 1); // Remueve el producto del array
+        localStorage.setItem('cart', JSON.stringify(cart)); // Actualiza localStorage
 
-    // Actualizar localStorage
-    localStorage.setItem('cart', JSON.stringify(cart));
+        // Actualiza el DOM para eliminar el producto eliminado
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartItemElements = cartItemsContainer.getElementsByClassName('cart-item');
+        if (cartItemElements[index]) {
+            cartItemElements[index].remove(); // Elimina el elemento visual
+        }
 
-    // Refrescar el modal inmediatamente
-    toggleCart();
+        // Recalcula y actualiza el total
+        let total = cart.reduce((acc, item) => acc + item.price, 0);
+        const totalElement = document.querySelector('#cart-items h5');
+        if (totalElement) {
+            totalElement.textContent = `Total: MX$${total.toFixed(2)}`;
+        }
 
-    // Sincronizar con el backend
-    fetch('/cart/remove', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-        body: JSON.stringify({ index }),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al comunicarse con el servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                console.log('Producto eliminado con éxito:', data);
-            } else {
-                console.error('Error desde el servidor:', data.message);
-                alert(data.message || 'No se pudo eliminar el producto.');
-            }
-        })
-        .catch(error => {
-            console.error('Error en la solicitud:', error);
-            alert('Ocurrió un problema al intentar eliminar el producto.');
-        });
-}
+        // Actualiza el contador del carrito
+        updateCartCount();
 
-
-
-
+        // Si el carrito está vacío, muestra el mensaje de carrito vacío
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+        }
+    }
 
     // Función para incrementar la cantidad de un producto
     function increaseQuantity(menuId, stock) {

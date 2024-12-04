@@ -21,7 +21,7 @@
 @endif
 
 <div class="container my-5">
-    <h1 class="text-center text-light">Simulación de Pago</h1>
+    <h1 class="text-center text-light">Completa tu Pago</h1>
 
     @if (!empty($selectedAddress))
         <div class="card bg-light mb-3">
@@ -52,7 +52,6 @@
             <tbody>
                 @php 
                     $grandTotal = 0; 
-                    $counter = 1; // Contador para numerar los productos
                 @endphp
                 @foreach ($carrito as $item)
                     @php 
