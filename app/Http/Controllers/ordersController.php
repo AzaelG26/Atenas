@@ -1,20 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 
 use App\Models\OnlineOrder;
 use App\Models\Order;
-use App\Models\Menu;
-use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
 
 
 class ordersController extends Controller
 {
+    // Para el menu del welcome
+    public function getAllMenu()
+    {
+        $menu = Menu::all();
+        return view('welcome', compact('menu'));
+    }
 
     public function showProfits(Request $request)
     {
@@ -111,7 +115,6 @@ class ordersController extends Controller
             'folio',
         ])->whereIn('status', ['Pending', 'In Process'])->orderBy('created_at', 'asc')->get();
 
-        // dd($order->diner_name);
 
         return view('orders', compact(['onlineOrder', 'orders']));
     }
@@ -125,7 +128,7 @@ class ordersController extends Controller
     public function getCompletedOrders()
     {
         $onlineCompleted = OnlineOrder::with([
-            'onlineOrderDetails.folio',
+            'folio',
             'onlineOrderDetails.menu',
             'people',
         ])->where('status', 'Completed')->orderBy('created_at', 'asc')->get();
@@ -137,14 +140,15 @@ class ordersController extends Controller
 
         return view('completedOrders', compact('onlineCompleted', 'localCompleted'));
     }
+
     public function getHistorialOrders()
     {
         $localHistorialOrders = Order::with([
             'orderDetail.menu',
             'folio',
         ])->orderBy('created_at', 'asc')
-            ->get()
-            ->map(function ($order) {
+            ->paginate(1)
+            ->through(function ($order) {
                 $order->product_names = $order->orderDetail->map(function ($detail) {
                     return $detail->menu->name;
                 })->implode(', ');
@@ -152,6 +156,7 @@ class ordersController extends Controller
                 return $order;
             });
 
+        // Paginación para las órdenes en línea
         $lineHistorialOrders = OnlineOrder::with([
             'onlineOrderDetails.folio',
             'onlineOrderDetails.menu',
@@ -159,14 +164,15 @@ class ordersController extends Controller
                 $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
             }
         ])->orderBy('created_at', 'asc')
-            ->get()
-            ->map(function ($order) {
+            ->paginate(1) // Paginar con 10 registros por página
+            ->through(function ($order) {
                 $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
                     return $detail->menu->name;
                 })->implode(', ');
 
                 return $order;
             });
+
 
         return view('historialOrders', compact(['localHistorialOrders', 'lineHistorialOrders']));
     }
@@ -183,7 +189,7 @@ class ordersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
 
         try {
@@ -202,11 +208,10 @@ class ordersController extends Controller
             $validated = $request->validate([
                 'diner_name' => 'required|max:100',
                 'menu_items.*.quantity' => 'integer|min:1',
-                'menu_items.*.notes' => 'nullable|string',
-                'menu_items.*.specifications' => 'nullable|string',
+                'menu_items.*.notes' => 'string',
+                'menu_items.*.specifications' => 'string',
             ]);
 
-            // dd($request);
             $order = new Order();
             $order->diner_name = $request->input('diner_name');
             $order->status = 'Pending';
@@ -222,6 +227,7 @@ class ordersController extends Controller
                 $orderDetail->quantity = $item['quantity'];
                 $orderDetail->notes = $item['notes'];
                 $orderDetail->specifications = $item['specifications'];
+                $orderDetail->status = 'Pending';
                 $orderDetail->save();
             }
 
@@ -230,9 +236,29 @@ class ordersController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->route('formOrders')->with('error', 'Hubo un error al crear la orden. Error: ' . $e->getMessage());
+            return redirect()->route('formOrders')->with('error', 'Hubo un error al crear la orden.');
         }
     }
+
+   
+    public function historialPedidos()
+    {
+        // Obtener pedidos físicos y online del usuario autenticado
+        $pedidosFisicos = Order::where('id_employee', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        // Cambiar id_user por id_people en la consulta de pedidos online
+        $pedidosOnline = OnlineOrder::where('id_people', Auth::id()) // Cambiar a id_people
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        // Combinar ambos pedidos en una colección y ordenarlos por fecha
+        $pedidos = $pedidosFisicos->merge($pedidosOnline)->sortByDesc('created_at');
+    
+        return view('historial', compact('pedidos'));
+    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -303,7 +329,10 @@ class ordersController extends Controller
         $order->status = $request->status;
         $order->save();
 
-
+        if ($order->status == 'Completed') {
+            // Llamar al procedimiento almacenado
+            DB::statement('CALL GenerateFolioAfterOrderCompleted(?)', [$order->id_order]);
+        }
 
         if ($order->status == 'Canceled') {
             return redirect()->route('orders')->with('success', 'Se ha cancelado la orden');

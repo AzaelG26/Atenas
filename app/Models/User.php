@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\People;
 use App\Models\Cart;
+use App\Models\Order; // Asegúrate de importar el modelo Order
 
 class User extends Authenticatable
 {
@@ -31,6 +31,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'email_verified_at',
         'password',
@@ -56,16 +57,16 @@ class User extends Authenticatable
         return $this->hasOne(People::class);
     }
 
-    public function pedidos()
+    // Cambié la relación de 'pedidos' a 'orders' y la clase a Order
+    public function orders()
     {
-        return $this->hasMany(Pedido::class);
+        return $this->hasMany(Order::class); // Relación con el modelo Order
     }
 
     public function cart()
     {
         return $this->hasOne(Cart::class);
     }
-
 
     /**
      * The attributes that should be cast.
