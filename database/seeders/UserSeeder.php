@@ -20,10 +20,11 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'javier',
-            'email' => 'javier@gmail.com',
+            'email' => 'atenasfoodoficial@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('admin1'), // password
+            'password' => Hash::make('administrador'), // password
             'active' => true,
+            'google_id' => null,
             'remember_token' => Str::random(10),
         ]);
     }
