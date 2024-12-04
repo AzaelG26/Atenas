@@ -93,7 +93,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::middleware(['auth', 'hasPersonalData', 'validate.method'])->group(function () {
+    Route::middleware(['auth', 'hasPersonalData'])->group(function () {
 
         Route::get('/menu', [MenuController::class, 'index'])->name('menu');
         Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
