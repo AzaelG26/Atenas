@@ -58,6 +58,8 @@
                 <thead>
                     <tr>
                         <th class="head">Cliente</th>
+                        <th class="head">Folio</th> 
+                        <th class="head">Platillos</th>                       
                         <th class="head">Estado</th>
                         <th class="head">Fecha</th>
                         <th class="head">Total</th>
@@ -66,7 +68,9 @@
                 <tbody class="table-dark">
                     @foreach ($pedidos as $pedido)
                         <tr>
-                            <td>{{ $pedido->people->name ?? 'Cliente no disponible' }}</td>
+                            <td>{{ $pedido->people->fullname ?? 'Cliente no disponible' }}</td>
+                            <td>{{$pedido->folio->identifier}}</td>
+                            <td>{{$pedido->product_names}}</td>
                             <td>
                                 <span class="badge 
                                     @if ($pedido->status == 'Pendiente') badge-warning 
@@ -76,7 +80,7 @@
                                     {{ $pedido->status }}
                                 </span>
                             </td>
-                            <td>{{ $pedido->formatted_date ?? 'Fecha no disponible' }}</td>
+                            <td>{{ $pedido->created_at ?? 'Fecha no disponible' }}</td>
                             <td>{{ $pedido->total_price ? '$' . number_format($pedido->total_price, 2) : 'Total no disponible' }}</td>
                         </tr>
                     @endforeach

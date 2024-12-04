@@ -20,15 +20,20 @@ class ordersController extends Controller
 
     public function historySingle()
     {
+        $usuario = optional(Auth::user()->people)->id;
+        // dd($usuario);
         $pedidos = OnlineOrder::with([
             'folio',
+            'people',
             'onlineOrderDetails.menu',
             'people' => function ($query) {
                 $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
             }
-        ])->orderBy('created_at', 'asc')
-            ->paginate(20)
-            ->through(function ($order) {
+        ])
+            ->where('id_people', $usuario)
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->map(function ($order) {
                 $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
                     return $detail->menu->name;
                 })->implode(', ');
@@ -36,6 +41,7 @@ class ordersController extends Controller
                 return $order;
             });
         // dd($pedidos);
+
         return view('historial', ['pedidos' => $pedidos]);
     }
 
