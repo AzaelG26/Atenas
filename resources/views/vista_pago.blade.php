@@ -40,35 +40,35 @@
     @endif
 
     @if (!empty($carrito))
-    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-        <table class="table table-dark table-hover mt-4">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php 
-                    $grandTotal = 0; 
-                @endphp
-                @foreach ($carrito as $item)
-                    @php 
-                        $subtotal = $item['price'] * $item['quantity']; 
-                        $grandTotal += $subtotal;
-                    @endphp
-                    @for ($i = 1; $i <= $item['quantity']; $i++)
-                        <tr>
-                            <td>{{ $item['name'] }}</td>
-                            <td>MX${{ number_format($item['price'], 2) }}</td>
-                            <td>MX${{ number_format($item['price'], 2) }}</td>
-                        </tr>
-                    @endfor
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+<div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+    <table class="table table-dark table-hover mt-4">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($carrito as $index => $item)
+            <tr>
+                <td>{{ $item['name'] }}</td>
+                <td>MX${{ number_format($item['price'], 2) }}</td>
+                <td>MX${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
+                <td>
+                    <div class="detail-input mt-2">
+                        <input type="text" name="specifications[{{ $index }}]" class="form-control mb-2" placeholder="Escriba un detalle (opcional)">
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+
+
         <h3 class="text-end text-light mt-4">Total: MX${{ number_format($total, 2) }}</h3>
         
         
@@ -76,34 +76,54 @@
     <div class="card-header">Información de Pago</div>
     <div class="card-body">
     <form method="POST" action="{{ route('procesar.pago') }}" id="paymentForm">
-        @csrf
-        <input type="hidden" name="selectedAddress" value="{{ $selectedAddress->id_address ?? '' }}">
-        
-        <div class="mb-3">
-            <label for="cardNumber" class="form-label">Número de Tarjeta</label>
-            <input type="text" id="cardNumber" name="card_number" class="form-control" placeholder="1234 5678 9012 3456" required maxlength="16" minlength="16">
-            @error('card_number')
+    @csrf
+    <input type="hidden" name="selectedAddress" value="{{ $selectedAddress->id_address ?? '' }}">
+
+    <div class="mb-3">
+        <label for="receiverName" class="form-label">Nombre del Receptor</label>
+        <input type="text" id="receiverName" name="receiver_name" class="form-control" placeholder="Nombre de quien recibirá el pedido" required>
+        @error('receiver_name')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="mb-3">
+        <label for="notes" class="form-label">Notas</label>
+        <input type="text" id="notes" name="notes" class="form-control" placeholder="¿Quieres agregar una nota de cómo quieres que te entreguen tu pedido?" maxlength="1000">
+        @error('notes')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="mb-3">
+        <label for="cardNumber" class="form-label">Número de Tarjeta</label>
+        <input type="text" id="cardNumber" name="card_number" class="form-control" placeholder="1234 5678 9012 3456" required maxlength="16" minlength="16">
+        @error('card_number')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="expiryDate" class="form-label">Fecha de Expiración (MM/YY)</label>
+            <input type="text" id="expiryDate" name="expiry_date" class="form-control" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/\d{2}$">
+            @error('expiry_date')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="expiryDate" class="form-label">Fecha de Expiración (MM/YY)</label>
-                <input type="text" id="expiryDate" name="expiry_date" class="form-control" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/\d{2}$">
-                @error('expiry_date')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="cvv" class="form-label">CVV</label>
-                <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required maxlength="3" minlength="3">
-                @error('cvv')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="cvv" class="form-label">CVV</label>
+            <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required maxlength="3" minlength="3">
+            @error('cvv')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
-        <button type="submit" onclick="clearCart()" class="btn btn-success btn-lg w-100">Simular Pago</button>
-    </form>
+    </div>
+
+    <button type="submit" onclick="clearCart()" class="btn btn-success btn-lg w-100">Simular Pago</button>
+</form>
+
 
     </div>
 </div>
@@ -117,41 +137,41 @@
 
 @section('scripts')
 <script>
-    document.getElementById('paymentForm').addEventListener('submit', function (e) {
-    const cardNumber = document.getElementById('cardNumber').value.trim();
-    const expiryDate = document.getElementById('expiryDate').value.trim();
-    const cvv = document.getElementById('cvv').value.trim();
+    document.addEventListener('DOMContentLoaded', function () {
+        // Validar formulario de pago
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+            const cardNumber = document.getElementById('cardNumber').value.trim();
+            const expiryDate = document.getElementById('expiryDate').value.trim();
+            const cvv = document.getElementById('cvv').value.trim();
 
-    const cardNumberRegex = /^\d{16}$/;
-    const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
-    const cvvRegex = /^\d{3}$/;
+            const cardNumberRegex = /^\d{16}$/;
+            const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+            const cvvRegex = /^\d{3}$/;
 
-    let valid = true;
+            let valid = true;
 
-    if (!cardNumberRegex.test(cardNumber)) {
-        alert('El número de tarjeta debe tener 16 dígitos.');
-        valid = false;
-    }
+            if (!cardNumberRegex.test(cardNumber)) {
+                alert('El número de tarjeta debe tener 16 dígitos.');
+                valid = false;
+            }
 
-    if (!expiryDateRegex.test(expiryDate)) {
-        alert('La fecha de expiración debe tener el formato MM/YY.');
-        valid = false;
-    }
+            if (!expiryDateRegex.test(expiryDate)) {
+                alert('La fecha de expiración debe tener el formato MM/YY.');
+                valid = false;
+            }
 
-    if (!cvvRegex.test(cvv)) {
-        alert('El CVV debe tener 3 dígitos.');
-        valid = false;
-    }
+            if (!cvvRegex.test(cvv)) {
+                alert('El CVV debe tener 3 dígitos.');
+                valid = false;
+            }
 
-    if (!valid) {
-        e.preventDefault(); 
-    } else {
-       
-        localStorage.removeItem('cart');
-        updateCartCount();
-    }
-});
-
+            if (!valid) {
+                e.preventDefault();
+            } else {
+                localStorage.removeItem('cart');
+                updateCartCount();
+            }
+        });
+    });
 </script>
-
 @endsection
