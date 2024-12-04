@@ -289,14 +289,49 @@
         cartModal.show();
     }
 
-    // Función para eliminar un producto del carrito
+    // Función para eliminar un producto por unidad del carrito
     function removeFromCart(index) {
-        cart.splice(index, 1);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        toggleCart();
-        updateCartCount();
-        checkCartLimit(); // Recheck the cart limit after removal
-    }
+    // Eliminar el producto en el carrito local
+    cart.splice(index, 1);
+
+    // Actualizar localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Refrescar el modal inmediatamente
+    toggleCart();
+
+    // Sincronizar con el backend
+    fetch('/cart/remove', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
+        body: JSON.stringify({ index }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al comunicarse con el servidor');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                console.log('Producto eliminado con éxito:', data);
+            } else {
+                console.error('Error desde el servidor:', data.message);
+                alert(data.message || 'No se pudo eliminar el producto.');
+            }
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+            alert('Ocurrió un problema al intentar eliminar el producto.');
+        });
+}
+
+
+
+
 
     // Función para incrementar la cantidad de un producto
     function increaseQuantity(menuId, stock) {
