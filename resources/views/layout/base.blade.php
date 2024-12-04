@@ -63,9 +63,7 @@
     <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
       <p>© 2024 Company, Inc. All rights reserved.</p>      
       <ul class="list-unstyled d-flex">
-        <li class="ms-3" style="padding-right: 30px;"><a class="link-body-emphasis" href="#"><i style="color: #977718; font-size:20px;" class="bi bi-whatsapp"></i></a></li>
-        <li class="ms-3" style="padding-right: 30px;"><a class="link-body-emphasis" href="#"><i style="color: #977718; font-size:20px;" class="bi bi-instagram"></i></a></li>
-        <li class="ms-3" style="padding-right: 30px;"><a class="link-body-emphasis" href="#"><i style="color: #977718; font-size:20px;" class="bi bi-facebook"></i></a></li>
+        <li class="ms-3" style="padding-right: 30px;"><a class="link-body-emphasis" href="https://www.facebook.com/profile.php?id=100084850736641"><i style="color: #977718; font-size:20px;" class="bi bi-facebook"></i></a></li>
       </ul>
 
     </div>

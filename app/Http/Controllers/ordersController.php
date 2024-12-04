@@ -15,6 +15,13 @@ use Carbon\Carbon;
 
 class ordersController extends Controller
 {
+    // Para el menu del welcome
+    public function getAllMenu()
+    {
+        // 
+        $menu = Menu::all();
+        return view('welcome', compact('menu'));
+    }
 
     public function showProfits(Request $request)
     {
@@ -125,7 +132,7 @@ class ordersController extends Controller
     public function getCompletedOrders()
     {
         $onlineCompleted = OnlineOrder::with([
-            'onlineOrderDetails.folio',
+            'folio',
             'onlineOrderDetails.menu',
             'people',
         ])->where('status', 'Completed')->orderBy('created_at', 'asc')->get();
@@ -137,14 +144,15 @@ class ordersController extends Controller
 
         return view('completedOrders', compact('onlineCompleted', 'localCompleted'));
     }
+
     public function getHistorialOrders()
     {
         $localHistorialOrders = Order::with([
             'orderDetail.menu',
             'folio',
         ])->orderBy('created_at', 'asc')
-            ->get()
-            ->map(function ($order) {
+            ->paginate(1)
+            ->through(function ($order) {
                 $order->product_names = $order->orderDetail->map(function ($detail) {
                     return $detail->menu->name;
                 })->implode(', ');
@@ -152,6 +160,7 @@ class ordersController extends Controller
                 return $order;
             });
 
+        // Paginación para las órdenes en línea
         $lineHistorialOrders = OnlineOrder::with([
             'onlineOrderDetails.folio',
             'onlineOrderDetails.menu',
@@ -159,14 +168,15 @@ class ordersController extends Controller
                 $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
             }
         ])->orderBy('created_at', 'asc')
-            ->get()
-            ->map(function ($order) {
+            ->paginate(1) // Paginar con 10 registros por página
+            ->through(function ($order) {
                 $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
                     return $detail->menu->name;
                 })->implode(', ');
 
                 return $order;
             });
+
 
         return view('historialOrders', compact(['localHistorialOrders', 'lineHistorialOrders']));
     }
@@ -303,7 +313,10 @@ class ordersController extends Controller
         $order->status = $request->status;
         $order->save();
 
-
+        if ($order->status == 'Completed') {
+            // Llamar al procedimiento almacenado
+            DB::statement('CALL GenerateFolioAfterOrderCompleted(?)', [$order->id_order]);
+        }
 
         if ($order->status == 'Canceled') {
             return redirect()->route('orders')->with('success', 'Se ha cancelado la orden');

@@ -50,6 +50,11 @@
 
             <div class="pb-3 mb-4 title-orders" style="display: flex; justify-content:space-between;">
                 <span class="fs-4 subtitle-orders"> &nbsp; &nbsp;<i class="bi bi-clock-history"></i> Historial de ventas</span>      
+                <a href="{{route('orders')}}" style="text-decoration:none;">
+                    <button type="button" title="Regresar a ordenes" class="btn btn-warning" >
+                        <i class="bi bi-box-arrow-left"></i> Regresar
+                    </button>  
+                </a>
             </div>
             <div>
                 <div style="display: flex; flex-wrap:wrap; justify-content:center;">
@@ -70,8 +75,7 @@
                             </div>
                             <div class="card-body" style="background-color: #212529;">
                                 <div class="tab-content" id="myTabContent">
-
-                                    <div class="tab-pane fade show active" id="line" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="tab-pane fade show active" id="line" role="tabpanel" aria-labelledby="home-tab" style="display: flex; flex-wrap:wrap; justify-content:center">
                                         <table class="table table-bordered border-dark">
                                             <thead style="border: 1px solid gray;">
                                                 <tr>
@@ -113,12 +117,42 @@
                                                 </tr>
                                             </tbody>
                                             @endforeach
-
                                         </table>
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                <!-- Enlace a la página anterior -->
+                                                @if ($lineHistorialOrders->onFirstPage())
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">Previous</span>
+                                                    </li>
+                                                @else
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="{{ $lineHistorialOrders->previousPageUrl() }}">Previous</a>
+                                                    </li>
+                                                @endif
+
+                                                <!-- Enlaces a las páginas -->
+                                                @foreach ($lineHistorialOrders->getUrlRange(1, $lineHistorialOrders->lastPage()) as $page => $url)
+                                                    <li class="page-item {{ $page == $lineHistorialOrders->currentPage() ? 'active' : '' }}">
+                                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                                    </li>
+                                                @endforeach
+
+                                                <!-- Enlace a la siguiente página -->
+                                                @if ($lineHistorialOrders->hasMorePages())
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="{{ $lineHistorialOrders->nextPageUrl() }}">Next</a>
+                                                    </li>
+                                                @else
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">Next</span>
+                                                    </li>
+                                                @endif
+                                            </ul>
+                                        </nav>
                                     </div>
 
                                     <div class="tab-pane fade" id="fisico" role="tabpanel" aria-labelledby="menu-tab" style="display: flex; flex-wrap:wrap; justify-content:center">
-
                                         <table class="table table-bordered border-dark">
                                             
                                             <thead style="border: 1px solid gray;">
@@ -132,13 +166,21 @@
                                                     <th class="head">
                                                         Precio total
                                                     </th>
+                                                    <th class="head">
+                                                        Estado de la compra
+                                                    </th>
+                                                    <th class="head">
+                                                        Folio
+                                                    </th>
+                                                    <th class="head">
+                                                        Fecha de la orden
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             @foreach ($localHistorialOrders as $local)
 
                                             <tbody class="table-dark">
-                                                <tr>
-                                                        
+                                                <tr>                                                            
                                                     <td>
                                                         {{$local->diner_name}}
                                                     </td>
@@ -148,11 +190,59 @@
                                                     <td>
                                                         {{$local->total_price}}
                                                     </td>
+                                                    <td>
+                                                        {{$local->status}}
+                                                    </td>
+                                                    @if ($local->folio)
+                                                        <td>
+                                                            {{$local->folio->identifier}}
+                                                        </td>                                                    
+                                                    @else
+                                                        <td>
+                                                            Folio no asignado
+                                                        </td>
+                                                    @endif
+                                                    <td>
+                                                        {{$local->created_at}}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                             @endforeach
 
                                         </table>
+
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                <!-- Enlace a la página anterior -->
+                                                @if ($localHistorialOrders->onFirstPage())
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">Previous</span>
+                                                    </li>
+                                                @else
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="{{ $localHistorialOrders->previousPageUrl() }}">Previous</a>
+                                                    </li>
+                                                @endif
+
+                                                <!-- Enlaces a las páginas -->
+                                                @foreach ($localHistorialOrders->getUrlRange(1, $localHistorialOrders->lastPage()) as $page => $url)
+                                                    <li class="page-item {{ $page == $localHistorialOrders->currentPage() ? 'active' : '' }}">
+                                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                                    </li>
+                                                @endforeach
+
+                                                <!-- Enlace a la siguiente página -->
+                                                @if ($localHistorialOrders->hasMorePages())
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="{{ $localHistorialOrders->nextPageUrl() }}">Next</a>
+                                                    </li>
+                                                @else
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">Next</span>
+                                                    </li>
+                                                @endif
+                                            </ul>
+                                        </nav>
                                     </div>
 
                                 </div>
@@ -164,13 +254,17 @@
     </main>
     <script>
         let tablaFisico = document.getElementById('fisico');
+        let tablaLine = document.getElementById('line');
         tablaFisico.style.display = 'none';
+        tablaLine.style.display = 'flex';
         function ocultarSeleccionPlatillo() {
             if (tablaFisico.style.display === 'none') {
                 tablaFisico.style.display = 'flex';
+                tablaLine.style.display = 'none';
 
             } else if(tablaFisico.style.display === 'flex') {
                 tablaFisico.style.display = 'none';
+                tablaLine.style.display = 'flex';
 
             }
         }

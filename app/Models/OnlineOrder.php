@@ -41,4 +41,8 @@ class OnlineOrder extends Model
     {
         return $this->hasMany(OnlineOrderDetail::class, 'id_online_order');
     }
+    public function folio()
+    {
+        return $this->belongsTo(Folio::class, 'id_folio');
+    }
 }

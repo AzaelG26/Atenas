@@ -56,21 +56,16 @@
                         </button>
                     </h5>
                     <div class="card-body" style="overflow-y: auto;">
-                        @if ($order->onlineOrderDetails->isNotEmpty())
-                            @php
-                                $firstDetail = $order->onlineOrderDetails->first();
-                            @endphp
+                       
                             <h5 class="card-title">
-                            
-                                @if($firstDetail->folio)
-                                    <p>Folio: {{ $firstDetail->folio->identifier }}</p>
-                                @else
+                            @if ($order->folio)                           
+                                    <p>Folio: {{ $order->folio->identifier }}</p>
+                            @else
                                     <p>No tiene folio asignado</p>
-                                @endif
+                            @endif
                                     <p>Fecha: {{ $order->created_at }}</p>
                                     <p>Estado: {{$order->status}}</p>
                             </h5>
-                        @endif
 
 
                         @foreach($order->onlineOrderDetails as $detail)                    
