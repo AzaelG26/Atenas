@@ -93,7 +93,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-
+    Route::middleware(['auth', 'hasPersonalData', 'validate.method'])->group(function () {
 
     Route::get('/menu', [MenuController::class, 'index'])->name('menu');
     Route::get('/editarmenu', [MenuController::class, 'showEditionMenu'])->name('edit.menu');
@@ -118,7 +118,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/user-addresses', [AddressController::class, 'userAddresses'])->name('user.addresses');
     Route::post('/select-address', [AddressController::class, 'seleccionarDireccion'])->name('select.address');
 
-
+    });
 
 
 
