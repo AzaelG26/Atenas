@@ -98,30 +98,31 @@
     </div>
 
     <div class="mb-3">
-        <label for="cardNumber" class="form-label">Número de Tarjeta</label>
-        <input type="text" id="cardNumber" name="card_number" class="form-control" placeholder="1234 5678 9012 3456" required maxlength="16" minlength="16">
-        @error('card_number')
+    <label for="cardNumber" class="form-label">Número de Tarjeta</label>
+    <input type="text" id="cardNumber" name="card_number" class="form-control" placeholder="1234 5678 9012 3456" required maxlength="16" pattern="^\d{16}$" oninput="this.value = this.value.replace(/\D/g, '')" >
+    @error('card_number')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label for="expiryDate" class="form-label">Fecha de Expiración (MM/YY)</label>
+        <input type="text" id="expiryDate" name="expiry_date" class="form-control" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/\d{2}$" maxlength="5" oninput="this.value = this.value.replace(/[^0-9\/]/g, '').substring(0, 5)">
+        @error('expiry_date')
             <div class="text-danger">{{ $message }}</div>
         @enderror
     </div>
 
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label for="expiryDate" class="form-label">Fecha de Expiración (MM/YY)</label>
-            <input type="text" id="expiryDate" name="expiry_date" class="form-control" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/\d{2}$">
-            @error('expiry_date')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="cvv" class="form-label">CVV</label>
-            <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required maxlength="3" minlength="3">
-            @error('cvv')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
+    <div class="col-md-6 mb-3">
+        <label for="cvv" class="form-label">CVV</label>
+        <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required maxlength="3" pattern="^\d{3}$" oninput="this.value = this.value.replace(/\D/g, '').substring(0, 3)">
+        @error('cvv')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
     </div>
+</div>
+
 
     <button type="submit" onclick="clearCart()" class="btn btn-success btn-lg w-100">Simular Pago</button>
 </form>
@@ -140,40 +141,52 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Validar formulario de pago
-        document.getElementById('paymentForm').addEventListener('submit', function (e) {
-            const cardNumber = document.getElementById('cardNumber').value.trim();
-            const expiryDate = document.getElementById('expiryDate').value.trim();
-            const cvv = document.getElementById('cvv').value.trim();
+    document.getElementById('paymentForm').addEventListener('submit', function (e) {
+        const cardNumber = document.getElementById('cardNumber').value.trim();
+        const expiryDate = document.getElementById('expiryDate').value.trim();
+        const cvv = document.getElementById('cvv').value.trim();
 
-            const cardNumberRegex = /^\d{16}$/;
-            const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
-            const cvvRegex = /^\d{3}$/;
+        const cardNumberRegex = /^\d{16}$/;
+        const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        const cvvRegex = /^\d{3}$/;
 
-            let valid = true;
+        let valid = true;
+        const currentYear = new Date().getFullYear() % 100; // Últimos dos dígitos del año
+        const currentMonth = new Date().getMonth() + 1; // Mes actual (1-12)
 
-            if (!cardNumberRegex.test(cardNumber)) {
-                alert('El número de tarjeta debe tener 16 dígitos.');
+        // Validación del número de tarjeta
+        if (!cardNumberRegex.test(cardNumber)) {
+            alert('El número de tarjeta debe tener exactamente 16 dígitos.');
+            valid = false;
+        }
+
+        // Validación de la fecha de expiración
+        if (expiryDateRegex.test(expiryDate)) {
+            const [month, year] = expiryDate.split('/').map(Number);
+            if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                alert('La fecha de expiración debe ser mayor o igual al mes y año actuales.');
                 valid = false;
             }
+        } else {
+            alert('La fecha de expiración debe tener el formato MM/YY.');
+            valid = false;
+        }
 
-            if (!expiryDateRegex.test(expiryDate)) {
-                alert('La fecha de expiración debe tener el formato MM/YY.');
-                valid = false;
-            }
+        // Validación del CVV
+        if (!cvvRegex.test(cvv)) {
+            alert('El CVV debe tener exactamente 3 dígitos.');
+            valid = false;
+        }
 
-            if (!cvvRegex.test(cvv)) {
-                alert('El CVV debe tener 3 dígitos.');
-                valid = false;
-            }
-
-            if (!valid) {
-                e.preventDefault();
-            } else {
-                localStorage.removeItem('cart');
-                updateCartCount();
-            }
-        });
+        if (!valid) {
+            e.preventDefault();
+        } else {
+            // Limpiar el carrito después de un pago exitoso
+            localStorage.removeItem('cart');
+            updateCartCount();
+        }
     });
+});
+
 </script>
 @endsection
