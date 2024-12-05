@@ -151,16 +151,14 @@
         const cvvRegex = /^\d{3}$/;
 
         let valid = true;
-        const currentYear = new Date().getFullYear() % 100; // Últimos dos dígitos del año
-        const currentMonth = new Date().getMonth() + 1; // Mes actual (1-12)
+        const currentYear = new Date().getFullYear() % 100; 
+        const currentMonth = new Date().getMonth() + 1; 
 
-        // Validación del número de tarjeta
         if (!cardNumberRegex.test(cardNumber)) {
             alert('El número de tarjeta debe tener exactamente 16 dígitos.');
             valid = false;
         }
 
-        // Validación de la fecha de expiración
         if (expiryDateRegex.test(expiryDate)) {
             const [month, year] = expiryDate.split('/').map(Number);
             if (year < currentYear || (year === currentYear && month < currentMonth)) {
@@ -172,7 +170,6 @@
             valid = false;
         }
 
-        // Validación del CVV
         if (!cvvRegex.test(cvv)) {
             alert('El CVV debe tener exactamente 3 dígitos.');
             valid = false;
@@ -181,7 +178,6 @@
         if (!valid) {
             e.preventDefault();
         } else {
-            // Limpiar el carrito después de un pago exitoso
             localStorage.removeItem('cart');
             updateCartCount();
         }
