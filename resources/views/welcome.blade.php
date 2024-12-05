@@ -113,7 +113,7 @@
             justify-content: center;
             width: auto;
             height: auto;
-            margin-top: 20em;
+            margin-top: 30em;
         }
 
         /* #interno-galeria-index{
@@ -669,7 +669,7 @@
         <div class="carousel-inner">
             <div class="carousel-item active" data-bs-interval="10000">
             {{-- <img src="..." class="d-block w-100" alt="..."> --}}
-            <img class="card-galery" class="d-block w-100" src="atenas_hotdog.png" alt="hot dog" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
+            <img class="card-galery" class="d-block w-100" src="meaty-hamburger-restaurant.png" alt="hot dog" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
 
             <div class="carousel-caption d-none d-md-block">
                 <h5>Elige el sabor</h5>
