@@ -84,13 +84,18 @@
 
         @push('scripts')
         <script>
-            @if (session('status'))
-                window.onload = function() {
-                    setTimeout(function() {
-                        document.getElementById('success-message').style.display = 'none';
-                    }, 5000); 
+            window.onload = function() {
+                    @if (session('success'))
+                        // Muestra la alerta de éxito
+                        const successMessage = document.getElementById('success-message');
+                        setTimeout(function() {
+                            successMessage.style.opacity = 0; 
+                            setTimeout(function() {
+                                successMessage.style.display = 'none';
+                            }, 1000); // lo tardado para el desvanecimiento
+                        }, 3000); // SE  dumuestra rante 3 segundos
+                    @endif
                 }
-            @endif
         </script>
         @endpush
 

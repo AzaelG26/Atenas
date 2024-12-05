@@ -28,52 +28,17 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+        $user = Auth::user();
+
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('users')->ignore($request->user()->id),
-            ],
-            'username' => [
-                'required',
-                'string',
-                'min:4',
-                'max:255',
-                Rule::unique('users')->ignore($request->user()->id),
-            ],
-            'gender' => 'required|in:Male,Female,Other',
-            'birthdate' => 'required|date_format:d/m/Y',
-            'cellphone_number' => 'required|string|max:15',
+            'name' => 'required|string|min:4|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+
         ]);
 
-        $user = $request->user();
-
-        if ($user->email !== $validated['email']) {
-            if (!Hash::check($request->input('password'), $user->password)) {
-                return redirect()->route('profile.edit')->withErrors(['password' => 'La contraseña es incorrecta para confirmar el cambio de correo electrónico.']);
-            }
-
-            $user->email_verified_at = null;
-        }
-
-        $formattedBirthdate = Carbon::createFromFormat('d/m/Y', $validated['birthdate'])->format('Y-m-d');
-        $age = Carbon::parse($formattedBirthdate)->diffInYears(Carbon::now());
-
-        if ($age < 18) {
-            return redirect()->route('profile.edit')->withErrors(['birthdate' => 'Debes ser mayor de 18 años.']);
-        }
-
-        $user->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'username' => $validated['username'],
-            'gender' => $validated['gender'],
-            'birthdate' => $formattedBirthdate,
-            'cellphone_number' => $validated['cellphone_number'],
-        ]);
-
-        return redirect()->route('profile.edit')->with('status', '¡Perfil actualizado con éxito!');
+        // si funciona el update por si marca error
+        $user->update($validated);
+        return redirect()->route('profile.edit')->with('success', 'Datos actualizados correctamente');
     }
 
     /**
