@@ -42,6 +42,12 @@
         .badge-secondary {
             background-color: #6c757d;
         }
+
+
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
     </style>
 @endpush
 
@@ -54,7 +60,8 @@
                 No hay pedidos para mostrar.
             </div>
         @else
-            <table class="table table-bordered border-dark table-responsive">
+        <div class="table-container">
+            <table class="table table-bordered border-dark">
                 <thead>
                     <tr>
                         <th class="head">Cliente</th>
@@ -86,6 +93,7 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
         @endif
     </div>
 @endsection
