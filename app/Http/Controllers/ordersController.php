@@ -134,6 +134,7 @@ class ordersController extends Controller
             'folio',
             'onlineOrderDetails.menu',
             'people',
+            'address'
         ])->whereIn('status', ['Paid', 'In Process'])->orderBy('created_at', 'asc')->get();
 
 
