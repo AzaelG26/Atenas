@@ -54,7 +54,7 @@
                 No hay pedidos para mostrar.
             </div>
         @else
-            <table class="table table-bordered border-dark">
+            <table class="table table-bordered border-dark table-responsive">
                 <thead>
                     <tr>
                         <th class="head">Cliente</th>
