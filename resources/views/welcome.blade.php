@@ -100,7 +100,7 @@
             justify-content: center;
             width: 100%;
             height: auto;
-            margin-top: 200px;
+            margin-top: 30em;
         }
 
         #interno-conocenos-index{
