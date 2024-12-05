@@ -273,7 +273,7 @@
                             </p>
                         </div>
 
-                        <button class="btn-accept">Update</button>
+                        <button class="btn-accept">Aceptar</button>
                     </form>
             </div>
         </div>

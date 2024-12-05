@@ -108,7 +108,7 @@
                 <form method="POST" action="{{ route('profile.update') }}">
                     @csrf
                     @method('PATCH')
-                    <p style="color: darkgray;">*Puedes editar tus datos</p>
+                    <p style="color: darkgray;">*Puedes editar tu nombre de usuario*</p>
                     <div class="col-md-8 input-icon">
                         <input 
                             placeholder="Nombre" 
@@ -130,7 +130,7 @@
                     </div>
 
                     <div class="col-md-8 input-icon">
-                        <input placeholder="Email" class="input" name="email" type="text" value="{{old('email', $user->email)}}">            
+                        <input placeholder="Email" class="input" name="email" type="text" value="{{old('email', $user->email)}}" disabled>            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('email')
                                 <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>

@@ -31,9 +31,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name' => 'required|string|min:4|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-
+            'name' => 'required|string|min:4|max:255|unique:users,name, ' . $user->id,
         ]);
 
         // si funciona el update por si marca error
