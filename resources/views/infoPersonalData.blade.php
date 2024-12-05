@@ -190,8 +190,10 @@
                     @csrf
                     @method('PUT')
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Nombre" class="input" name="name" type="text" value="{{ old('name', $people->name) }}" >
-                            <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
+                            <label for="name" style="color: white;" class="form-label">Nuevo(s) nombre(s)</label>
+                            <br>
+                            <input placeholder="Nombre" class="input" id="name" name="name" type="text" value="{{ old('name', $people->name) }}" onkeypress="return evitarNumeros(event)">
+                            <p style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                                 @error('name') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
                                 @enderror
@@ -199,7 +201,9 @@
                         </div>  
                         
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Apellido paterno" class="input" name="paternal_lastname" type="text" value="{{ old('paternal_lastname', $people->paternal_lastname) }}">            
+                            <label for="paternal_lastname" style="color: white;" class="form-label">Nuevo apellido</label>
+                            <br>
+                            <input placeholder="Apellido paterno" class="input" id="paternal_lastname" name="paternal_lastname" type="text" value="{{ old('paternal_lastname', $people->paternal_lastname) }}" onkeypress="return evitarNumeros(event)">            
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                                 @error('paternal_lastname') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -208,13 +212,17 @@
                         </div>  
                         
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Apellido materno" class="input" name="maternal_lastname" type="text" value="{{ old('maternal_lastname', $people->maternal_lastname) }}">            
-                            <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
+                            <label for="maternal_lastname" style="color: white;" class="form-label">Nuevo apellido</label>
+                            <br>
+                            <input placeholder="Apellido materno" class="input" id="maternal_lastname" name="maternal_lastname" type="text" value="{{ old('maternal_lastname', $people->maternal_lastname) }}" onkeypress="return evitarNumeros(event)">            
+                            <p style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                                 @error('maternal_lastname') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)red">{{ $message }}</div>
                                 @enderror
                             </p>
                         </div>  
+                        <label style="color: white;" class="form-label">Nuevo genero</label>
+                        <br>
                         <div class="col-md-8 input-icon">
                             <div class="radio-container">
                                 <div class="radio-wrapper">
@@ -244,7 +252,9 @@
                         </div>
 
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Número de teléfono" class="input" name="cellphone_number" type="text" value="{{ old('cellphone_number', $people->cellphone_number) }}">            
+                            <label for="cellphone_number" style="color: white;" class="form-label">Nuevo teléfono</label>
+                            <br>
+                            <input placeholder="Número de teléfono" id="cellphone_number" class="input" name="cellphone_number" type="text" value="{{ old('cellphone_number', $people->cellphone_number) }}" onkeypress="return numeros(event)">            
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                                 @error('cellphone_number') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -253,7 +263,7 @@
                         </div> 
 
                         <div class="col-md-8 input-icon">
-                            <label for="birthdate" style="color: white;">Fecha de nacimiento</label>
+                            <label for="birthdate" style="color: white;" class="form-label">Fecha de nacimiento</label>
                             <br>
                             <input type="date" id="birthdate" name="birthdate" class="input" value="{{ old('birthdate', $people->birthdate) }}">
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
@@ -269,6 +279,42 @@
         </div>
     </div>
 </main>
+
+    <script>
+        function evitarNumeros(event){
+            const charCode = event.charCode || event.keyCode;
+            const charStr = String.fromCharCode(charCode);
+
+            if(/[0-9]/.test(charStr)){
+                return false
+            }
+            return true
+        }
+
+        function numeros(event){
+            const charCode = event.charCode || event.keyCode;
+            const charStr = String.fromCharCode(charCode);
+
+            if(!/[0-9]/.test(charStr)){
+                return false
+            }
+            return true
+        }
+
+        const inputFecha = document.getElementById('birthdate');
+        const fechaActual = new Date();
+
+        const fechaMaxima = new Date();
+        fechaMaxima.setFullYear(fechaActual.getFullYear() - 18);
+
+        const fechaMinima = new Date();
+        fechaMinima.setFullYear(fechaActual.getFullYear() -90);
+
+        inputFecha.min = fechaMinima.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        inputFecha.max = fechaMaxima.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+    </script>
+
      @if (session('success'))
     <script>
             alert('{{ session('success') }}');

@@ -108,18 +108,18 @@
             height: auto;
         }
 
-        #container-galeria-index{
+        #carouselExampleDark{
             display: flex;
             justify-content: center;
             width: auto;
             height: auto;
-            margin-top: 30em;
+            margin-top: 20em;
         }
 
-        #interno-galeria-index{
+        /* #interno-galeria-index{
             width: 90%;
             height: auto;
-        } 
+        }  */
 
         #container-menu-index{
             display: flex;
@@ -464,6 +464,15 @@
         .star-rating i {
             margin-right: 3px; /* Espaciado entre las estrellas */
         }
+
+        /* carrousel */
+        .carousel-inner img { 
+            width: 100%; 
+            height: 400px;
+            object-fit: cover; 
+            object-position: center; 
+            filter: brightness(0.5); 
+        }
     </style>
     <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -612,9 +621,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#container-conocenos-index">Conócenos</a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a class="nav-link"href="#container-galeria-index">Galeria</a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item">
                                 <a class="nav-link" href="#container-menu-index">Menú</a>
                             </li>
@@ -650,6 +659,52 @@
         </div>
     </div>
             
+        
+    <div id="carouselExampleDark" class="carousel carousel-fade slide" data-bs-ride="carousel" data-bs-interval="1000">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+            {{-- <img src="..." class="d-block w-100" alt="..."> --}}
+            <img class="card-galery" class="d-block w-100" src="atenas_hotdog.png" alt="hot dog" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
+
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Elige el sabor</h5>
+                {{-- <p>Some representative placeholder content for the first slide.</p> --}}
+            </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+            {{-- <img src="..." class="d-block w-100" alt="..."> --}}
+            <img class="card-galery" class="d-block w-100" src="boneless_with_potatoes.png" alt="boneless with potatoes" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
+
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Elige la diferencia</h5>
+                {{-- <p>Some representative placeholder content for the second slide.</p> --}}
+            </div>
+            </div>
+            <div class="carousel-item">
+            {{-- <img src="..." class="d-block w-100" alt="..."> --}}
+            <img class="card-galery" class="d-block w-100" src="gringa_cr.png" alt="gringa" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
+
+            <div class="carousel-caption d-none d-md-block">
+                <h5>El sabor auténtico</h5>
+                {{-- <p>Some representative placeholder content for the third slide.</p> --}}
+            </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>    
+
 
     <section id="container-conocenos-index">
         <div id="interno-conocenos-index">                
@@ -680,7 +735,7 @@
         </div>
     </section>
     
-    <section id="container-galeria-index">
+    {{-- <section id="carrousel">
         <div id="interno-galeria-index">                
             <div class="card" style="height: auto; background-color: transparent; border:none;">
                 <div class="card-header">
@@ -701,7 +756,11 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
+    {{-- carousel-fade --}}
+
+
+
 
       
 

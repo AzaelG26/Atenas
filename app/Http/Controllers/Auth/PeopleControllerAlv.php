@@ -102,7 +102,7 @@ class PeopleControllerAlv extends Controller
             $edad = Carbon::parse($birthdate)->age;
 
             if ($edad < 18) {
-                return redirect()->route('formPersonalData')->with('error', 'Debes ser mayor de edad para registrarte.');
+                return redirect()->route('personas.create')->with('error', 'Debes ser mayor de edad para registrarte.');
             }
         }
 

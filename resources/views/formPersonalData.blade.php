@@ -132,7 +132,7 @@
                 <form action="{{ route('personas.create') }}" method="POST">
                     @csrf
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Nombre" class="input" name="name" type="text"  >
+                            <input placeholder="Nombre" class="input" name="name" type="text" onkeypress="return evitarNumeros(event)" required>
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                                 @error('name') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -141,7 +141,7 @@
                         </div> 
                                                 
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Apellido paterno" class="input" name="paternal_lastname" type="text" >            
+                            <input placeholder="Apellido paterno" class="input" name="paternal_lastname" type="text" onkeypress="return evitarNumeros(event)" required>            
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                                 @error('paternal_lastname') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -150,7 +150,7 @@
                         </div>  
 
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Apellido materno" class="input" name="maternal_lastname" type="text" >            
+                            <input placeholder="Apellido materno" class="input" name="maternal_lastname" type="text" required>            
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                                 @error('maternal_lastname') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -187,7 +187,7 @@
                         </div>
 
                         <div class="col-md-8 input-icon">
-                            <input placeholder="Número de teléfono" class="input" name="cellphone_number" type="text">            
+                            <input placeholder="Número de teléfono" class="input" name="cellphone_number" type="text" onkeypress="return soloNumeros(event)" required>            
                             <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                                 @error('cellphone_number') 
                                     <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -212,6 +212,45 @@
         </div>
     </div>
 </main>
+
+<script>
+    function evitarNumeros(event){
+        const charCode = event.charCode || event.keyCode;
+        const charStr = String.fromCharCode(charCode);
+
+        if(/[0-9]/.test(charStr)){
+            return false
+        }
+        return true;
+    }
+
+    function soloNumeros(event){
+        const charCode = event.charCode || event.keyCode;
+        const charStr = String.fromCharCode(charCode);
+
+        if(!/[0-9]/.test(charStr)){
+            return false
+        }
+        return true
+    }
+
+    const inputFecha = document.getElementById('birthdate');
+    const fechaActual = new Date();
+
+    const fechaMaxima = new Date();
+    fechaMaxima.setFullYear(fechaActual.getFullYear() - 18);
+
+    const fechaMinima = new Date();
+    fechaMinima.setFullYear(fechaActual.getFullYear() -90);
+
+    inputFecha.min = fechaMinima.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    inputFecha.max = fechaMaxima.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+
+
+    
+</script>
+
 @if (session('success'))
     <script>
             alert('{{ session('success') }}');
