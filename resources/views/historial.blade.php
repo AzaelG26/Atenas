@@ -45,7 +45,7 @@
 
 
         .table-container {
-            max-height: 400px;
+            max-height: 700px;
             overflow-y: auto;
         }
     </style>
