@@ -203,6 +203,8 @@
             background-image: url('top-view-burger-fries-with-sauces-copy-space.jpg'); 
             /* filter: blur(5px); */
             background-size: cover;            
+            object-fit: cover;
+            object-position: center;
             background-attachment: fixed;
             box-shadow: 0px 3px 10px rgba(39, 39, 39, 0.8);
         }
