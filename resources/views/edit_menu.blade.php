@@ -76,16 +76,16 @@
                                 
                                 <tr>
                                     <td>
-                                        <input type="text" name="name" value="{{ $menuDetalles->name }}" class="form-control" required>
+                                        <textarea type="text" name="name" class="form-control" required> {{ $menuDetalles->name }}</textarea>
                                     </td>
                                     <td>
-                                        <input type="text" name="description" value="{{ $menuDetalles->description }}" class="form-control" required>
+                                        <textarea name="description" class="form-control" required>{{ $menuDetalles->description }}</textarea>
                                     </td>
                                     <td>
-                                        <input type="number" name="price" value="{{ $menuDetalles->price }}" class="form-control" required>
+                                        <textarea type="number" name="price" class="form-control" required>{{ $menuDetalles->price }}</textarea>
                                     </td>
                                     <td>
-                                        <input type="number" name="stock" value="{{ $menuDetalles->stock->stock }}" class="form-control" required>
+                                        <textarea type="number" name="stock" class="form-control" required>{{ $menuDetalles->stock->stock }}</textarea>
                                     </td>
                                     <td style="text-align: center">
                                         <button type="submit" title="Actualizar datos" class="btn btn-warning"><i class="bi bi-upload"></i></button>
