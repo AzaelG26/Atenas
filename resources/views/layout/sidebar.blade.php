@@ -134,20 +134,11 @@
                     <a class="links nav-link {{ request()->routeIs('personas.create') ? 'active' : '' }}" href="{{route('personas.create')}}">
                         <i class="bi bi-person-vcard"></i> Datos personales 
                     </a>
-                </li>
-                @if (optional(optional(Auth::user()->people)->employees)->admin == true)
-                    <li>
-                        <a  class="links nav-link {{ request()->routeIs('employee.create') ? 'active' : '' }}" href="{{route('employee.create')}}">
-                            <img width="15" height="15" src="https://img.icons8.com/glyph-neue/64/ce9d22/cook-male.png" alt="cook-male"/>
-                            Nuevo empleado
-                        </a>
-                    </li>
-                @endif
-                </li>                
+                </li>                                
                 
                 <li>
                     <a class="links nav-link {{ request()->routeIs('historial') ? 'active' : '' }}" href="{{route('historial')}}">
-                        <i class="bi bi-person-vcard"></i> Historial de Pedidos
+                        <i class="bi bi-clock-history"></i> Historial de Pedidos
                     </a>
                 </li>
                 @if(optional(Auth::user()->people)->employees)
@@ -171,6 +162,23 @@
                     @endif
                 @endif
                 
+                @if (optional(optional(Auth::user()->people)->employees)->admin == true)
+                    <li>
+                        <a  class="links nav-link {{ request()->routeIs('employee.create') ? 'active' : '' }}" href="{{route('employee.create')}}">
+                            <img width="15" height="15" src="https://img.icons8.com/glyph-neue/64/ce9d22/cook-male.png" alt="cook-male"/>
+                            Nuevo empleado
+                        </a>
+                    </li>
+                @endif
+
+                @if (optional(optional(Auth::user()->people)->employees)->admin == true)
+                    <li>
+                        <a  class="links nav-link {{ request()->routeIs('ganancias') ? 'active' : '' }}" href="{{route('ganancias')}}">
+                            <img width="15" height="15" src="https://img.icons8.com/ios/50/ce9d22/sales-balance.png" alt="sales-balance"/>
+                            Ganancias
+                        </a>
+                    </li>
+                @endif
             </ul>    
 
             <ul class="nav flex-column" style="width: 100%">
