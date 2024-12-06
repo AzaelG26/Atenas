@@ -662,7 +662,7 @@
     </div>
             
         
-    <div id="carouselExampleDark" class="carousel carousel-fade slide" data-bs-ride="carousel" data-bs-interval="1000">
+    {{-- <div id="carouselExampleDark" class="carousel carousel-fade slide" data-bs-ride="carousel" data-bs-interval="1000">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -670,31 +670,24 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active" data-bs-interval="10000">
-            {{-- <img src="..." class="d-block w-100" alt="..."> --}}
-            <img class="card-galery" class="d-block w-100" src="meaty-hamburger-restaurant.png" alt="hot dog" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
+                <img class="card-galery" class="d-block w-100" src="meaty-hamburger-restaurant.png" alt="hot dog" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
 
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Elige el sabor</h5>
-                {{-- <p>Some representative placeholder content for the first slide.</p> --}}
-            </div>
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Elige el sabor</h5>
+                </div>
             </div>
             <div class="carousel-item" data-bs-interval="2000">
-            {{-- <img src="..." class="d-block w-100" alt="..."> --}}
-            <img class="card-galery" class="d-block w-100" src="boneless_with_potatoes.png" alt="boneless with potatoes" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
+                <img class="card-galery" class="d-block w-100" src="boneless_with_potatoes.png" alt="boneless with potatoes" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
 
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Elige la diferencia</h5>
-                {{-- <p>Some representative placeholder content for the second slide.</p> --}}
-            </div>
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Elige la diferencia</h5>
+                </div>
             </div>
             <div class="carousel-item">
-            {{-- <img src="..." class="d-block w-100" alt="..."> --}}
-            <img class="card-galery" class="d-block w-100" src="gringa_cr.png" alt="gringa" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
-
-            <div class="carousel-caption d-none d-md-block">
-                <h5>El sabor auténtico</h5>
-                {{-- <p>Some representative placeholder content for the third slide.</p> --}}
-            </div>
+                <img class="card-galery" class="d-block w-100" src="gringa_cr.png" alt="gringa" style="object-fit: cover; box-shadow: 0px 2px 15px rgb(0, 0, 0); width:100%;height: 500px; background-size: cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>El sabor auténtico</h5>
+                </div>
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
@@ -705,7 +698,7 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
-    </div>    
+    </div>     --}}
 
 
     <section id="container-conocenos-index">
@@ -765,7 +758,7 @@
 
 
       
-
+    <hr style="color:gray">
     <section id="container-menu-index">
         <div id="interno-menu-index">                
             <div class="card" style="height: auto; background-color: transparent; border:none;">
@@ -778,7 +771,10 @@
                     <div class="card-body content-about" style=" display:flex; background-color: transparent;   width:80vw;">
                             {{-- <img src="delicious-fried-chicken-fries.jpg" id="picture-menu" style="heigt:auto; max-width:40%;" alt="food"> --}}
                         <div class="contenido-menu">
-                            <h2 class="subtitulos" style="cursor:context-menu; color:#e0a91e" >Contenido del menú</h2>
+                            <h2 class="subtitulos" style="cursor:context-menu; color:#e0a91e; text-align:center" >
+                                <hr style="width: 100vw; color:gray">
+                                Contenido del menú
+                            </h2>
                             <br>
                             <br>
                             <div style="width: 100%; display:flex; flex-wrap:wrap; overflow-y:auto;">

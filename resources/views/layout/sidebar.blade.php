@@ -177,7 +177,7 @@
                 <li style="border-top:1px solid#be952c"> 
                     <ul class="nav flex-column" >
                         <li><a class="links nav-link" style="color:#be952c" href="/">Ir a inicio</a></li>                        
-                    </ul >                    
+                    </ul>                    
                     <div class="dropdown" data-bs-theme="dark">
                         
                         <button style="width:100%; border:none; color:#be952c" class="btn dropdown-toggle" type="button" id="dropdownMenuButtonDark" data-bs-toggle="dropdown" aria-expanded="false">
