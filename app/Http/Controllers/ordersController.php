@@ -53,7 +53,7 @@ class ordersController extends Controller
 
         $ventasOnline = OnlineOrder::with([
             'onlineOrderDetails.menu',
-        ])
+        ])->where('status', 'Completed')
             ->where('status', 'Completed')
             ->orderBy('created_at', 'asc');
 
