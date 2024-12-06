@@ -209,23 +209,21 @@
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Función para actualizar la cantidad de productos en el carrito
-    // Función para actualizar la cantidad de productos en el carrito
     function updateCartCount() {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         document.getElementById('cart-count').textContent = totalItems;
+        checkCartLimit(); // Asegurarse de actualizar el estado de los botones
     }
 
     // Función para verificar si el límite global de productos ha sido alcanzado
     function checkCartLimit() {
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
         const addButtons = document.querySelectorAll('.btn-primary');
-        
-        // Deshabilitar todos los botones de incremento si el total de productos es 10 o más
-        if (totalItemsInCart >= 10) {
-            addButtons.forEach(button => button.disabled = true); // Deshabilitar todos los botones de incremento
-        } else {
-            addButtons.forEach(button => button.disabled = false); // Habilitar los botones si el límite no se alcanza
-        }
+
+        // Deshabilitar botones si se alcanza el límite
+        addButtons.forEach(button => {
+            button.disabled = totalItemsInCart >= 10;
+        });
     }
 
     // Función para agregar un producto al carrito
@@ -238,10 +236,8 @@
             return;
         }
 
-        // Calcular el total de productos en el carrito
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-        // Validar si se supera el límite de 10 productos
         if (totalItemsInCart + quantity > 10) {
             alert('No puedes agregar más de 10 productos en total al carrito.');
             return;
@@ -258,7 +254,6 @@
         localStorage.setItem('cart', JSON.stringify(cart));
         alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
         updateCartCount();
-        checkCartLimit();  // Recheck the cart limit
     }
 
     // Función para mostrar el carrito dentro del modal
@@ -326,9 +321,8 @@
 
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-        // Verificar si el carrito ya tiene 10 o más productos
         if (totalItemsInCart >= 10) {
-            alert('No puedes agregar más productos, el límite de 10 productos ha sido alcanzado.');
+            alert('No puedes agregar más productos, el límite de 10 ha sido alcanzado.');
             return;
         }
 
@@ -339,7 +333,7 @@
             alert('No puedes agregar más del stock disponible.');
         }
 
-        checkCartLimit();  // Recheck the cart limit when increasing quantity
+        checkCartLimit(); // Revisión del límite tras el incremento
     }
 
     // Función para disminuir la cantidad de un producto
@@ -354,7 +348,7 @@
             stockElement.textContent = currentStock + 1;
         }
 
-        checkCartLimit();  // Recheck the cart limit after decreasing quantity
+        checkCartLimit(); // Revisión del límite tras la disminución
     }
 
     // Función para vaciar el carrito
