@@ -30,11 +30,11 @@
             width: auto;
             height: auto;
         }
-        textarea{
-            -webkit-appearance: none; /* Elimina estilos predeterminados de iOS */
-            resize: vertical; /* Permite que crezca solo verticalmente */
-        }
 
+        .table-container {
+            overflow-y: auto;
+        }
+    
 </style>
 @push('styles')
 
@@ -61,46 +61,48 @@
                     <div class="pb-3 mb-4 categoria">
                         &nbsp; &nbsp;<span class="fs-4 subtitle-edit-menu">{{$category->name}}</span>
                     </div>
-                    <table class="table table-bordered border-dark">
-                        <thead style="border: 1px solid gray;">
-                            <tr>
-                                <th class="head">Platillo</th>
-                                <th class="head">Descripción</th>
-                                <th class="head">Precio</th>
-                                <th class="head">Stock</th>
-                                <th class="head">Fijár</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-dark">
-                            @foreach ($category->menu as $menuDetalles)
-                            
-                            <form action="{{route('menu.update', $menuDetalles->id_menu)}}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                
+                    <div class="table-container">                    
+                        <table class="table table-bordered border-dark">
+                            <thead style="border: 1px solid gray;">
                                 <tr>
-                                    <td>
-                                        <textarea type="text" name="name" class="form-control" required> {{ $menuDetalles->name }}</textarea>
-                                    </td>
-                                    <td>
-                                        <textarea name="description" class="form-control" required>{{ $menuDetalles->description }}</textarea>
-                                    </td>
-                                    <td>
-                                        <textarea type="number" name="price" class="form-control" required>{{ $menuDetalles->price }}</textarea>
-                                    </td>
-                                    <td>
-                                        <textarea type="number" name="stock" class="form-control" required>{{ $menuDetalles->stock->stock }}</textarea>
-                                    </td>
-                                    <td style="text-align: center">
-                                        <button type="submit" title="Actualizar datos" class="btn btn-warning"><i class="bi bi-upload"></i></button>
-                                    </td>                           
+                                    <th class="head">Platillo</th>
+                                    <th class="head">Descripción</th>
+                                    <th class="head">Precio</th>
+                                    <th class="head">Stock</th>
+                                    <th class="head">Fijár</th>
                                 </tr>
-                            </form>
-                            @endforeach
-                        </tbody>
+                            </thead>
+                            <tbody class="table-dark">
+                                @foreach ($category->menu as $menuDetalles)
+                                
+                                <form action="{{route('menu.update', $menuDetalles->id_menu)}}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    
+                                    <tr>
+                                        <td>
+                                            <textarea type="text" name="name" class="form-control" required> {{ $menuDetalles->name }}</textarea>
+                                        </td>
+                                        <td>
+                                            <textarea name="description" class="form-control" required>{{ $menuDetalles->description }}</textarea>
+                                        </td>
+                                        <td>
+                                            <textarea type="number" name="price" class="form-control" required>{{ $menuDetalles->price }}</textarea>
+                                        </td>
+                                        <td>
+                                            <textarea type="number" name="stock" class="form-control" required>{{ $menuDetalles->stock->stock }}</textarea>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <button type="submit" title="Actualizar datos" class="btn btn-warning"><i class="bi bi-upload"></i></button>
+                                        </td>                           
+                                    </tr>
+                                </form>
+                                @endforeach
+                            </tbody>
 
 
-                    </table>
+                        </table>
+                    </div>
                         
                     @endforeach
                 </div>
