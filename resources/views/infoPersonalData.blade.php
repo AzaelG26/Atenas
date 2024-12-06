@@ -126,12 +126,28 @@
     font-size: 16px;
     font-weight: 600;
     }
+
+    /* Desvanecimiento */
+    .fade-slide {
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .hidden {
+        opacity: 0;
+        transform: translateX(100px); 
+        pointer-events: none; 
+    }
+
+    .visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
 </style>
 @endpush
 
 @section('content')
 <main id="content-all">
-    <div class="container py-4">
+    <div class="container py-4 fade-slide visible" id="container-personal-data">
 
         <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
             <span class="fs-4 subtitle-persons"> &nbsp; &nbsp;Datos personales</span>      
@@ -177,7 +193,7 @@
         </div>
     </div>
 
-    <div class="container py-4" id="edition-container" style="display: none;">
+    <div class="container py-4 fade-slide hidden" id="edition-container" style="display: none;">
         <div class="pb-3 mb-4 title-person-form" style="display: flex; justify-content:space-between;">
             <span class="fs-4 subtitle-persons">&nbsp; &nbsp;Editar</span>
             <button type="button" onclick="hideEdition()" class="btn btn-dark btn-add-data" title="close section">               
@@ -336,11 +352,34 @@
 
     <script>
         function showEdit(){
-            document.getElementById('edition-container').style.display = 'block';
+            const editContainer = document.getElementById('edition-container');
+            const dataContainer = document.getElementById('container-personal-data');
+
+            dataContainer.classList.add('hidden');
+            dataContainer.classList.remove('visible');
+
+            setTimeout(() => {
+                dataContainer.style.display = 'none'; 
+                editContainer.style.display = 'block'; 
+                editContainer.classList.add('visible');
+                editContainer.classList.remove('hidden');
+            }, 500);
         }
 
         function hideEdition(){
-            document.getElementById('edition-container').style.display = 'none';
+            const editContainer = document.getElementById('edition-container');
+            const dataContainer = document.getElementById('container-personal-data');
+
+            editContainer.classList.add('hidden');
+            editContainer.classList.remove('visible');
+
+            setTimeout(() => {
+                editContainer.style.display = 'none';
+                dataContainer.style.display = 'block';
+                dataContainer.classList.add('visible');
+                dataContainer.classList.remove('hidden');
+            }, 500); 
+
         }
     </script>
     
