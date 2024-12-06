@@ -122,7 +122,7 @@
         </div>
 
         
-        <div class="offcanvas-body p-0">
+        <div class="offcanvas-body p-0" style="display: flex; flex-direction:column; justify-content:space-between;">
             <ul class="nav flex-column" style="width: 100%">
                 <li>
                     <a class="links nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}" href="{{ route('profile.edit') }}" >
@@ -170,14 +170,21 @@
                     </li>
                     @endif
                 @endif
-                <li style="border-top:1px solid#be952c">                     
+                
+            </ul>    
+
+            <ul class="nav flex-column" style="width: 100%">
+                <li style="border-top:1px solid#be952c"> 
+                    <ul class="nav flex-column" >
+                        <li><a class="links nav-link" style="color:#be952c" href="/">Ir a inicio</a></li>                        
+                    </ul >                    
                     <div class="dropdown" data-bs-theme="dark">
                         
                         <button style="width:100%; border:none; color:#be952c" class="btn dropdown-toggle" type="button" id="dropdownMenuButtonDark" data-bs-toggle="dropdown" aria-expanded="false">
                             {{Auth::user()->name}} 
                         </button>
                         <ul style="width:100%;" class="dropdown-menu" aria-labelledby="dropdownMenuButtonDark">
-                            <li><a class="dropdown-item" style="color:#be952c" href="/">Ir a inicio</a></li>
+
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf                                                                                                                    
@@ -189,7 +196,7 @@
                         </ul>
                     </div>
                 </li>
-            </ul>    
+            </ul>
         </div>
     </div>
 
