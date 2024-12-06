@@ -30,7 +30,11 @@
             width: auto;
             height: auto;
         }
-    
+        textarea{
+            -webkit-appearance: none; /* Elimina estilos predeterminados de iOS */
+            resize: vertical; /* Permite que crezca solo verticalmente */
+        }
+
 </style>
 @push('styles')
 
