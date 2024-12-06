@@ -54,8 +54,8 @@
             </div>
 
             <!-- Formulario para editar datos del perfil -->
-            <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
-                <div class="container-fluid py-3">
+            <div style="background-color: #131718; display:flex; justify-content:center" style="" class="p-10 mb-4 rounded-3">
+                <div class="container py-3">
                     @foreach ($categorias as $category)
                     
                     <div class="pb-3 mb-4 categoria">
@@ -92,8 +92,8 @@
                                         <td>
                                             <textarea type="number" name="stock" class="form-control" required>{{ $menuDetalles->stock->stock }}</textarea>
                                         </td>
-                                        <td style="text-align: center">
-                                            <button type="submit" title="Actualizar datos" class="btn btn-warning"><i class="bi bi-upload"></i></button>
+                                        <td style="text-align: center;">
+                                            <button type="submit" title="Actualizar datos" class="btn btn-warning"><i class="bi bi-check2-square"></i></button>
                                         </td>                           
                                     </tr>
                                 </form>
