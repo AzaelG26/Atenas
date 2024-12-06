@@ -189,7 +189,7 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf                                                                                                                    
                                     <button type="submit" style="text-decoration: none; width:100% " class="btn btn-link p-0" onclick="event.preventDefault(); this.closest('form').submit();">
-                                        <a style="color:#be952c" class="dropdown-item"> Log out</a>
+                                        <a style="color:#be952c" class="dropdown-item"> Cerrar sesión</a>
                                     </button>                                                                            
                                 </form>
                             </li>
