@@ -20,26 +20,20 @@ class PasswordsController extends Controller
 
     public function sendResetMail(Request $request)
     {
-        try {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
 
-            $request->validate([
-                'email' => 'required|email|exists:users,email',
-            ]);
+        $user = User::where('email', $request->email)->first();
 
-
-            $user = User::where('email', $request->email)->first();
-
-            if (!$user) {
-                return redirect()->route('password.mostrar')->with('error', 'No encontramos una cuenta con ese correo electrónico.');
-            }
-
-            $resetURL = URL::signedRoute('password.reset', ['id' => $user->id]);
-
-            Mail::to($user->email)->send(new RecuperarPasswordMail($resetURL, $user));
-            return redirect()->route('login')->with('success', 'Hemos enviado un enlace para restablecer la contraseña a tu correo electrónico.');
-        } catch (\Exception $e) {
-            return redirect()->route('password.mostrar')->with('error', 'Ocurrió un problema al enviar el correo. Inténtalo de nuevo.');
+        if (!$user) {
+            return redirect()->route('password.mostrar')->with('error', 'No encontramos una cuenta con ese correo electrónico.');
         }
+
+        $resetURL = URL::signedRoute('password.reset', ['id' => $user->id]);
+
+        Mail::to($user->email)->send(new RecuperarPasswordMail($resetURL, $user));
+        return redirect()->route('login')->with('success', 'Hemos enviado un enlace para restablecer la contraseña a tu correo electrónico.');
     }
 
     public function showResetForm($id)
