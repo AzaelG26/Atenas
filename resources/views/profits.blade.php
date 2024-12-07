@@ -185,7 +185,7 @@
                                     <th class="head">Platillos</th>
                                     <th class="head">Cantidad</th>
                                     {{-- <th class="head">Precio total</th> --}}
-                                    <th class="head">Última modificación</th>
+                                    <th class="head">Fecha de la orden</th>
                                 </tr>
                             </thead>
                             <tbody class="table-dark">
@@ -196,7 +196,7 @@
                                         <td>{{ $item->menu->name }}</td>
                                         <td>{{ $item->quantity }}</td>
                                         {{-- <td>{{ $ventas->total_price }}</td> --}}
-                                        <td>{{ $ventas->updated_at }}</td>
+                                        <td>{{ $ventas->created_at }}</td>
                                     </tr>
                                     @endforeach
                                 @endforeach
@@ -238,7 +238,7 @@
                                     <th class="head">Platillos</th>
                                     <th class="head">Cantidad</th>
                                     {{-- <th class="head">Precio total</th> --}}
-                                    <th class="head">Última modificación</th>
+                                    <th class="head">Fecha de la orden</th>
                                 </tr>
                             </thead>
                             <tbody class="table-dark">
@@ -249,7 +249,7 @@
                                         <td>{{ $item->menu->name }}</td>
                                         <td>{{ $item->quantity }}</td>
                                         {{-- <td>{{ $online->total_price }}</td> --}}
-                                        <td>{{ $online->updated_at }}</td>
+                                        <td>{{ $online->created_at }}</td>
                                     </tr>
                                     @endforeach
                                 @endforeach
