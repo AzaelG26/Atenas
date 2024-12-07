@@ -20,11 +20,12 @@ class PasswordsController extends Controller
 
     public function sendResetMail(Request $request)
     {
-        dd($request->input('_token'));
-
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
+        if (!$request) {
+            return redirect()->route('password.mostrar')->with('error', 'No encontramos una cuenta con ese correo electrónico.');
+        }
 
         $user = User::where('email', $request->email)->first();
 
