@@ -111,7 +111,7 @@
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="status"  value="Canceled">
-                            <button class="btn btn-danger" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px; background-color:red; color:white;border:1px solid red;" title="Cancelar orden">
+                            <button onclick="return confirm('¿Estás seguro de que deseas eliminar esta orden?')" class="btn btn-danger" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px; background-color:red; color:white;border:1px solid red;" title="Cancelar orden">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
@@ -119,7 +119,7 @@
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="status" value="In Process">
-                            <button class="btn btn-success" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px;" title="Atender esta orden">
+                            <button onclick="return confirm('Confirma para atender esta orden')" class="btn btn-success" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px;" title="Atender esta orden">
                                 <i class="bi bi-check2-circle"></i>
                             </button>
                         </form>
@@ -128,7 +128,7 @@
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="status" value="Completed">
-                            <button class="btn btn-dark" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px" title="Marcar como completada">
+                            <button onclick="return confirm('Confirma para completar esta orden')" class="btn btn-dark" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px" title="Marcar como completada">
                                 <i class="bi bi-check2-square"></i>
                             </button>
                         </form>
@@ -174,7 +174,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="status"  value="Canceled">
-                                <button class="btn btn-danger" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px; background-color:red; color:white;border:1px solid red;" title="Cancelar orden">
+                                <button onclick="return confirm('¿Estás seguro de que deseas eliminar esta orden?')" class="btn btn-danger" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px; background-color:red; color:white;border:1px solid red;" title="Cancelar orden">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>
@@ -182,7 +182,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="status" value="In Process">
-                                <button class="btn btn-success" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px;" title="Atender esta orden">
+                                <button onclick="return confirm('Confirma para atender esta orden')" class="btn btn-success" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px;" title="Atender esta orden">
                                     <i class="bi bi-check2-circle"></i>
                                 </button>
                             </form>
@@ -191,7 +191,7 @@
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="status" value="Completed">
-                                <button class="btn btn-dark" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px" title="Marcar como completada">
+                                <button onclick="return confirm('Confirma para completar esta orden')" class="btn btn-dark" style="display:flex; justify-content:center; align-items:center; width: 100%; height:40px" title="Marcar como completada">
                                     <i class="bi bi-check2-square"></i>
                                 </button>
                             </form>
