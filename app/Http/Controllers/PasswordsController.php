@@ -20,6 +20,8 @@ class PasswordsController extends Controller
 
     public function sendResetMail(Request $request)
     {
+        dd($request->input('_token'));
+
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
