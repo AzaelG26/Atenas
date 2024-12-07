@@ -219,11 +219,12 @@
     function checkCartLimit() {
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
         const addButtons = document.querySelectorAll('.btn-primary');
+        const increaseButtons = document.querySelectorAll('.increase-btn');
 
         // Deshabilitar botones si se alcanza el límite
-        addButtons.forEach(button => {
-            button.disabled = totalItemsInCart >= 10;
-        });
+        const disable = totalItemsInCart >= 10;
+        addButtons.forEach(button => (button.disabled = disable));
+        increaseButtons.forEach(button => (button.disabled = disable));
     }
 
     // Función para agregar un producto al carrito
@@ -329,10 +330,18 @@
         if (currentQuantity < stock && currentStock > 0) {
             quantityInput.value = currentQuantity + 1;
             stockElement.textContent = currentStock - 1;
+
+            const existingItem = cart.find(item => item.menuId === menuId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push (`<p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>`);
+            }
         } else {
             alert('No puedes agregar más del stock disponible.');
         }
 
+        localStorage.setItem('cart', JSON.stringify(cart)); 
         checkCartLimit(); // Revisión del límite tras el incremento
     }
 
@@ -346,8 +355,17 @@
         if (currentQuantity > 1) {
             quantityInput.value = currentQuantity - 1;
             stockElement.textContent = currentStock + 1;
-        }
 
+            const existingItem = cart.find(item => item.menuId === menuId);
+            if (existingItem) {
+                existingItem.quantity -= 1;
+
+                if (existingItem.quantity <= 0) {
+                    cart = cart.filter(item => item.menuId === menuId);
+                }
+            }
+        }
+        localStorage.setItem('cart', JSON.stringify(cart)); 
         checkCartLimit(); // Revisión del límite tras la disminución
     }
 

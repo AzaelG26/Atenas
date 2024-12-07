@@ -96,8 +96,8 @@
                                         <button class="btn btn-secondary" onclick="decreaseQuantity('{{ $menu->id_menu }}')">-</button>
                                         <input type="number" id="quantity{{ $menu->id_menu }}" 
                                             class="form-control mx-2 text-center" 
-                                            value="1" 
-                                            min="1" 
+                                            value="0" 
+                                            min="0" 
                                             max="{{ $menu->stock->stock }}" 
                                             readonly 
                                             style="width: 70px;">
