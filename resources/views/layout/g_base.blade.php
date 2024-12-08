@@ -212,19 +212,17 @@
     function updateCartCount() {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         document.getElementById('cart-count').textContent = totalItems;
-        checkCartLimit(); // Asegurarse de actualizar el estado de los botones
+        checkCartLimit();
     }
 
-    // Función para verificar si el límite global de productos ha sido alcanzado
+    // Verifica si el límite de productos está alcanzado
     function checkCartLimit() {
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
         const addButtons = document.querySelectorAll('.btn-primary');
-        const increaseButtons = document.querySelectorAll('.increase-btn');
 
-        // Deshabilitar botones si se alcanza el límite
-        const disable = totalItemsInCart >= 10;
-        addButtons.forEach(button => (button.disabled = disable));
-        increaseButtons.forEach(button => (button.disabled = disable));
+        addButtons.forEach(button => {
+            button.disabled = totalItemsInCart >= 10;
+        });
     }
 
     // Función para agregar un producto al carrito
@@ -244,6 +242,7 @@
             return;
         }
 
+        // Busca si el producto ya existe en el carrito
         const existingItem = cart.find(item => item.menuId === menuId);
 
         if (existingItem) {
@@ -254,13 +253,13 @@
 
         localStorage.setItem('cart', JSON.stringify(cart));
         alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
-        updateCartCount();
+        updateCartCount(); 
     }
 
     // Función para mostrar el carrito dentro del modal
     function toggleCart() {
         const cartItemsContainer = document.getElementById('cart-items');
-        cartItemsContainer.innerHTML = '';
+        cartItemsContainer.innerHTML = ''; // Limpia el contenido previo
         let total = 0;
 
         if (cart.length === 0) {
@@ -270,7 +269,7 @@
                 total += item.price * item.quantity;
                 const itemRow = document.createElement('div');
                 itemRow.classList.add('cart-item');
-                itemRow.innerHTML = `  
+                itemRow.innerHTML = `
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>
                         <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
@@ -281,71 +280,61 @@
             cartItemsContainer.innerHTML += `<h5 class="mt-3">Total: MX$${total.toFixed(2)}</h5>`;
         }
 
-        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
-        cartModal.show();
+        const cartModalElement = document.getElementById('cartModal');
+        if (cartModalElement) {
+            const cartModal = new bootstrap.Modal(cartModalElement);
+            cartModal.show();
+        } else {
+            console.error('El modal con ID "cartModal" no se encontró en el DOM.');
+        }
     }
+
 
     // Función para eliminar un producto por unidad del carrito
     function removeFromCart(index) {
-        cart.splice(index, 1); // Remueve el producto del array
-        localStorage.setItem('cart', JSON.stringify(cart)); // Actualiza localStorage
-
-        // Actualiza el DOM para eliminar el producto eliminado
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartItemElements = cartItemsContainer.getElementsByClassName('cart-item');
-        if (cartItemElements[index]) {
-            cartItemElements[index].remove(); // Elimina el elemento visual
-        }
-
-        // Recalcula y actualiza el total
-        let total = cart.reduce((acc, item) => acc + item.price, 0);
-        const totalElement = document.querySelector('#cart-items h5');
-        if (totalElement) {
-            totalElement.textContent = `Total: MX$${total.toFixed(2)}`;
-        }
-
-        // Actualiza el contador del carrito
+        cart.splice(index, 1); // Elimina el producto del array
+        localStorage.setItem('cart', JSON.stringify(cart));
+        toggleCart(); // Actualiza el contenido del modal
         updateCartCount();
-
-        // Si el carrito está vacío, muestra el mensaje de carrito vacío
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
-        }
     }
 
-    // Función para incrementar la cantidad de un producto
+    // Incrementa la cantidad de productos y actualiza el carrito
     function increaseQuantity(menuId, stock) {
         const quantityInput = document.getElementById(`quantity${menuId}`);
         const stockElement = document.getElementById(`stock${menuId}`);
+        const buttonElement = document.querySelector(`button[onclick="increaseQuantity('${menuId}', '${stock}')"]`);
         let currentQuantity = parseInt(quantityInput.value);
         let currentStock = parseInt(stockElement.textContent);
 
+        // Calcular la cantidad total proyectada en el carrito
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const projectedTotal = totalItemsInCart + 1; // Proyecta el total si se incrementa este producto
 
-        if (totalItemsInCart >= 10) {
-            alert('No puedes agregar más productos, el límite de 10 ha sido alcanzado.');
+        // Validar límite de productos (10 productos máximo en total)
+        if (projectedTotal > 10) {
+            alert('No puedes agregar más productos. Límite de 10 alcanzado.');
+            buttonElement.disabled = true; // Deshabilitar el botón si el límite se alcanza
             return;
         }
 
+        // Validar que no se exceda el stock disponible
         if (currentQuantity < stock && currentStock > 0) {
+            // Incrementar la cantidad visible en el input
             quantityInput.value = currentQuantity + 1;
+
+            // Reducir el stock disponible visualmente
             stockElement.textContent = currentStock - 1;
 
-            const existingItem = cart.find(item => item.menuId === menuId);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push (`<p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>`);
+            // Deshabilitar el botón si el total proyectado alcanza el límite después del incremento
+            if (projectedTotal === 10) {
+                buttonElement.disabled = true;
             }
         } else {
             alert('No puedes agregar más del stock disponible.');
         }
-
-        localStorage.setItem('cart', JSON.stringify(cart)); 
-        checkCartLimit(); // Revisión del límite tras el incremento
     }
 
-    // Función para disminuir la cantidad de un producto
+    // Reduce la cantidad de productos
     function decreaseQuantity(menuId) {
         const quantityInput = document.getElementById(`quantity${menuId}`);
         const stockElement = document.getElementById(`stock${menuId}`);
@@ -361,12 +350,13 @@
                 existingItem.quantity -= 1;
 
                 if (existingItem.quantity <= 0) {
-                    cart = cart.filter(item => item.menuId === menuId);
+                    cart = cart.filter(item => item.menuId !== menuId);
                 }
             }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
         }
-        localStorage.setItem('cart', JSON.stringify(cart)); 
-        checkCartLimit(); // Revisión del límite tras la disminución
     }
 
     // Función para vaciar el carrito

@@ -96,12 +96,15 @@
                                         <button class="btn btn-secondary" onclick="decreaseQuantity('{{ $menu->id_menu }}')">-</button>
                                         <input type="number" id="quantity{{ $menu->id_menu }}" 
                                             class="form-control mx-2 text-center" 
-                                            value="0" 
-                                            min="0" 
+                                            value="1" 
+                                            min="1" 
                                             max="{{ $menu->stock->stock }}" 
                                             readonly 
                                             style="width: 70px;">
-                                        <button class="btn btn-primary" onclick="increaseQuantity('{{ $menu->id_menu }}', '{{ $menu->stock->stock }}')">+</button>
+                                            <button class="btn btn-primary" 
+        onclick="increaseQuantity('{{ $menu->id_menu }}', '{{ $menu->stock->stock }}')"
+        id="button{{ $menu->id_menu }}">+</button>
+
                                     </div>
 
                                     <button class="btn btn-success mt-3" 
