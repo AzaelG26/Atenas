@@ -86,7 +86,7 @@
                                         <br>
                                         Número interior: {{$ordenes->address->interior_number}}
                                         <br>
-                                        Número Exterior: {{$ordenes->address->outer_numbe}} 
+                                        Número Exterior: {{$ordenes->address->outer_number}} 
                                         <br>                              
                                     </div>                             
                                 </div>
