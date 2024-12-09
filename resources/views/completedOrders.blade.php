@@ -42,7 +42,7 @@
                 <div class="card" style="width: 18rem; height:22em; margin-bottom:10px;">
                     <h5 class="card-header" style="display: flex; justify-content:space-between;align-items:center">
                         De: {{ $ordenes->people->name }} 
-                        <button type="button" style="width: 58px" title="Ver dirección" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <button type="button" style="width: 58px" title="Ver dirección" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{$ordenes->id_online_order}}">
                             <i class="bi bi-three-dots-vertical"></i><i class="bi bi-signpost-2"></i>
                         </button>                       
                     </h5>
@@ -70,11 +70,11 @@
                             @endif
                         @endforeach 
                         <!-- Modal -->
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal fade" id="staticBackdrop{{$ordenes->id_online_order}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Direccion</h1>
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel{{$ordenes->id_online_order}}">Direccion</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -86,7 +86,7 @@
                                         <br>
                                         Número interior: {{$ordenes->address->interior_number}}
                                         <br>
-                                        Número Exterior: {{$ordenes->address->outer_numbe}} 
+                                        Número Exterior: {{$ordenes->address->outer_number}} 
                                         <br>                              
                                     </div>                             
                                 </div>
