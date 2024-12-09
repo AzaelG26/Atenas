@@ -105,104 +105,107 @@ class MenuController extends Controller
     }
 
     public function procesarPago(Request $request)
-{
-    $validatedData = $request->validate([
-        'card_number' => ['required', 'digits:16'],
-        'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
-        'cvv' => ['required', 'digits:3'],
-        'receiver_name' => ['required', 'string', 'max:255'],
-        'notes' => ['nullable', 'string', 'max:1000'],
-    ]);
-
-    $carrito = session('carrito', []);
-    if (empty($carrito)) {
-        return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
-    }
-
-    $user = auth()->user()->people?->id;
-
-        if ($user) {
-            $idClient = $user;
-        } else {
-            return redirect()->route('addresses')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
-        }
-
-    $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
-    $selectedAddressId = $request->input('selectedAddress');
-
-    $selectedAddress = Address::where('id_address', $selectedAddressId)
-        ->whereHas('client', function ($query) {
-            $query->where('user_id', Auth::id());
-        })
-        ->with(['neighborhood', 'neighborhood.postalCode'])
-        ->firstOrFail();
-
-    if (!$selectedAddress) {
-        return redirect()->route('vista.pago')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
-    }
-
-    $receiverName = $request->input('receiver_name');
-    $notes = $request->input('notes');
-    $specifications = $request->input('specifications');
-
-    try {
-        DB::beginTransaction();
-        
-        $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?, ?)', [
-            1,
-            $totalPrice,
-            'Completed',
-            $receiverName,
-            $notes,
-            $idClient,
-            $totalPrice,
-            $selectedAddressId,
+    {
+        $validatedData = $request->validate([
+            'card_number' => ['required', 'digits:16'],
+            'expiry_date' => ['required', 'regex:/^(0[1-9]|1[0-2])\/\d{2}$/'],
+            'cvv' => ['required', 'digits:3'],
+            'receiver_name' => ['required', 'string', 'max:255'],
+            'notes' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        $paymentAndOrderData = collect($paymentAndOrderResult)->first();
-        $newOrderId = $paymentAndOrderData->OrderID;
+        $carrito = session('carrito', []);
+        if (empty($carrito)) {
+            return redirect()->route('vista.pago')->withErrors(['error' => 'El carrito está vacío.']);
+        }
 
-        DB::update('UPDATE online_orders SET status = ? WHERE id_online_order = ?', ['Paid', $newOrderId]);
+        $user = auth()->user()->people?->id;
 
-        $specifications = $request->input('specifications', []);
+            if ($user) {
+                $idClient = $user;
+            } else {
+                return redirect()->route('addresses')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
+            }
 
-        foreach ($carrito as $index => &$item) {
-            $item['specifications'] = [];
+        $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
+        $selectedAddressId = $request->input('selectedAddress');
 
-            if (isset($specifications[$index])) {
-                foreach ($specifications[$index] as $specDetail) {
-                    $item['specifications'][] = $specDetail ?? null;
+        $selectedAddress = Address::where('id_address', $selectedAddressId)
+            ->whereHas('client', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->with(['neighborhood', 'neighborhood.postalCode'])
+            ->firstOrFail();
+
+        if (!$selectedAddress) {
+            return redirect()->route('vista.pago')->withErrors(['error' => 'Dirección no válida o no encontrada.']);
+        }
+
+        $receiverName = $request->input('receiver_name');
+        $notes = $request->input('notes');
+        $specifications = $request->input('specifications');
+
+        try {
+            DB::beginTransaction();
+            
+            $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?, ?)', [
+                1,
+                $totalPrice,
+                'Completed',
+                $receiverName,
+                $notes,
+                $idClient,
+                $totalPrice,
+                $selectedAddressId,
+            ]);
+
+            $paymentAndOrderData = collect($paymentAndOrderResult)->first();
+            $newOrderId = $paymentAndOrderData->OrderID;
+
+            DB::update('UPDATE online_orders SET status = ? WHERE id_online_order = ?', ['Paid', $newOrderId]);
+
+            $specifications = $request->input('specifications', []);
+
+            foreach ($carrito as $index => &$item) {
+                $item['specifications'] = [];
+
+                if (isset($specifications[$index])) {
+                    foreach ($specifications[$index] as $specDetail) {
+                        $item['specifications'][] = $specDetail ?? null;
+                    }
                 }
             }
-        }
 
-        foreach ($carrito as $item) {
-            foreach ($item['specifications'] as $specDetail) {
-                DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
-                    $newOrderId,
-                    $item['menuId'],
-                    1,  
-                    $specDetail,
-                ]);
+            foreach ($carrito as $item) {
+                foreach ($item['specifications'] as $specDetail) {
+                    DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
+                        $newOrderId,
+                        $item['menuId'],
+                        1,  
+                        $specDetail,
+                    ]);
+                }
             }
+
+            DB::select('CALL GenerateFolioAfterOrderPaid(?)', [$newOrderId]);
+
+            $folioId = DB::table('folios')->orderByDesc('created_at')->value('id_folio');
+
+            DB::select('CALL UpdateOrderWithFolio(?)', [$folioId]);
+
+            DB::commit();
+
+            session()->forget('carrito');
+
+            return redirect()->route('menu')->with('success', "Pago procesado exitosamente.");
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            if ($e->getCode() === '45000') {
+                return redirect()->route('menu')->withErrors(['error' => 'Stock insuficiente para uno de los productos seleccionados.']);
+            }
+
+            return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
         }
-
-        DB::select('CALL GenerateFolioAfterOrderPaid(?)', [$newOrderId]);
-
-        $folioId = DB::table('folios')->orderByDesc('created_at')->value('id_folio');
-
-        DB::select('CALL UpdateOrderWithFolio(?)', [$folioId]);
-
-        DB::commit();
-
-        session()->forget('carrito');
-
-        return redirect()->route('menu')->with('success', "Pago procesado exitosamente.");
-    } catch (\Exception $e) {
-        DB::rollBack();
-
-        return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
     }
-}
-
 }
