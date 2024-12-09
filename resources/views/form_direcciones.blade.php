@@ -343,7 +343,6 @@
     const numeroExterior = document.getElementById('numeroExterior').value.trim();
     const referencia = document.getElementById('referencia').value.trim();
 
-    // Verificar si algún campo obligatorio está vacío
     let errores = [];
 
     if (!calle) {
@@ -358,11 +357,9 @@
         errores.push('El campo "Referencia" es obligatorio.');
     }
 
-    // Mostrar errores si existen
     if (errores.length > 0) {
-        alert(errores.join('\n')); // Muestra una alerta con los errores
+        alert(errores.join('\n')); 
     } else {
-        // Si no hay errores, envía el formulario
         document.getElementById('direccionForm').submit();
     }
 });
