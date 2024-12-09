@@ -49,12 +49,13 @@ class ordersController extends Controller
     {
         $ventas = Order::with('orderDetail.menu', 'folio')
             ->where('status', 'Completed')
+            ->where('status', '<>', 'Canceled')
             ->orderBy('created_at', 'asc');
 
         $ventasOnline = OnlineOrder::with([
             'onlineOrderDetails.menu',
         ])->where('status', 'Completed')
-            ->where('status', 'Completed')
+            ->where('status', '<>', 'Canceled')
             ->orderBy('created_at', 'asc');
 
         if ($mes = $request->input('mes')) {
@@ -72,8 +73,8 @@ class ordersController extends Controller
         $totalFisico = $ventas->sum('total_price');
         $totalOnline = $ventasOnline->sum('total_price');
 
-        $minOrders = Order::min('created_at');
-        $minOnlineOrders = OnlineOrder::min('created_at');
+        $minOrders = Order::where('status', '<>', 'Canceled')->min('created_at');
+        $minOnlineOrders = OnlineOrder::where('status', '<>', 'Canceled')->min('created_at');
 
         $fechaMasAntigua = min($minOrders, $minOnlineOrders);
 
