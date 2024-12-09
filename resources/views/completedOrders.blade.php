@@ -62,7 +62,9 @@
                             @if($detail->menu)
                             <p class="card-text">
                                 Producto: {{ $detail->menu->name }} <br>
-                                Cantidad: {{ $detail->quantity }}.</p>
+                                Cantidad: {{ $detail->quantity }}. <br>
+                                Especificaciones: {{$detail->specifications}}
+                            </p>
                                 <hr>
                             @else
                                 <p>No se encontró el producto para este detalle.</p>
