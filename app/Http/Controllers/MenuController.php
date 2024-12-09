@@ -104,10 +104,6 @@ class MenuController extends Controller
         return view('vista_pago', compact('carrito', 'total', 'selectedAddress'));
     }
 
-
-
-
-
     public function procesarPago(Request $request)
 {
     $validatedData = $request->validate([
@@ -169,18 +165,26 @@ class MenuController extends Controller
         DB::update('UPDATE online_orders SET status = ? WHERE id_online_order = ?', ['Paid', $newOrderId]);
 
         $specifications = $request->input('specifications', []);
-            foreach ($carrito as $index => &$item) {
-                $item['specifications'] = $specifications[$index] ?? null;
-            }
 
+        foreach ($carrito as $index => &$item) {
+            $item['specifications'] = [];
+
+            if (isset($specifications[$index])) {
+                foreach ($specifications[$index] as $specDetail) {
+                    $item['specifications'][] = $specDetail ?? null;
+                }
+            }
+        }
 
         foreach ($carrito as $item) {
-            DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
-                $newOrderId,
-                $item['menuId'],
-                $item['quantity'] ?? 1,
-                $item['specifications'],
-            ]);
+            foreach ($item['specifications'] as $specDetail) {
+                DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
+                    $newOrderId,
+                    $item['menuId'],
+                    1,  
+                    $specDetail,
+                ]);
+            }
         }
 
         DB::select('CALL GenerateFolioAfterOrderPaid(?)', [$newOrderId]);

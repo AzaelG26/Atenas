@@ -119,7 +119,7 @@
 @endif
 
 <div class="container mt-4" style="color:#ffca28">
-    <h2>Gestionar Direcciones</h2>
+    <h2>Busca tu Dirección</h2>
 
     <div class="form-check">
         <input class="form-check-input" type="radio" name="direccionOption" id="opcionAgregar" value="agregar">
@@ -144,30 +144,45 @@
 
         <form id="direccionForm" method="POST" action="{{ route('register.address') }}" style="display: none;">
             @csrf
-            <h3>Detalles de la Dirección</h3>
+            <h3>Detalles de tu Dirección</h3>
             <input type="hidden" name="id_neighborhood" id="direccion_id">
 
             <div class="form-group">
-                <label for="calle">Calle:</label>
-                <input type="text" id="calle" class="form-control" name="street" required>
+                <label for="calle">Calle(s):</label>
+                <input type="text" id="calle" class="form-control" name="street" placeholder="Escribe el nombre de las calles de donde quieres que se entregue tu pedido (Campo Obligatorio)">
+                @error('street')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="numeroExterior">Número Exterior:</label>
-                <input type="text" id="numeroExterior" class="form-control" name="outer_number" required>
+                <input type="text" id="numeroExterior" class="form-control" name="outer_number"placeholder="Escribe el número exterior de donde te encuentras (Campo Obligatorio)"maxlength="6" pattern="^\d{1,6}$"oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 6);">
+                @error('outer_number')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="numeroInterior">Número Interior:</label>
-                <input type="text" id="numeroInterior" class="form-control" name="interior_number">
+                <input type="text" id="numeroInterior" class="form-control" name="interior_number"placeholder="Escribe el número interior de donde te encuentras (Campo Opcional)"maxlength="6" pattern="^\d{1,6}$"oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 6);">
+                @error('interior_number')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
+
 
             <div class="form-group">
                 <label for="referencia">Referencia:</label>
-                <input type="text" id="referencia" class="form-control" name="reference">
+                <input type="text" id="referencia" class="form-control" name="reference" placeholder="Escribe una referencia sobre el lugar donde quieres que realicen tu entrega (Campo Obligatorio)">
+                @error('reference')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3">Guardar Dirección</button>
+            <div class="d-flex justify-content-center mt-3">
+                <button type="submit" id="guardarDireccionBtn" class="btn btn-primary mt-3">Guardar Dirección</button>
+            </div>
         </form>
     </div>
 </div>
@@ -198,19 +213,19 @@
                     </div>
                 @endforeach
             </div>
-            <button type="submit" class="btn btn-primary">Confirmar</button>
+            <div class="d-flex justify-content-center mt-3">
+                <button type="submit" class="btn btn-primary">Confirmar</button>
+            </div>
+            
         @endif
     </div>
-
     
     <input type="hidden" name="cart" value="{{ json_encode($carrito) }}">
 </form>
 
-<a href="{{ route('menu') }}" class="btn btn-secondary mt-3">Regresar al Menú</a>
-
-
-
-
+<div class="d-flex justify-content-center mt-3">
+    <a href="{{ route('menu') }}" class="btn btn-secondary">Regresar al Menú</a>
+</div>
 
 <div id="addressesData" data-empty="{{ $addresses->isEmpty() ? 'true' : 'false' }}"></div>
 <div id="postalCodesData" data-postalcodes='@json($postalCodes)'></div>
@@ -321,6 +336,39 @@
             document.getElementById('opcionAgregar').checked = true;
         }
     });
+
+    document.getElementById('guardarDireccionBtn').addEventListener('click', function(event) {
+    // Obtener los valores de los campos obligatorios
+    const calle = document.getElementById('calle').value.trim();
+    const numeroExterior = document.getElementById('numeroExterior').value.trim();
+    const referencia = document.getElementById('referencia').value.trim();
+
+    // Verificar si algún campo obligatorio está vacío
+    let errores = [];
+
+    if (!calle) {
+        errores.push('El campo "Calle(s)" es obligatorio.');
+    }
+
+    if (!numeroExterior) {
+        errores.push('El campo "Número Exterior" es obligatorio.');
+    }
+
+    if (!referencia) {
+        errores.push('El campo "Referencia" es obligatorio.');
+    }
+
+    // Mostrar errores si existen
+    if (errores.length > 0) {
+        alert(errores.join('\n')); // Muestra una alerta con los errores
+    } else {
+        // Si no hay errores, envía el formulario
+        document.getElementById('direccionForm').submit();
+    }
+});
+
+
+
 </script>
 
 @endsection

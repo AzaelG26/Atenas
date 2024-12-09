@@ -65,19 +65,29 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $grandTotal = 0;
+                @endphp
                 @foreach ($carrito as $index => $item)
-                <tr>
-                    <td>{{ $item['name'] }}</td>
-                    <td>MX${{ number_format($item['price'], 2) }}</td>
-                    <td>MX${{ number_format($item['price'] * $item['quantity'], 2) }}</td>
-                    <td>
-                        <div class="detail-input mt-2">
-                            <input type="text" name="specifications[{{ $index }}]" class="form-control mb-2" placeholder="Escriba un detalle (opcional)">
-                        </div>
-                    </td>
-                </tr>
+                    @php
+                        $subtotal = $item['price'] * $item['quantity'];
+                        $grandTotal += $subtotal;
+                    @endphp
+                    @for ($i = 0; $i < $item['quantity']; $i++)
+                        <tr>
+                            <td>{{ $item['name'] }}</td>
+                            <td>MX${{ number_format($item['price'], 2) }}</td>
+                            <td>MX${{ number_format($item['price'], 2) }}</td>
+                            <td>
+                                <div class="detail-input mt-2">
+                                    <input type="text" name="specifications[{{ $index }}][{{ $i }}]" class="form-control mb-2" placeholder="Escriba un detalle (opcional)">
+                                </div>
+                            </td>
+                        </tr>
+                    @endfor
                 @endforeach
             </tbody>
+
         </table>
     </div>
 

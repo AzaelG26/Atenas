@@ -146,14 +146,23 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <body>
     <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
-                <i class="bi bi-list" style="font-size: 1.5rem;"></i>
-            </button>        
-            <!-- Botón para abrir el modal del carrito -->
-            <button onclick="toggleCart()" class="btn-cart">
-                <i class="bi bi-cart3"></i> Carrito (<span id="cart-count">0</span>)
-            </button>    
+        <div class="container-fluid">      
+            <a href="{{ route('welcome') }}" class="btn btn-warning d-flex align-items-center gap-2" style="text-decoration: none; color: white; background-color: #daa520; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                </svg>
+                <span>Ir al inicio</span>
+            </a>
+
+            @php
+                $hiddenRoutes = ['addresses.form', 'post_carro', 'vista.pago'];
+            @endphp
+
+            @if (!in_array(Route::currentRouteName(), $hiddenRoutes))
+                <button onclick="toggleCart()" class="btn-cart">
+                    <i class="bi bi-cart3"></i> Carrito (<span id="cart-count">0</span>)
+                </button>
+            @endif
         </div>
     </nav>
 
@@ -212,55 +221,70 @@
     function updateCartCount() {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         document.getElementById('cart-count').textContent = totalItems;
-        checkCartLimit(); // Asegurarse de actualizar el estado de los botones
+        checkCartLimit();
     }
 
-    // Función para verificar si el límite global de productos ha sido alcanzado
+    // Verifica si el límite de productos está alcanzado
     function checkCartLimit() {
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
         const addButtons = document.querySelectorAll('.btn-primary');
-        const increaseButtons = document.querySelectorAll('.increase-btn');
 
-        // Deshabilitar botones si se alcanza el límite
-        const disable = totalItemsInCart >= 10;
-        addButtons.forEach(button => (button.disabled = disable));
-        increaseButtons.forEach(button => (button.disabled = disable));
+        addButtons.forEach(button => {
+            button.disabled = totalItemsInCart >= 10;
+        });
     }
 
     // Función para agregar un producto al carrito
     function addToCart(name, price, menuId) {
-        const quantityInput = document.getElementById(`quantity${menuId}`);
-        const quantity = parseInt(quantityInput.value);
+    const quantityInput = document.getElementById(`quantity${menuId}`);
+    const quantity = parseInt(quantityInput.value);
 
-        if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
-            alert('Cantidad no válida.');
-            return;
-        }
-
-        const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-        if (totalItemsInCart + quantity > 10) {
-            alert('No puedes agregar más de 10 productos en total al carrito.');
-            return;
-        }
-
-        const existingItem = cart.find(item => item.menuId === menuId);
-
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            cart.push({ menuId, name, price: parseFloat(price), quantity });
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-        alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
-        updateCartCount();
+    if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
+        alert('Cantidad no válida.');
+        return;
     }
+
+    const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    if (totalItemsInCart + quantity > 10) {
+        alert('No puedes agregar más de 10 productos en total al carrito.');
+        return;
+    }
+
+    // Busca si el producto ya existe en el carrito
+    const existingItem = cart.find(item => item.menuId === menuId);
+
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        cart.push({ menuId, name, price: parseFloat(price), quantity });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount(); 
+
+    // Cerrar el modal actual
+    const currentModal = bootstrap.Modal.getInstance(document.getElementById(`modal${menuId}`));
+    if (currentModal) {
+        currentModal.hide();
+    }
+
+    // Abrir el modal del carrito
+    const cartModalElement = document.getElementById('cartModal');
+    if (cartModalElement) {
+        const cartModal = new bootstrap.Modal(cartModalElement);
+        toggleCart(); // Muestra los productos en el carrito
+        cartModal.show();
+    } else {
+        console.error('El modal con ID "cartModal" no se encontró en el DOM.');
+    }
+}
+
 
     // Función para mostrar el carrito dentro del modal
     function toggleCart() {
         const cartItemsContainer = document.getElementById('cart-items');
-        cartItemsContainer.innerHTML = '';
+        cartItemsContainer.innerHTML = ''; // Limpia el contenido previo
         let total = 0;
 
         if (cart.length === 0) {
@@ -270,7 +294,7 @@
                 total += item.price * item.quantity;
                 const itemRow = document.createElement('div');
                 itemRow.classList.add('cart-item');
-                itemRow.innerHTML = `  
+                itemRow.innerHTML = `
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>
                         <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
@@ -281,71 +305,61 @@
             cartItemsContainer.innerHTML += `<h5 class="mt-3">Total: MX$${total.toFixed(2)}</h5>`;
         }
 
-        const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
-        cartModal.show();
+        const cartModalElement = document.getElementById('cartModal');
+        if (cartModalElement) {
+            const cartModal = new bootstrap.Modal(cartModalElement);
+            cartModal.show();
+        } else {
+            console.error('El modal con ID "cartModal" no se encontró en el DOM.');
+        }
     }
+
 
     // Función para eliminar un producto por unidad del carrito
     function removeFromCart(index) {
-        cart.splice(index, 1); // Remueve el producto del array
-        localStorage.setItem('cart', JSON.stringify(cart)); // Actualiza localStorage
-
-        // Actualiza el DOM para eliminar el producto eliminado
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartItemElements = cartItemsContainer.getElementsByClassName('cart-item');
-        if (cartItemElements[index]) {
-            cartItemElements[index].remove(); // Elimina el elemento visual
-        }
-
-        // Recalcula y actualiza el total
-        let total = cart.reduce((acc, item) => acc + item.price, 0);
-        const totalElement = document.querySelector('#cart-items h5');
-        if (totalElement) {
-            totalElement.textContent = `Total: MX$${total.toFixed(2)}`;
-        }
-
-        // Actualiza el contador del carrito
+        cart.splice(index, 1); // Elimina el producto del array
+        localStorage.setItem('cart', JSON.stringify(cart));
+        toggleCart(); // Actualiza el contenido del modal
         updateCartCount();
-
-        // Si el carrito está vacío, muestra el mensaje de carrito vacío
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
-        }
     }
 
-    // Función para incrementar la cantidad de un producto
+    // Incrementa la cantidad de productos y actualiza el carrito
     function increaseQuantity(menuId, stock) {
         const quantityInput = document.getElementById(`quantity${menuId}`);
         const stockElement = document.getElementById(`stock${menuId}`);
+        const buttonElement = document.querySelector(`button[onclick="increaseQuantity('${menuId}', '${stock}')"]`);
         let currentQuantity = parseInt(quantityInput.value);
         let currentStock = parseInt(stockElement.textContent);
 
+        // Calcular la cantidad total proyectada en el carrito
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const projectedTotal = totalItemsInCart + 1; // Proyecta el total si se incrementa este producto
 
-        if (totalItemsInCart >= 10) {
-            alert('No puedes agregar más productos, el límite de 10 ha sido alcanzado.');
+        // Validar límite de productos (10 productos máximo en total)
+        if (projectedTotal > 10) {
+            alert('No puedes agregar más productos. Límite de 10 alcanzado.');
+            buttonElement.disabled = true; // Deshabilitar el botón si el límite se alcanza
             return;
         }
 
+        // Validar que no se exceda el stock disponible
         if (currentQuantity < stock && currentStock > 0) {
+            // Incrementar la cantidad visible en el input
             quantityInput.value = currentQuantity + 1;
+
+            // Reducir el stock disponible visualmente
             stockElement.textContent = currentStock - 1;
 
-            const existingItem = cart.find(item => item.menuId === menuId);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push (`<p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>`);
+            // Deshabilitar el botón si el total proyectado alcanza el límite después del incremento
+            if (projectedTotal === 10) {
+                buttonElement.disabled = true;
             }
         } else {
             alert('No puedes agregar más del stock disponible.');
         }
-
-        localStorage.setItem('cart', JSON.stringify(cart)); 
-        checkCartLimit(); // Revisión del límite tras el incremento
     }
 
-    // Función para disminuir la cantidad de un producto
+    // Reduce la cantidad de productos
     function decreaseQuantity(menuId) {
         const quantityInput = document.getElementById(`quantity${menuId}`);
         const stockElement = document.getElementById(`stock${menuId}`);
@@ -361,12 +375,13 @@
                 existingItem.quantity -= 1;
 
                 if (existingItem.quantity <= 0) {
-                    cart = cart.filter(item => item.menuId === menuId);
+                    cart = cart.filter(item => item.menuId !== menuId);
                 }
             }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
         }
-        localStorage.setItem('cart', JSON.stringify(cart)); 
-        checkCartLimit(); // Revisión del límite tras la disminución
     }
 
     // Función para vaciar el carrito
