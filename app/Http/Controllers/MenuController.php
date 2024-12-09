@@ -168,13 +168,15 @@ class MenuController extends Controller
 
             foreach ($carrito as $index => &$item) {
                 $item['specifications'] = [];
-
+            
                 if (isset($specifications[$index])) {
                     foreach ($specifications[$index] as $specDetail) {
                         $item['specifications'][] = $specDetail ?? null;
                     }
                 }
             }
+            unset($item);
+            
 
             foreach ($carrito as $item) {
                 foreach ($item['specifications'] as $specDetail) {
