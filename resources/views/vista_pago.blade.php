@@ -134,7 +134,7 @@
 </div>
 
 
-    <button type="submit" onclick="clearCart()" class="btn btn-success btn-lg w-100">Simular Pago</button>
+    <button type="submit" onclick="clearCart()" class="btn btn-success btn-lg w-100">Concretar Pago</button>
 </form>
 
 
