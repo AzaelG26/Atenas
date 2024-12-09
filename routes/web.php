@@ -103,7 +103,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
         Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
-
+        Route::get('/ticket/{orderId}', [MenuController::class, 'mostrarTicket'])->name('detalle.ticket');
 
         Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
         Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');

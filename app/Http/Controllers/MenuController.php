@@ -202,10 +202,11 @@ class MenuController extends Controller
             DB::rollBack();
 
             if ($e->getCode() === '45000') {
-                return redirect()->route('menu')->withErrors(['error' => 'Stock insuficiente para uno de los productos seleccionados.']);
-            }
+            return redirect()->route('menu')->withErrors(['error' => 'Stock insuficiente para uno de los productos seleccionados.']);
+        }
 
             return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
         }
     }
+    
 }
