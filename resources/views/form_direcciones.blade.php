@@ -157,7 +157,7 @@
 
             <div class="form-group">
                 <label for="numeroExterior">Número Exterior:</label>
-                <input type="text" id="numeroExterior" class="form-control" name="outer_number" placeholder="Escribe el número exterior de donde te encuentras (Campo Obligatorio)" maxlength="6">
+                <input type="text" id="numeroExterior" class="form-control" name="outer_number"placeholder="Escribe el número exterior de donde te encuentras (Campo Obligatorio)"maxlength="6" pattern="^\d{1,6}$"oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 6);">
                 @error('outer_number')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -165,11 +165,12 @@
 
             <div class="form-group">
                 <label for="numeroInterior">Número Interior:</label>
-                <input type="text" id="numeroInterior" class="form-control" name="interior_number" placeholder="Escribe el número interior de donde te encuentras (Campo Opcional)" maxlength="6">
+                <input type="text" id="numeroInterior" class="form-control" name="interior_number"placeholder="Escribe el número interior de donde te encuentras (Campo Opcional)"maxlength="6" pattern="^\d{1,6}$"oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0, 6);">
                 @error('interior_number')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+
 
             <div class="form-group">
                 <label for="referencia">Referencia:</label>
