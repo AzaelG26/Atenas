@@ -175,15 +175,27 @@ class ordersController extends Controller
         $localHistorialOrders = Order::with([
             'orderDetail.menu',
             'folio',
-        ])->orderBy('created_at', 'asc')
-            ->paginate(20)
-            ->through(function ($order) {
-                $order->product_names = $order->orderDetail->map(function ($detail) {
-                    return $detail->menu->name;
-                })->implode(', ');
+        ])
+            ->orderBy('created_at', 'asc')
+            ->paginate(20);
 
-                return $order;
+        $localGrouped = $localHistorialOrders->getCollection()
+            ->groupBy(function ($order) {
+                return $order->created_at->format('Y-m-d');
+            })
+            ->map(function ($orders) {
+                return $orders->map(function ($order) {
+
+                    $order->product_names = $order->orderDetail->map(function ($detail) {
+                        return $detail->menu->name;
+                    })->implode(', ');
+
+                    return $order;
+                });
             });
+
+        $localHistorialOrders->setCollection($localGrouped->flatten());
+
 
         $lineHistorialOrders = OnlineOrder::with([
             'folio',
@@ -191,19 +203,29 @@ class ordersController extends Controller
             'people' => function ($query) {
                 $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
             }
-        ])->orderBy('created_at', 'asc')
-            ->paginate(20)
-            ->through(function ($order) {
-                $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
-                    return $detail->menu->name;
-                })->implode(', ');
+        ])
+            ->orderBy('created_at', 'asc')
+            ->paginate(20);
 
-                return $order;
+        $lineGrouped = $lineHistorialOrders->getCollection()
+            ->groupBy(function ($order) {
+                return $order->created_at->format('Y-m-d'); // Agrupar por fecha
+            })
+            ->map(function ($orders) {
+                return $orders->map(function ($order) {
+
+                    $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
+                        return $detail->menu->name;
+                    })->implode(', ');
+
+                    return $order;
+                });
             });
 
-
+        $lineHistorialOrders->setCollection($lineGrouped->flatten());
         return view('historialOrders', compact(['localHistorialOrders', 'lineHistorialOrders']));
     }
+
 
     /**
      * Display a listing of the resource.
