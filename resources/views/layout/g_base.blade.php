@@ -146,14 +146,23 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <body>
     <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
-                <i class="bi bi-list" style="font-size: 1.5rem;"></i>
-            </button>        
-            <!-- Botón para abrir el modal del carrito -->
-            <button onclick="toggleCart()" class="btn-cart">
-                <i class="bi bi-cart3"></i> Carrito (<span id="cart-count">0</span>)
-            </button>    
+        <div class="container-fluid">      
+            <a href="{{ route('welcome') }}" class="btn btn-warning d-flex align-items-center gap-2" style="text-decoration: none; color: white; background-color: #daa520; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                </svg>
+                <span>Ir al inicio</span>
+            </a>
+
+            @php
+                $hiddenRoutes = ['addresses.form', 'post_carro', 'vista.pago'];
+            @endphp
+
+            @if (!in_array(Route::currentRouteName(), $hiddenRoutes))
+                <button onclick="toggleCart()" class="btn-cart">
+                    <i class="bi bi-cart3"></i> Carrito (<span id="cart-count">0</span>)
+                </button>
+            @endif
         </div>
     </nav>
 
@@ -227,34 +236,50 @@
 
     // Función para agregar un producto al carrito
     function addToCart(name, price, menuId) {
-        const quantityInput = document.getElementById(`quantity${menuId}`);
-        const quantity = parseInt(quantityInput.value);
+    const quantityInput = document.getElementById(`quantity${menuId}`);
+    const quantity = parseInt(quantityInput.value);
 
-        if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
-            alert('Cantidad no válida.');
-            return;
-        }
-
-        const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-        if (totalItemsInCart + quantity > 10) {
-            alert('No puedes agregar más de 10 productos en total al carrito.');
-            return;
-        }
-
-        // Busca si el producto ya existe en el carrito
-        const existingItem = cart.find(item => item.menuId === menuId);
-
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            cart.push({ menuId, name, price: parseFloat(price), quantity });
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-        alert(`${quantity} ${name}(s) añadido(s) al carrito.`);
-        updateCartCount(); 
+    if (isNaN(price) || isNaN(quantity) || quantity <= 0) {
+        alert('Cantidad no válida.');
+        return;
     }
+
+    const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    if (totalItemsInCart + quantity > 10) {
+        alert('No puedes agregar más de 10 productos en total al carrito.');
+        return;
+    }
+
+    // Busca si el producto ya existe en el carrito
+    const existingItem = cart.find(item => item.menuId === menuId);
+
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        cart.push({ menuId, name, price: parseFloat(price), quantity });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount(); 
+
+    // Cerrar el modal actual
+    const currentModal = bootstrap.Modal.getInstance(document.getElementById(`modal${menuId}`));
+    if (currentModal) {
+        currentModal.hide();
+    }
+
+    // Abrir el modal del carrito
+    const cartModalElement = document.getElementById('cartModal');
+    if (cartModalElement) {
+        const cartModal = new bootstrap.Modal(cartModalElement);
+        toggleCart(); // Muestra los productos en el carrito
+        cartModal.show();
+    } else {
+        console.error('El modal con ID "cartModal" no se encontró en el DOM.');
+    }
+}
+
 
     // Función para mostrar el carrito dentro del modal
     function toggleCart() {

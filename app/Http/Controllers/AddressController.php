@@ -78,41 +78,51 @@ class AddressController extends Controller
     }
 
     public function registerAddress(Request $request)
-    {
-        // con el "?" se previene el error en caso de haber datos nulos
-        $user = auth()->user()->people?->id;
+{
+    // Validar los campos, excepto el número interior
+    $validatedData = $request->validate([
+        'id_neighborhood' => 'required',
+        'street' => 'required|string',
+        'outer_number' => 'required|string|max:6',
+        'reference' => 'required|string',
+        'interior_number' => 'nullable|string|max:6',
+    ], [
+        'id_neighborhood.required' => 'Te falta seleccionar un vecindario.',
+        'street.required' => 'Es obligatorio que escribas las calles donde quieres que se entregue tu pedido.',
+        'outer_number.required' => 'Es obligatorio escribir el numero exterrior de tu estancia.',
+        'outer_number.max' => 'El número exterior no puede tener más de 6 caracteres.',
+        'reference.required' => 'Para nosotros es importante que coloques una referencia de donde quieres que se realice tu pedido.',
+    ]);
 
-        if ($user) {
-            $idClient = $user;
-        } else {
-            return redirect()->route('addresses')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
-        }
+    // Obtener el ID del usuario autenticado
+    $user = auth()->user()->people?->id;
 
-        $idNeighborhood = $request->input('id_neighborhood');
-        $street = $request->input('street');
-        $reference = $request->input('reference');
-        $interiorNumber = $request->input('interior_number');
-        $outerNumber = $request->input('outer_number');
-
-        try {
-            DB::statement('CALL register_address(?, ?, ?, ?, ?, ?, @id_address)', [
-                $idClient,
-                $idNeighborhood,
-                $street,
-                $reference,
-                $interiorNumber,
-                $outerNumber
-            ]);
-        
-            $result = DB::select('SELECT @id_address AS id_address');
-        
-            return redirect()->route('addresses.form')
-                ->with('success', 'Dirección registrada exitosamente.');
-
-        } catch (\Exception $e) {
-            return redirect()->route('addresses.form')->with('error', 'Error al registrar la dirección: ' . $e->getMessage());
-        }        
+    if ($user) {
+        $idClient = $user;
+    } else {
+        return redirect()->route('addresses')->with('error', 'No se logró realizar el registro porque no se tienen datos de persona.');
     }
+
+    try {
+        DB::statement('CALL register_address(?, ?, ?, ?, ?, ?, @id_address)', [
+            $idClient,
+            $validatedData['id_neighborhood'],
+            $validatedData['street'],
+            $validatedData['reference'],
+            $validatedData['interior_number'],
+            $validatedData['outer_number']
+        ]);
+
+        $result = DB::select('SELECT @id_address AS id_address');
+
+        return redirect()->route('addresses.form')
+            ->with('success', 'Dirección registrada exitosamente.');
+
+    } catch (\Exception $e) {
+        return redirect()->route('addresses.form')->with('error', 'Error al registrar la dirección: ' . $e->getMessage());
+    }
+}
+
 
 
 

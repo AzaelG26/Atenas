@@ -31,45 +31,39 @@ class CartController extends Controller
         return view('cart.show', compact('items'));
     }
 
-
-
-
     // Agregar un producto al carrito
     public function addToCart(Request $request)
     {
         $user = Auth::user();
         $cart = $user->cart;
 
-        // Si no existe un carrito para el usuario, crearlo
         if (!$cart) {
-            $cart = $user->cart->firstOrCreate(['items' => json_encode([])]);
+            $cart = Cart::create([
+                'user_id' => $user->id,
+                'items' => json_encode([]),
+            ]);
         }
 
-        // Decodificar los items actuales del carrito
         $items = json_decode($cart->items, true) ?? [];
 
-        // Obtener los datos del producto desde la solicitud
         $menuId = $request->input('menuId');
-        $quantity = $request->input('quantity');
+        $quantity = (int) $request->input('quantity');
         $price = $request->input('price');
         $name = $request->input('name');
 
-        // Crear una nueva entrada para cada unidad añadida
         for ($i = 0; $i < $quantity; $i++) {
             $items[] = [
                 'menuId' => $menuId,
                 'name' => $name,
                 'price' => $price,
-                'quantity' => 1, // Siempre 1, porque cada entrada es separada
             ];
         }
 
-        // Guardar los items en el carrito del usuario
         $cart->items = json_encode($items);
         $cart->save();
 
-        // Guardar el carrito actualizado en la sesión (opcional)
-        session(['carrito' => $items]);
+        // Agrega esta línea temporal para verificar el contenido del carrito
+        dd($items);
 
         return response()->json(['message' => 'Producto(s) añadido(s) al carrito']);
     }
