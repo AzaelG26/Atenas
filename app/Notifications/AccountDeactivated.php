@@ -4,6 +4,7 @@
 
 namespace App\Notifications;
 
+use App\Mail\AccountDeactivatedMail;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -33,13 +34,7 @@ class AccountDeactivated extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->subject('Tu cuenta ha sido desactivada')
-            ->line('Hola ' . $this->user->name . ',')
-            ->line('Tu cuenta ha sido desactivada exitosamente.')
-            ->line('Si tienes alguna pregunta, por favor contacta con el soporte.')
-            ->action('Volver a activar tu cuenta', url('/'))
-            ->line('Gracias por usar nuestros servicios.');
+        return (new AccountDeactivatedMail($this->user));
     }
 
     /**

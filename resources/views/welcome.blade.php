@@ -937,6 +937,12 @@
             alert('{{session('success')}}')
         </script>        
     @endif
+    @if (session('status'))
+        <script>
+            alert('{{session('status')}}')
+        </script>        
+    @endif
+    
 
     @if (session('error'))
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

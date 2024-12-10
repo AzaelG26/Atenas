@@ -216,6 +216,31 @@
 
     @stack('scripts') 
 
+    <script>
+        document.addEventListener('show.bs.offcanvas', function (event) {
+    if (event.target.id === 'offcanvasSidebar') {
+        // Prevenir el cierre cuando se haga clic fuera
+        var offcanvasElement = document.getElementById('offcanvasSidebar');
+        var bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
+        
+        // Evitar el comportamiento predeterminado de cerrar
+        bsOffcanvas._config.backdrop = 'static'; // El backdrop se mantiene estático, no se cierra al hacer clic fuera
+        bsOffcanvas._config.keyboard = false; // Desactiva el cierre con el teclado
+    }
+});
+
+document.addEventListener('hidden.bs.offcanvas', function (event) {
+    if (event.target.id === 'offcanvasSidebar') {
+        // Eliminar el fondo oscuro (offcanvas-backdrop)
+        document.querySelectorAll('.offcanvas-backdrop').forEach(backdrop => backdrop.remove());
+        
+        // Restablecer el estado del body (si es necesario)
+        document.body.classList.remove('offcanvas-open');
+        document.body.style = '';
+    }
+});
+    </script>
+
     
 
 </body>
