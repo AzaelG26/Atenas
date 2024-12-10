@@ -331,7 +331,8 @@
                                 @if (Route::has('register'))
                                 <div id="link-register">
                                     {{-- href="{{ route('register') }}"  --}}
-                                    <p style="margin-top:20px">¿No tienes una cuenta? &nbsp;<a onclick="mostrarFormularioRegister()"  style="text-decoration:underline; color:#0A58CA; cursor: pointer;">Registrate</a></p>
+                                    {{-- onclick="mostrarFormularioRegister()" --}}
+                                    <p style="margin-top:20px">¿No tienes una cuenta? &nbsp;<a  href="{{route('register')}}" style="text-decoration:underline; color:#0A58CA; cursor: pointer;">Registrate</a></p>
                                 </div>
                                 @endif  
                                 {{-- <div class="flex items-center justify-end mt-4" >                                
@@ -343,88 +344,7 @@
                         </div>   
                         
                     </form>
-                </div>  
-
-
-                <div class="card border-0 second-card mb-3" id="second-card">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-                        <div class="col-md-12">
-                            <div class="card-body">
-
-                                <h2 class="card-title" style="color:rgb(71, 71, 71); text-align: center; margin-top:60px; ">Crear una cuenta</h2>
-                                
-                                <div class="col-md-9">                            
-                                    {{-- <label for="email" class="form-label">Email</label> --}}
-                                    <div class="col-md-12 input-icon">
-                                        <i class="bi bi-person-fill" style="top:50%"></i>  <!-- Icono de usuario -->
-                                        <input type="text" placeholder="Name" class="form-control" id="name" name="name" autocomplete="name">
-                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; ; width:100%; flex-wrap:nowrap;">
-                                            @error('name')
-                                                {{ $message }}
-                                            @enderror
-                                        </p>
-                                    </div>
-                                
-                                    {{-- <label for="password" class="form-label">Password</label> --}}
-                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
-                                        <i class="bi bi-envelope-fill" style="top:50%"></i>  <!-- Icono de Correo Electrónico -->
-                                        <input type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus autocomplete="username">
-                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
-                                            @error('email')
-                                                {{ $message }}
-                                            @enderror
-                                        </p>
-                                    </div>
-
-                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
-                                        <i class="bi bi-lock-fill" style="top:50%"> </i> <!-- Icono de candado -->
-                                        <input type="password" placeholder="Password" class="form-control" id="password" name="password" autocomplete="current-password">
-                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
-                                            @error('password')
-                                                {{ $message }}
-                                            @enderror
-                                        </p>
-                                    </div>
-
-                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
-                                        <i class="bi bi-lock-fill" style="top:50%"> </i> <!-- Icono de candado -->
-                                        <input type="password" placeholder="Confirm Password" class="form-control" id="password_confirmation" name="password_confirmation"  autocomplete="new-password">
-                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
-                                            @error('password_confirmation')
-                                                {{ $message }}
-                                            @enderror
-                                        </p>
-                                    </div>
-
-                                    <div style="display:flex; justify-content:center; width: 100%;">
-                                        <button style="width: 100%" type="submit" class="btn-register"><span>Registrarse</span></button>
-                                    </div>
-
-                                    <p style="text-align: center; margin-top:10px; color:rgb(71, 71, 71);">O</p>
-
-                                    <div>
-                                        <a href="{{ url('/login-google') }}" class="btn btn-google" style="background-color: white; color: black; border-radius:17px; width:100% ">
-                                            <img width="25" height="25" src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo"/>
-                                            Unirse con Google
-                                        </a>
-                                        @if (Route::has('register'))
-                                            <div id="link-register">
-                                                {{-- href="{{ route('register') }}"  --}}
-                                                <p style="color:rgb(71, 71, 71); text-align:center; margin-top:10px;">¿Ya estás registrado? &nbsp;<a onclick="mostrarFormularioRegister()"  style="text-decoration:underline; color:#0A58CA; cursor: pointer;">Volver</a></p>
-                                            </div>
-                                        @endif  
-                                    </div>
-
-
-                                </div>                    
-                                
-                            </div> 
-                        </div>   
-                        <div class="mt-4">                                            
-                        </div>
-                    </form>
-                </div>                         
+                </div>                  
             </div>
         </div>        
     </section>

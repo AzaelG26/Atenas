@@ -74,9 +74,25 @@
             position: relative; /* Necesario para posicionar contenido sobre el video */
 
         }
+        .second-card{
+            display: block;
+            border-radius: 15px;
+            height:100%; 
+            width:25em; 
+            background-color:rgba(255, 255, 255);
+        }
+
+        .card-body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* height: 100%; */
+        }       
+     
         .input-icon {
             position: relative;
-            width: 80%;
+            width: 100%;
         }
         .input-icon i {
             position: absolute;
@@ -98,7 +114,6 @@
             text-decoration: underline; 
         }
         .card{
-            background-color: rgba(14, 14, 14, 0.342);
             color: white;
             /* box-shadow: 0px 0px 20px rgb(29, 29, 29); */
             border-radius: 20px;
@@ -112,9 +127,7 @@
             position: relative; 
             z-index: 1; 
         }
-        .input-icon {
-            margin-top: 28px;
-        }
+        /* Boton register */
         .btn-register{
         cursor: pointer;
         border: none;
@@ -131,6 +144,7 @@
         border-radius: 20px;
         overflow: hidden;
         background: #feffff;
+        border: 0.5px solid gray;
         color: white;
         }
         .btn-register span{
@@ -141,6 +155,7 @@
         
         .btn-register:hover span {
         color: #006c8d;
+        
         }
 
         .btn-register::before,
@@ -151,30 +166,69 @@
         width: 100%;
         height: 100%;
         z-index: 0;
+        
         }
 
         .btn-register::before {
         content: "";
-        background:  rgb(13, 118, 136);
+        background:  rgb(12, 86, 99);
         width: 120%;
         left: -10%;
         transform: skew(30deg);
-        transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+        transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);        
         }
 
         .btn-register:hover::before {
-        transform: translate3d(100%, 0, 0);
+        transform: translate3d(100%, 0, 0);        
+        }
+
+        /* boton google */
+        .btn-google{
+            transition: all 0.4s ease;
+            border: 0.1px solid rgb(219, 219, 219);
+        }
+        .btn-google:hover{
+            box-shadow: 0px 5px 10px rgb(0, 0, 0);
+            transform: translateY(2px);
+            
+        }
+        #link-register{
+            display: block;
+        }
+
+        
+        .enter-forgot-password{
+            margin-bottom: 0px;
+        }
+        .card-title{
+            margin-bottom:40px;
+        }
+        @media (max-width: 1030px){
+            /* #link-register{
+                display: block;
+            } */
+            .card-title{
+                margin-bottom: 20px;
+            }
+                   
+            .enter-forgot-password{
+                margin-top: 0px;
+            }
+
         }
         #video{
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 70%;
+            height: 100%;
             filter: blur(1px);
             object-fit: cover; 
             background-size: cover;            
             z-index: -1;
+        }
+        #reg-cont{
+            transition: all 0.5s ease; /* Transición para cambio de estilos*/
         }
     </style>
  </head>
@@ -185,74 +239,87 @@
     </video>
     
     <section id="reg-cont">            
-        <div class="card mb-3" style="height:auto; width:25em;margin-top:40px;">
-            <div class="row g-0" style="height: auto;">
-                <div  class="card-body">
+        <div class="card border-0 second-card mb-3" id="second-card">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-                        <h2 class="card-title" style="text-align: center;">Register</h2>
-                        <hr>
+                        <div class="col-md-12">
+                            <div class="card-body">
 
-                        <div class="col-md-12" style="display: flex; flex-direction:column; align-items:center;">
-                            
-                            <div class="col-md-12 input-icon">
-                                <i class="bi bi-person-fill"></i>  <!-- Icono de usuario -->
-                                <input type="text" placeholder="Name" class="form-control" id="name" name="name" autocomplete="name">
-                                <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
-                                    @error('name')
-                                        {{ $message }}
-                                    @enderror
-                                </p>
-                            </div>
+                                <h2 class="card-title" style="color:rgb(71, 71, 71); margin-top:60px; ">Crear una cuenta</h2>
+                                
+                                <div class="col-md-10">                            
+                                    {{-- <label for="email" class="form-label">Email</label> --}}
+                                    <div class="col-md-8 input-icon">
+                                        <i class="bi bi-person-fill" style="top:50%"></i>  <!-- Icono de usuario -->
+                                        <input type="text" placeholder="Name" class="form-control" id="name" name="name" autocomplete="name">
+                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; ; width:100%; flex-wrap:nowrap;">
+                                            @error('name')
+                                                {{ $message }}
+                                            @enderror
+                                        </p>
+                                    </div>
+                                
+                                    {{-- <label for="password" class="form-label">Password</label> --}}
+                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
+                                        <i class="bi bi-envelope-fill" style="top:50%"></i>  <!-- Icono de Correo Electrónico -->
+                                        <input type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus autocomplete="username">
+                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
+                                            @error('email')
+                                                {{ $message }}
+                                            @enderror
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
+                                        <i class="bi bi-lock-fill" style="top:50%"> </i> <!-- Icono de candado -->
+                                        <input type="password" placeholder="Password" class="form-control" id="password" name="password" autocomplete="current-password">
+                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
+                                            @error('password')
+                                                {{ $message }}
+                                            @enderror
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-8 input-icon" style="margin-top:40px;">
+                                        <i class="bi bi-lock-fill" style="top:50%"> </i> <!-- Icono de candado -->
+                                        <input type="password" placeholder="Confirm Password" class="form-control" id="password_confirmation" name="password_confirmation"  autocomplete="new-password">
+                                        <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
+                                            @error('password_confirmation')
+                                                {{ $message }}
+                                            @enderror
+                                        </p>
+                                    </div>
+
+                                    <div style="display:flex; justify-content:center; width: 100%;">
+                                        <button style="width: 100%" type="submit" class="btn-register"><span>Registrarse</span></button>
+                                    </div>
+
+                                    <p style="text-align: center; margin-top:10px; color:rgb(71, 71, 71);">O</p>
+
+                                    <div>
+                                        <a href="{{ url('/login-google') }}" class="btn btn-google" style="background-color: white; color: black; border-radius:17px; width:100% ">
+                                            <img width="25" height="25" src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo"/>
+                                            Unirse con Google
+                                        </a>
+                                        @if (Route::has('register'))
+                                            <div id="link-register">
+                                                {{-- href="{{ route('register') }}"  --}}
+                                                <p style="color:rgb(71, 71, 71); text-align:center; margin-top:10px;">¿Ya estás registrado? &nbsp;<a href="{{route('login')}}" style="text-decoration:underline; color:#0A58CA; cursor: pointer;">Volver</a></p>
+                                            </div>
+                                        @endif  
+                                    </div>
 
 
-                            
-
-                            <div class="col-md-8 input-icon">
-                                <i class="bi bi-envelope-fill"></i>  <!-- Icono de Correo Electrónico -->
-                                <input type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus autocomplete="username">
-                                <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
-                                    @error('email')
-                                        {{ $message }}
-                                    @enderror
-                                </p>
-                            </div>
-
-                        
-                            <div class="col-md-8 input-icon">
-                                <i class="bi bi-lock-fill"> </i> <!-- Icono de candado -->
-                                <input type="password" placeholder="Password" class="form-control" id="password" name="password" autocomplete="current-password">
-                                <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
-                                    @error('password')
-                                        {{ $message }}
-                                    @enderror
-                                </p>
-                            </div>
-
-                            
-                            <div class="col-md-8 input-icon">
-                                <i class="bi bi-lock-fill"> </i> <!-- Icono de candado -->
-                                <input type="password" placeholder="Confirm Password" class="form-control" id="password_confirmation" name="password_confirmation"  autocomplete="new-password">
-                                <p class="text-danger" style="display:flex;justify-content:center;height: 4px; width:100%; flex-wrap:nowrap;">
-                                    @error('password_confirmation')
-                                        {{ $message }}
-                                    @enderror
-                                </p>
-                            </div>
-                            
-                            <div style=" display:flex; justify-content:center; width: 100%;">
-                                <button style="width: 80%" type="submit" class="btn-register"><span>Accept</span></button>
-                            </div>
+                                </div>                    
+                                
+                            </div> 
+                        </div>   
+                        <div class="mt-4">                                            
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
+                </div>                         
     </section>
 
-    <section style="border-top:1px solid yellow; margin-top:220px; width:100%;">
-        @include('layout.base')
-    </section>
 
  </body>
  </html>

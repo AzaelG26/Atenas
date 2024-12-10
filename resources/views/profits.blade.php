@@ -81,7 +81,11 @@
         }
         
 
-        
+        @media (max-width: 576px) {
+            #filtrar .buscar {
+                display: none;
+            }
+        }
     </style>
 @endpush
 @section('content')
@@ -129,7 +133,7 @@
             <section class="filter-button">
                 <br>
                 
-                <button class="btn btn-outline-warning" id="filtrar" onclick="filtrarPorMes()"><i class="bi bi-funnel"></i> Buscar</button>
+                <button class="btn btn-outline-warning" id="filtrar" onclick="filtrarPorMes()"><i class="bi bi-funnel"></i> <span class="buscar">Buscar</span></button>
             </section>   
         </div>
         <br>
@@ -177,32 +181,37 @@
 
                         </div>  
 
-
-                        <table class="table table-bordered border-dark">
-                            <thead style="border: 1px solid gray;">
-                                <tr>
-                                    <th class="head">Nombre de comensal</th>
-                                    <th class="head">Platillos</th>
-                                    <th class="head">Cantidad</th>
-                                    {{-- <th class="head">Precio total</th> --}}
-                                    <th class="head">Fecha de la orden</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-dark">
-                                @foreach($ventas as $ventas)
-                                    @foreach ($ventas->orderDetail as $item)                                        
+                        <div style="overflow-x:auto">
+                            <table class="table table-bordered border-dark">
+                                <thead style="border: 1px solid gray;">
                                     <tr>
-                                        <td>{{ $ventas->diner_name }}</td>
-                                        <td>{{ $item->menu->name }}</td>
-                                        <td>{{ $item->quantity }}</td>
-                                        {{-- <td>{{ $ventas->total_price }}</td> --}}
-                                        <td>{{ $ventas->created_at }}</td>
+                                        <th class="head">Nombre de comensal</th>
+                                        <th class="head">Platillos</th>
+                                        <th class="head">Cantidad</th>
+                                        {{-- <th class="head">Precio total</th> --}}
+                                        <th class="head">Fecha de la orden</th>
                                     </tr>
+                                </thead>
+                                <tbody class="table-dark">
+                                    @foreach($ventasFisicasAgrupadas as $comenzal => $ventas)
+                                        @foreach ($ventas as $item)                                        
+                                        <tr>
+                                            <td>{{ $comenzal }}</td>
+                                            <td>{{ $item->product_details }}</td>
+                                            <td>{{ $item->total_price }}</td>
+                                            {{-- <td>{{ $ventas->total_price }}</td> --}}
+                                            <td>{{ $item->created_at }}</td>
+                                        </tr>
+                                        @endforeach
                                     @endforeach
-                                @endforeach
-                            </tbody>
-                        </table>                                                  
+                                </tbody>
+                            </table>                                                  
+                        </div>
                     </div>
+
+
+
+                    
                     
                     <div class="tab-pane fade" id="menu" role="tabpanel" aria-labelledby="menu-tab" style="display: flex; flex-wrap:wrap; justify-content:center">
                         <div style="display: flex; justify-content:space-between; width:100%;">
@@ -227,34 +236,37 @@
 
                             <div class="card-body">
                                 <div id="graficaOnline"></div>
-                            </div>
-                            
+                            </div>                            
                         </div>
 
-                        <table class="table table-bordered border-dark">
-                            <thead style="border: 1px solid gray;">
-                                <tr>
-                                    <th class="head">Nombre de orden</th>
-                                    <th class="head">Platillos</th>
-                                    <th class="head">Cantidad</th>
-                                    {{-- <th class="head">Precio total</th> --}}
-                                    <th class="head">Fecha de la orden</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-dark">
-                                @foreach($ventasOnline as $online)
-                                    @foreach ($online->OnlineOrderDetails as $item)                                        
+                        <div style="overflow-x:auto; width:100%;">
+                            <table class="table table-bordered border-dark">
+                                <thead style="border: 1px solid gray;">
                                     <tr>
-                                        <td>{{ $online->order_name }}</td>
-                                        <td>{{ $item->menu->name }}</td>
-                                        <td>{{ $item->quantity }}</td>
-                                        {{-- <td>{{ $online->total_price }}</td> --}}
-                                        <td>{{ $online->created_at }}</td>
+                                        <th class="head">cliente</th>
+                                        <th class="head">Receptor</th>
+                                        <th class="head">Platillo y cantidades</th>
+                                        <th class="head">Precio final</th>
+                                        {{-- <th class="head">Cantidad</th> --}}
+                                        {{-- <th class="head">Precio total</th> --}}
+                                        <th class="head">Fecha de la orden</th>
                                     </tr>
+                                </thead>
+                                <tbody class="table-dark">
+                                    @foreach($ventasOnlineAgrupadas as $persona => $ordenes)
+                                        @foreach($ordenes as $orden)
+                                        <tr>
+                                            <td>{{ $persona }}</td>
+                                            <td> {{$orden->order_name}}</td>
+                                            <td>{{ $orden->product_details }}</td>
+                                            <td>${{$orden->total_price}}</td>
+                                            <td>{{ $orden->created_at->format('Y-m-d H:i') }}</td>
+                                        </tr>
+                                        @endforeach
                                     @endforeach
-                                @endforeach
-                            </tbody>
-                        </table>  
+                                </tbody>
+                            </table> 
+                        </div> 
                         
                     </div>
                 </div>
@@ -352,8 +364,6 @@
             show.render();
         };
 
-
-
         let contenedorGraficaOnline = document.getElementById('graficaTwo');
         contenedorGraficaOnline.style.display = 'none'
         const btnGraficaLine = document.getElementById('grafica-line');
@@ -439,9 +449,6 @@
 
         }
 
-
-
-
         function filtrarPorMes(){
             let mesSeleccionado = document.getElementById('mes').value;
             let yearSeleccionado = document.getElementById('anio').value;
@@ -465,12 +472,5 @@
 
             }
         }
-
-        
-        
-        
-
-        
-
     </script>
 @endsection

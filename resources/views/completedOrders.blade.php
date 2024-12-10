@@ -54,16 +54,19 @@
                             @else
                                 <p>No tiene folio asignado</p>
                             @endif
+                                <p>Receptor: {{$ordenes->order_name}}</p>
                                 <p>Fecha: {{ $ordenes->created_at }}</p>
                                 <p>Estado: {{$ordenes->status}}</p>
+                                <p>Notas: {{$ordenes->notes ?? 'Sin notas'}}</p>
                                 <hr>
                         </h5>        
                         @foreach($ordenes->onlineOrderDetails as $detail)                    
                             @if($detail->menu)
                             <p class="card-text">
-                                Producto: {{ $detail->menu->name }} <br>
-                                Cantidad: {{ $detail->quantity }}. <br>
-                                Especificaciones: {{$detail->specifications}}
+                                <strong>Producto:</strong> {{ $detail->menu->name }} <br>
+                                <strong>Cantidad:</strong> {{ $detail->quantity }} <br>
+                                {{-- <strong>Notas de la orden:</strong> {{$ordenes->notes}}  <br> --}}
+                                <strong>Especificaciones:</strong> {{$detail->specifications ?? 'Sin especificaciones'}}
                             </p>
                                 <hr>
                             @else

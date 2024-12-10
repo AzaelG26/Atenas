@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Address;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class MenuController extends Controller
         $categorias = Category::with(['menu' => function ($query) {
             $query->with('stock');
         }])->get();
-      
+
         return view('Menu', compact('categorias'));
     }
 
@@ -53,9 +54,11 @@ class MenuController extends Controller
         // con esto traemos las categorias con su stock correspondiente 
         $categorias = Category::with(['menu' => function ($query) {
             $query->with('stock');
-        }])->get();
+        }, 'menu.stock'])->get();
 
-        return view('edit_menu', compact('categorias'));
+        $showCategories = Category::get();
+        // dd($categorias);
+        return view('edit_menu', compact(['categorias', 'showCategories']));
     }
 
     public function update(Request $request, $id)
@@ -65,6 +68,7 @@ class MenuController extends Controller
             'description' => 'required|string|max:255',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
+            'status' => 'nullable|boolean',
         ]);
 
         // aqui se actualiza el menu y el stock
@@ -72,6 +76,7 @@ class MenuController extends Controller
         $menu->name = $request->input('name');
         $menu->description = $request->input('description');
         $menu->price = $request->input('price');
+        $menu->status = $request->has('status') ? true : false;
         $menu->save();
 
         $menu->stock->stock = $request->input('stock');
@@ -121,11 +126,11 @@ class MenuController extends Controller
 
         $user = auth()->user()->people?->id;
 
-            if ($user) {
-                $idClient = $user;
-            } else {
-                return redirect()->route('addresses')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
-            }
+        if ($user) {
+            $idClient = $user;
+        } else {
+            return redirect()->route('addresses')->with('error', 'No se encontró el registro de "people" para el usuario autenticado.');
+        }
 
         $totalPrice = collect($carrito)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
         $selectedAddressId = $request->input('selectedAddress');
@@ -147,7 +152,7 @@ class MenuController extends Controller
 
         try {
             DB::beginTransaction();
-            
+
             $paymentAndOrderResult = DB::select('CALL RegisterPaymentAndOrder(?, ?, ?, ?, ?, ?, ?, ?)', [
                 1,
                 $totalPrice,
@@ -168,7 +173,7 @@ class MenuController extends Controller
 
             foreach ($carrito as $index => &$item) {
                 $item['specifications'] = [];
-            
+
                 if (isset($specifications[$index])) {
                     foreach ($specifications[$index] as $specDetail) {
                         $item['specifications'][] = $specDetail ?? null;
@@ -176,14 +181,14 @@ class MenuController extends Controller
                 }
             }
             unset($item);
-            
+
 
             foreach ($carrito as $item) {
                 foreach ($item['specifications'] as $specDetail) {
                     DB::select('CALL RegisterOrderDetails(?, ?, ?, ?)', [
                         $newOrderId,
                         $item['menuId'],
-                        1,  
+                        1,
                         $specDetail,
                     ]);
                 }
@@ -204,11 +209,36 @@ class MenuController extends Controller
             DB::rollBack();
 
             if ($e->getCode() === '45000') {
-            return redirect()->route('menu')->withErrors(['error' => 'Stock insuficiente para uno de los productos seleccionados.']);
-        }
+                return redirect()->route('menu')->withErrors(['error' => 'Stock insuficiente para uno de los productos seleccionados.']);
+            }
 
             return redirect()->route('vista.pago')->withErrors(['error' => 'Hubo un problema al procesar el pago: ' . $e->getMessage()]);
         }
     }
-    
+
+    public function create(Request $request)
+    {
+        $validated = $request->validate([
+            'id_category' => 'required',
+            'name' => 'required|min:3',
+            'description' => 'required|string|min:3',
+            'price' => 'required|numeric|gt:0', // mayor a 0
+            'stock' => 'required|numeric|gte:0' //mayor o igual a 0
+        ]);
+
+        $menu = new Menu();
+        $menu->name = $validated['name'];
+        $menu->description = $validated['description'];
+        $menu->price = $validated['price'];
+        $menu->status = true;
+        $menu->id_category = $validated['id_category'];
+        $menu->save();
+
+        $stock = new Stock();
+        $stock->stock = $validated['stock'];
+        $stock->id_menu = $menu->id_menu;
+        $stock->save();
+
+        return redirect()->route('edit.menu')->with('success', 'Se añadió el nuevo platillo');
+    }
 }
