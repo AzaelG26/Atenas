@@ -179,28 +179,6 @@
         </div>
         @endif        
         
-        <div style="background-color: #131718; display:flex" class="p-5 mb-4 rounded-3">
-            <div class="container-fluid py-5">
-                <form method="POST" action="{{ route('profile.deactivate') }}" onsubmit="return confirm('¿Estás seguro de que deseas desactivar tu cuenta? Esta acción no eliminará tu cuenta permanentemente.')">
-                    @csrf
-                    @method('PATCH')
-                    <p style="color: darkgray;">*Puedes desactivar tu cuenta temporalmente</p>
-
-                    <div class="col-md-8 input-icon">
-                        <input placeholder="Confirma tu contraseña" class="input" name="password" type="password" required>            
-                        <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
-                            @error('password') 
-                                <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
-                            @enderror
-                        </p>
-                    </div>
-
-                    <button type="submit" class="btn-accept" style="background-color: orange; margin-top: 20px;">
-                        Desactivar Cuenta
-                    </button>
-                </form>
-            </div>
-        </div>
     </div>
 </main>
 @endsection
