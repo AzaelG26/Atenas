@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountDeactivatedMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Redirect;
 use App\Notifications\AccountDeactivated;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class ProfileController extends Controller
 {
@@ -45,15 +48,24 @@ class ProfileController extends Controller
     public function deactivateAccount(Request $request)
     {
         $user = $request->user();
-        $user->update(['active' => false]); // Cambiar el estado a inactivo (false)
 
-        // Notificar al usuario sobre la desactivación
-        $user->notify(new AccountDeactivated($user));
+        // Desactivar la cuenta
+        $user->update(['active' => false]);
+
+        if ($user->email) {
+            // Generar la URL firmada sin expiración
+            $signedUrl = URL::signedRoute('account.activate', ['userId' => $user->id]);
+
+            // Enviar correo de desactivación con el enlace
+            Mail::to($user->email)->send(new AccountDeactivatedMail($user, $signedUrl));
+        } else {
+            return redirect('/')->with('status', 'Tu cuenta ha sido desactivada, pero no pudimos enviarte un correo.');
+        }
 
         // Cerrar sesión automáticamente
         Auth::logout();
 
-        return redirect('/')->with('status', 'Tu cuenta ha sido desactivada. Podrás activarla nuevamente iniciando sesión o contactando al administrador.');
+        return redirect()->route('welcome')->with('status', 'Tu cuenta ha sido desactivada. Podrás activarla nuevamente iniciando sesión o contactando al administrador.');
     }
 
     /**
@@ -61,9 +73,11 @@ class ProfileController extends Controller
      */
     public function activateAccount($userId)
     {
-        $user = User::findOrFail($userId);
-        $user->update(['active' => true]); // Cambiar el estado a activo (true)
 
-        return redirect()->back()->with('status', 'La cuenta ha sido activada.');
+        $user = User::findOrFail($userId);
+        $user->update(['active' => true]);
+        Auth::login($user);
+
+        return redirect()->route('welcome')->with('status', 'La cuenta ha sido activada.');
     }
 }

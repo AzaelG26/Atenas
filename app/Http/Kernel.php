@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckAccountActive;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'employee' => \App\Http\Middleware\EmployeeMiddleware::class,
         'hasPersonalData' => \App\Http\Middleware\CheckDPuser::class,
         'check.post.method' => \App\Http\Middleware\CheckPostMethod::class,
+        'active' => \App\Http\Middleware\CheckAccountActive::class,
     ];
 }

@@ -57,10 +57,8 @@ Route::get('/google-callback-url', function () {
 });
 
 
+Route::middleware('active')->group(function () {});
 // rutas para añadir empleados
-Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create'); // Cambiado a 'employee.create'
-Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
-Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
 
 Route::get('/añadir-imagenes', [ImagenController::class, 'showAddImagesForm'])->name('imagenes.add');
 Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');
@@ -83,6 +81,7 @@ Route::post('password/reset/{id}', [App\Http\Controllers\PasswordsController::cl
     ->name('password.modificar');
 
 
+Route::get('/activate/{userId}', [ProfileController::class, 'activateAccount'])->name('account.activate');
 
 Route::middleware('auth')->group(function () {
 
@@ -90,6 +89,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch('/profile/deactivate', [ProfileController::class, 'deactivateAccount'])->name('profile.deactivate');
+    Route::get('/activate/{userId}', [ProfileController::class, 'activateAccount'])->name('account.activate');
+
 
 
 
@@ -130,7 +131,12 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware('employee')->group(function () {
+Route::middleware(['employee', 'active'])->group(function () {
+
+    Route::get('/employee/create', [EmployeeController::class, 'create'])->middleware('active')->name('employee.create');
+    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+    Route::get('/buscarPersonas', [EmployeeController::class, 'buscarPersona'])->name('buscar.personas');
+
 
     Route::get('/orders', [ordersController::class, 'getOrdersOnline'])->name('orders');
     Route::get('/orders/completadas', [ordersController::class, 'getCompletedOrders'])->name('orders.completed');
@@ -143,7 +149,7 @@ Route::middleware('employee')->group(function () {
 });
 
 
-Route::middleware('admin')->group(function () {
+Route::middleware(['admin', 'active'])->group(function () {
 
     Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
     Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
