@@ -297,7 +297,6 @@
                 itemRow.innerHTML = `
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <p>${item.name} - MX$${item.price.toFixed(2)} x ${item.quantity}</p>
-                        <button onclick="removeFromCart(${index})" class="btn btn-sm btn-outline-danger">Eliminar</button>
                     </div>
                 `;
                 cartItemsContainer.appendChild(itemRow);
