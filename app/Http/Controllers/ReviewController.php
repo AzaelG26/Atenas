@@ -18,7 +18,7 @@ class ReviewController extends Controller
 
     public function index()
     {
-        $menu = Menu::all();
+        $menu = Menu::where('status', 1)->get(); 
 
         $reseñas = Review::all();
 
