@@ -13,14 +13,13 @@ use Illuminate\Support\Facades\DB;
 class MenuController extends Controller
 {
     public function index()
-    {
+{
+    $categorias = Category::with(['menu' => function ($query) {
+        $query->where('status', 1)->with('stock'); // Filtrar menús activos
+    }])->get();
 
-        $categorias = Category::with(['menu' => function ($query) {
-            $query->with('stock');
-        }])->get();
-
-        return view('Menu', compact('categorias'));
-    }
+    return view('Menu', compact('categorias'));
+}
 
     public function postCarro(Request $request)
     {
