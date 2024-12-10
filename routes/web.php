@@ -89,6 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch('/profile/deactivate', [ProfileController::class, 'deactivateAccount'])->name('profile.deactivate');
+    Route::get('/activate/{userId}', [ProfileController::class, 'activateAccount'])->name('account.activate');
 
 
 
