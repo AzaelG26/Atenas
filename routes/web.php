@@ -100,6 +100,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
         Route::post('/post_carro', [MenuController::class, 'postCarro'])->name('post_carro');
 
+        Route::post('/menu/create', [MenuController::class, 'create'])->name('menu.create');
+
 
         Route::get('/vista-pago', [MenuController::class, 'vistaPago'])->name('vista.pago');
         Route::post('/procesar-pago', [MenuController::class, 'procesarPago'])->name('procesar.pago');
