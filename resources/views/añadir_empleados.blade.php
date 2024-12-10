@@ -24,7 +24,7 @@
     max-width: 400px;
     width: 100%;
     height: 40px;
-    padding: 10px;
+    padding-left: 10px;
     /* text-align: center; */
     border: 2px solid rgb(39, 39, 39);
     color: white;
@@ -177,7 +177,7 @@
                 <br>  
 
                 <div class="col-md-8 input-icon">
-                    <input placeholder="Nombre(s)" class="input" name="personal_name" type="text" disabled>            
+                    <input placeholder="Nombre(s)" class="input" name="personal_name" type="text" readonly>            
                     <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                         @error('personal_name') 
                             <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -188,7 +188,7 @@
 
                 </div>
                 <div class="col-md-8 input-icon">
-                    <input placeholder="Apellido paterno" class="input" name="lastname1" type="text" disabled>            
+                    <input placeholder="Apellido paterno" class="input" name="lastname1" type="text" readonly>            
                     <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                         @error('lastname1') 
                             <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -197,7 +197,7 @@
                 </div>
 
                 <div class="col-md-8 input-icon">
-                    <input placeholder="Apellido materno" class="input" name="lastname2" type="text" disabled>            
+                    <input placeholder="Apellido materno" class="input" name="lastname2" type="text" readonly>            
                     <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                         @error('lastname2') 
                             <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -210,7 +210,7 @@
                     <div class="radio-container">
                         <div class="radio-wrapper">
                             <label class="radio-button">
-                            <input id="male" name="gender" type="radio" value="male" disabled>
+                            <input id="male" name="gender" type="radio" value="male" readonly>
                             <span class="radio-checkmark"></span>
                             <span class="radio-label">Masculino</span>
                             </label>
@@ -218,7 +218,7 @@
 
                         <div class="radio-wrapper">
                             <label class="radio-button">
-                            <input id="female" name="gender" type="radio" value="female" disabled>
+                            <input id="female" name="gender" type="radio" value="female" readonly>
                             <span class="radio-checkmark"></span>
                             <span class="radio-label">Femenino</span>
                             </label>
@@ -226,7 +226,7 @@
 
                         <div class="radio-wrapper">
                             <label class="radio-button">
-                            <input id="other" name="gender" type="radio" value="other" disabled>
+                            <input id="other" name="gender" type="radio" value="other" readonly>
                             <span class="radio-checkmark"></span>
                             <span class="radio-label">Otro</span>
                             </label>
@@ -236,7 +236,7 @@
                 <br>
 
                 <div class="col-md-8 input-icon">
-                    <input placeholder="Número de teléfono" class="input" name="cellphone_number" type="text" disabled>            
+                    <input placeholder="Número de teléfono" class="input" name="cellphone_number" type="text" readonly>            
                     <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                         @error('cellphone_number') 
                             <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -247,7 +247,7 @@
                 <div class="col-md-8 input-icon">
                     <label for="birthdate" style="color: white;">Fecha de nacimiento</label>
                     <br>
-                    <input style="color: rgb(255, 255, 255);" type="date" id="birthdate" name="birthdate" class="input" disabled>
+                    <input style="color: rgb(255, 255, 255);" type="date" id="birthdate" name="birthdate" class="input" readonly>
                     <p  style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap; ">
                         @error('birthdate') 
                             <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -272,7 +272,7 @@
                     <input type="hidden" name="people_id" value="{{ old('people_id') }}">
 
                     <div class="col-md-8 input-icon">
-                        <input placeholder="CURP" class="input" name="curp" type="text" value="{{old('curp')}}">            
+                        <input placeholder="CURP" class="input" name="curp" type="text" value="{{old('curp')}}" oninput="return validarCURP(event)" maxlength="18">            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('curp') 
                                 <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -281,7 +281,7 @@
                     </div>
                 
                     <div class="col-md-8 input-icon">
-                        <input placeholder="NSS" class="input" name="nss" type="text" value="{{old('nss')}}">            
+                        <input placeholder="NSS" class="input" name="nss" type="text" value="{{old('nss')}}" oninput="return validateNSS(event)" maxlength="11" >            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('nss') 
                                 <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -290,7 +290,7 @@
                     </div>
 
                     <div class="col-md-8 input-icon">
-                        <input placeholder="RFC" class="input" name="rfc" type="text" value="{{old('rfc')}}">            
+                        <input placeholder="RFC" class="input" name="rfc" type="text" value="{{old('rfc')}}" oninput="validarRFC(event)" maxlength="13">            
                         <p class="text-danger" style="display:flex;justify-content:center;height: 30px; width:100%; flex-wrap:nowrap;">
                             @error('rfc') 
                                 <div class="text-red-500 text-sm" style="color:rgba(255, 0, 0, 0.788)">{{ $message }}</div>
@@ -306,7 +306,6 @@
                         </select>
                     </div>
                     <br>
-
                     <button  type="submit" class="btn-accept">Aceptar</button>  
                 </div>
             </div>
@@ -318,6 +317,82 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+
+    // Validar CURP
+    function validarCURP(event) {
+        const input = event.target;
+        const value = input.value;
+        const length = value.length;
+
+        // Primeros 4 caracteres deben ser letras (2 apellidos y nombre)
+        if (length <= 4) {
+            if (!/^[A-Za-z]$/.test(value[length - 1])) {
+                input.value = value.slice(0, length - 1);
+                return;
+            }
+        }
+
+        // los siguientes 6 caracteres deben ser números (fecha de nacimiento)
+        if (length > 4 && length <= 10) {
+            if (!/^[0-9]$/.test(value[length - 1])) {
+                input.value = value.slice(0, length - 1);
+                return;
+            }
+        }
+
+        if (length > 10) {
+            if (!/^[A-Za-z0-9]$/.test(value[length - 1])) {
+                input.value = value.slice(0, length - 1);
+            }
+        }
+    }
+
+    // Validar nns
+    function validateNSS(event) {
+        const input = event.target;
+        const value = input.value;
+
+        const validValue = value.replace(/[^0-9]/g, ''); // aqui se cualquier carácter no numérico
+
+        // Actualiza el valor del campo con solo números
+        if (value !== validValue) {
+            input.value = validValue;
+        }
+    }
+
+    // Validar RFC
+    function validarRFC(event) {
+        const input = event.target;
+        const value = input.value;
+        const length = value.length;
+
+        // Primeros 4 caracteres deben ser letras
+        if (length <= 4) {
+            if (!/^[A-Za-z]$/.test(value[length - 1])) {
+                input.value = value.slice(0, length - 1);
+                return;
+            }
+        }
+
+        // Los siguientes 6 caracteres deben ser números (fecha de nacimiento)
+        if (length > 4 && length <= 10) {
+            if (!/^[0-9]$/.test(value[length - 1])) {
+                input.value = value.slice(0, length - 1);
+                return;
+            }
+        }
+
+        // Después de los primeros 10 caracteres, permitir alfanuméricos (homoclave)
+        if (length > 10 && length <= 13) {
+            if (!/^[A-Za-z0-9]$/.test(value[length - 1])) {
+                input.value = value.slice(0, length - 1);
+                return;
+            }
+        }
+    }
+   
+
+
     $(document).ready(function() {
         // #busqueda es el elemento con esa id
     $('#busqueda').on('keyup', function() {

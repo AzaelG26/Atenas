@@ -35,7 +35,7 @@ class ordersController extends Controller
             ->get()
             ->map(function ($order) {
                 $order->product_names = $order->onlineOrderDetails->map(function ($detail) {
-                    return $detail->menu->name;
+                    return $detail->menu->name . ' (' . $detail->quantity . ') ';
                 })->implode(', ');
 
                 return $order;
@@ -54,6 +54,9 @@ class ordersController extends Controller
 
         $ventasOnline = OnlineOrder::with([
             'onlineOrderDetails.menu',
+            'people' => function ($query) {
+                $query->select('id', DB::raw("CONCAT(name, ' ', paternal_lastname, ' ', maternal_lastname) as fullname"));
+            },
         ])->where('status', 'Completed')
             ->where('status', '<>', 'Canceled')
             ->orderBy('created_at', 'asc');
@@ -124,9 +127,32 @@ class ordersController extends Controller
         ];
 
         // dd($FisicoDatosGrafica);
+        // Agrupación y concatenación de productos
+        $ventasOnlineAgrupadas = $ventasOnline->groupBy(function ($venta) {
+            return $venta->people->fullname;
+        })->map(function ($ordenes) {
+            return $ordenes->map(function ($orden) {
+                $orden->product_details = $orden->onlineOrderDetails->map(function ($detalle) {
+                    return $detalle->menu->name . ' (' . $detalle->quantity . ')';
+                })->implode(', ');
 
+                return $orden;
+            });
+        });
+
+        $ventasFisicasAgrupadas = $ventas->groupBy(function ($venta) {
+            return $venta->diner_name ?? 'Cliente Anónimo';
+        })->map(function ($ordenes) {
+            return $ordenes->map(function ($orden) {
+                $orden->product_details = $orden->orderDetail->map(function ($detalle) {
+                    return $detalle->menu->name . ' (' . $detalle->quantity . ')';
+                })->implode(', ');
+
+                return $orden;
+            });
+        });
         // dd($datosGrafica);
-        return view('profits', compact(['ventas', 'ventasOnline', 'totalOnline', 'totalFisico', 'anios', 'datosGrafica', 'FisicoDatosGrafica']));
+        return view('profits', compact(['ventas', 'ventasOnline', 'ventasFisicasAgrupadas', 'ventasOnlineAgrupadas', 'totalOnline', 'totalFisico', 'anios', 'datosGrafica', 'FisicoDatosGrafica']));
     }
 
     public function getOrdersOnline()

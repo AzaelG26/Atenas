@@ -63,17 +63,21 @@
                             @else
                                     <p>No tiene folio asignado</p>
                             @endif
+                                    <p>Receptor: {{$order->order_name}}</p>
                                     <p>Fecha: {{ $order->created_at }}</p>
                                     <p>Estado: {{$order->status}}</p>
+                                    <p>Notas: {{$order->notes ?? 'Sin notas'}}. </p>
+                                                          
+
                             </h5>
 
 
                         @foreach($order->onlineOrderDetails as $detail)                    
                             @if($detail->menu)
                             <p class="card-text">
-                                Producto: {{ $detail->menu->name }} <br>
-                                Cantidad: {{ $detail->quantity }}. <br>                            
-                                Especificaciones: {{$detail->specifications}}
+                                <strong>Producto:</strong> {{ $detail->menu->name }}. <br>
+                                <strong>Cantidad:</strong> {{ $detail->quantity }}. <br>     
+                                <strong>Especificaciones:</strong> {{$detail->specifications}}.
                                 </p>
 
                                 <hr>
@@ -162,8 +166,12 @@
                             @foreach($orden->OrderDetail as $detail)                    
                                 @if($detail->menu)
                                 <p class="card-text">
-                                    Producto: {{ $detail->menu->name }} <br>
-                                    Cantidad: {{ $detail->quantity }}.</p>
+                                    <strong> Producto:</strong> {{ $detail->menu->name }}. <br>
+                                    <strong>Cantidad:</strong> {{ $detail->quantity }}. <br>
+                                    <strong>Notas:</strong> {{$detail->notes ?? 'Sin notas'}}.
+                                    <strong>Especificaciones:</strong> {{$detail->specifications ?? 'Sin especificaciones'}}
+                                </p>
+
                                     <hr>
                                 @else
                                     <p>No se encontró el producto para este detalle.</p>

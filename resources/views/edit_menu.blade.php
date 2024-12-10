@@ -47,6 +47,66 @@
             }
         }
         
+        .material-checkbox {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        color: #ffffff;
+        cursor: pointer;
+        }
+
+        .material-checkbox input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        }
+
+        .checkmark {
+        position: relative;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        border: 2px solid #004b47;
+        border-radius: 4px;
+        transition: all 0.3s;
+        }
+
+        .material-checkbox input[type="checkbox"]:checked ~ .checkmark {
+        background-color: #001433;
+        border-color: #002f4b;
+        }
+
+        .material-checkbox input[type="checkbox"]:checked ~ .checkmark:after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 6px;
+        width: 4px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+        }
+
+        .material-checkbox input[type="checkbox"]:focus ~ .checkmark {
+        box-shadow: 0 0 0 2px #dfec5065;
+        }
+
+        .material-checkbox:hover input[type="checkbox"] ~ .checkmark {
+        border-color: #00657e;
+        }
+
+        .material-checkbox input[type="checkbox"]:disabled ~ .checkmark {
+        opacity: 0.5;
+        cursor: not-allowed;
+        }
+
+        .material-checkbox input[type="checkbox"]:disabled ~ .checkmark:hover {
+        border-color: #4d4d4d;
+        }
+
 </style>
 @push('styles')
 
@@ -176,7 +236,11 @@
                                             <textarea type="number" name="stock" class="form-control input-stock" required onkeypress="return soloNumeros(event)">{{ $menuDetalles->stock->stock }}</textarea>
                                         </td>
                                         <td>
-                                            <input type="checkbox" name="status" value="1"  {{ $menuDetalles->status ? 'checked' : '' }}>
+                                            <label class="material-checkbox">
+                                                <input type="checkbox" class="enable-edit" name="status" value="1"  {{ $menuDetalles->status ? 'checked' : '' }}>
+                                                <span class="checkmark"></span>
+                                                {{ $menuDetalles->status? 'Activo' : 'Inactivo' }}
+                                            </label>
                                         </td>
                                         <td style="text-align: center;">
                                             <button type="submit" title="Actualizar datos" class="btn btn-warning"><i class="bi bi-check2-square"></i></button>
