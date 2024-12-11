@@ -73,7 +73,7 @@
     </div>
   </footer>
     
-              <!-- JavaScript para ocultar el loader cuando la página haya cargado -->
+
     <script>
         window.addEventListener('load', function() {
             document.getElementById('loader').style.display = 'none';

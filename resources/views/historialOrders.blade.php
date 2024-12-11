@@ -219,7 +219,7 @@
 
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination">
-                                                <!-- Enlace a la página anterior -->
+
                                                 @if ($localHistorialOrders->onFirstPage())
                                                     <li class="page-item disabled">
                                                         <span class="page-link">Previous</span>
@@ -230,14 +230,14 @@
                                                     </li>
                                                 @endif
 
-                                                <!-- Enlaces a las páginas -->
+
                                                 @foreach ($localHistorialOrders->getUrlRange(1, $localHistorialOrders->lastPage()) as $page => $url)
                                                     <li class="page-item {{ $page == $localHistorialOrders->currentPage() ? 'active' : '' }}">
                                                         <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                                                     </li>
                                                 @endforeach
 
-                                                <!-- Enlace a la siguiente página -->
+
                                                 @if ($localHistorialOrders->hasMorePages())
                                                     <li class="page-item">
                                                         <a class="page-link" href="{{ $localHistorialOrders->nextPageUrl() }}">Next</a>

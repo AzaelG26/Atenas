@@ -86,14 +86,14 @@
         <script>
             window.onload = function() {
                     @if (session('success'))
-                        // Muestra la alerta de éxito
+
                         const successMessage = document.getElementById('success-message');
                         setTimeout(function() {
                             successMessage.style.opacity = 0; 
                             setTimeout(function() {
                                 successMessage.style.display = 'none';
                             }, 1000); // lo tardado para el desvanecimiento
-                        }, 3000); // SE  dumuestra rante 3 segundos
+                        }, 3000); // SE  dumuestra durante 3 segundos
                     @endif
                 }
         </script>

@@ -311,8 +311,8 @@
                 width: 100%;
             }
             .content-about {
-                width: 90%; /* Ajusta el ancho al contenedor */
-                height: 80vh; /* Permite que la altura se ajuste dinámicamente */
+                width: 90%; 
+                height: 80vh;
             }
 
             #interno-conocenos-index .card .card-body:not(.content-about) {
@@ -320,12 +320,12 @@
             }
 
             .hero h1, .hero h3 {
-                font-size: 1.5em; /* Ajusta el tamaño del texto */
+                font-size: 1.5em; 
                 margin-bottom: 10px;
             }
 
             #container-conocenos-index {
-                margin-top: 50px; /* Reduce el margen para pantallas pequeñas */
+                margin-top: 50px; 
             }
         }
 
@@ -351,19 +351,19 @@
         /* Animación de cambio de color */
         @keyframes colorChange {
             0% {
-            background-color: #fffeb4; /* Negro */
+            background-color: #fffeb4;
             }
             25% {
-            background-color: #b0d2e2; /* Azul claro */
+            background-color: #b0d2e2; 
             }
             50% {
-            background-color: #acf3e3; /* Morado */
+            background-color: #acf3e3; 
             }
             75% {
-            background-color: #fffeb4; /* Rojo */
+            background-color: #fffeb4; 
             }
             100% {
-            background-color: #ffe7cd; /* Naranja */
+            background-color: #ffe7cd; 
             }
         }
 
@@ -453,18 +453,17 @@
             transform: scale(0.9);
         }
 
-        /* Para ocultar el select original */
         select {
             display: none;
         }
 
         .star-rating {
-            color: gold; /* Cambia el color a dorado para las estrellas llenas */
-            font-size: 1.5em; /* Tamaño de las estrellas */
+            color: gold; 
+            font-size: 1.5em; 
         }
 
         .star-rating i {
-            margin-right: 3px; /* Espaciado entre las estrellas */
+            margin-right: 3px; 
         }
 
         /* carrousel */
@@ -901,25 +900,23 @@
     <script>
         let lastScrollTop = 0;
 
-        // Obtenemos el elemento de la barra de navegación
         const navbar = document.querySelector('.navbar');
         const container_fluid = document.querySelector('.container-fluid');
-        // Manejador del evento de scroll
+
         window.addEventListener('scroll', function () {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-            // Si se desliza hacia abajo, ocultar la barra de navegación
+
             if (scrollTop > lastScrollTop) {
                 
                 navbar.style.top = "-200px"; 
             } else {
-                // Si se desliza hacia arriba, mostrar la barra de navegación
+
                 navbar.style.top = "0";
 
             }
 
-            // Actualizamos la posición previa del scroll
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Evita números negativos
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
         });
         document.querySelectorAll('.star-rating input').forEach((input) => {
             input.addEventListener('change', function() {
@@ -927,7 +924,6 @@
             });
         });
 
-        // Asegurar que la barra de navegación esté visible al refrescar la página
         window.addEventListener('load', function() {
             navbar.style.top = "0";
         });

@@ -234,7 +234,7 @@
     const postalCodesData = document.getElementById('postalCodesData').getAttribute('data-postalcodes');
     const neighborhoods = JSON.parse(postalCodesData);
 
-    // Buscador dinámico
+    // Buscador 
     document.getElementById('busqueda').addEventListener('keyup', function() {
         const query = this.value.toLowerCase();
         const resultados = document.getElementById('resultados');

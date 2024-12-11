@@ -16,7 +16,7 @@ class AccountDeactivated extends Notification
     protected $user;
 
     /**
-     * Crear una nueva notificación de cuenta desactivada.
+     * 
      *
      * @param  $user
      * @return void
@@ -27,7 +27,7 @@ class AccountDeactivated extends Notification
     }
 
     /**
-     * Enviar la notificación por correo electrónico.
+     * 
      *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
@@ -38,7 +38,7 @@ class AccountDeactivated extends Notification
     }
 
     /**
-     * Otros canales para enviar la notificación (SMS, base de datos, etc.)
+     * 
      *
      * @param  mixed  $notifiable
      * @return array

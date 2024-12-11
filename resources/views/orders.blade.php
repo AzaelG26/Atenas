@@ -211,46 +211,7 @@
                     </div>
                 @endforeach
             </div>
-        </div>    
-            
-
-        @if (session('success')) 
-            <script>
-                // Mostrar la alerta
-                const alert = document.getElementById('alert');
-                const alertStrong = document.getElementById('alert-strong');
-                const successMessage = '{{ session('success') }}';
-
-                // const btnesRutas = document.getElementByClassName('botones-rutas');
-
-                if (successMessage) {
-                    alertStrong.innerText = 'Alerta! ' + successMessage ;  // Muestra el mensaje de éxito
-                    alert.style.display = 'block';  // Muestra la alerta en la página
-                    
-                    // Si el navegador soporta notificaciones
-                    if ("Notification" in window) {
-                        // Pedir permiso para mostrar notificaciones si no se ha concedido aún
-                        if (Notification.permission !== "granted") {
-                            Notification.requestPermission();
-                        }
-
-                        // Crear y mostrar la notificación si el permiso es concedido
-                        if (Notification.permission === "granted") {
-                            const notification = new Notification("Alerta", {
-                                body: successMessage,  // El contenido del mensaje
-                                icon: "/path/to/icon.png",  // Una imagen opcional para la notificación
-                            });
-
-                            // Reproducir un sonido cuando se haga clic en la notificación
-                            const audio = new Audio('/path/to/success-sound.mp3');
-                            notification.onclick = function() {
-                                audio.play();  // Reproduce el sonido cuando el usuario haga clic
-                            };
-                        }
-                    }
-                }
-            </script>
-        @endif
+        </div>                        
 
         
 @endsection

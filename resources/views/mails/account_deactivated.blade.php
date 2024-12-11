@@ -44,7 +44,7 @@
         </p>
         <p style="font-size: 14px; color: #666;">
             Gracias por confiar en nuestros servicios.<br>
-            El equipo de {{ config('app.name') }}
+            El equipo de Atenas Food
         </p>
     </div>
 </body>

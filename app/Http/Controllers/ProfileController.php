@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\URL;
 class ProfileController extends Controller
 {
     /**
-     * Mostrar la página de edición de perfil.
+     * 
      */
     public function edit(Request $request)
     {
@@ -27,7 +27,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Actualizar la información del perfil del usuario.
+     * 
      */
     public function update(Request $request)
     {
@@ -37,39 +37,35 @@ class ProfileController extends Controller
             'name' => 'required|string|min:4|max:255|unique:users,name, ' . $user->id,
         ]);
 
-        // si funciona el update por si marca error
+
         $user->update($validated);
         return redirect()->route('profile.edit')->with('success', 'Datos actualizados correctamente');
     }
 
     /**
-     * Desactivar la cuenta del usuario.
+     * 
      */
     public function deactivateAccount(Request $request)
     {
         $user = $request->user();
 
-        // Desactivar la cuenta
         $user->update(['active' => false]);
 
         if ($user->email) {
-            // Generar la URL firmada sin expiración
             $signedUrl = URL::signedRoute('account.activate', ['userId' => $user->id]);
 
-            // Enviar correo de desactivación con el enlace
             Mail::to($user->email)->send(new AccountDeactivatedMail($user, $signedUrl));
         } else {
             return redirect('/')->with('status', 'Tu cuenta ha sido desactivada, pero no pudimos enviarte un correo.');
         }
 
-        // Cerrar sesión automáticamente
         Auth::logout();
 
         return redirect()->route('welcome')->with('status', 'Tu cuenta ha sido desactivada. Podrás activarla nuevamente iniciando sesión o contactando al administrador.');
     }
 
     /**
-     * Activar la cuenta del usuario (para uso del administrador).
+     * 
      */
     public function activateAccount($userId)
     {
