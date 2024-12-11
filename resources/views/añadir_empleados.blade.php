@@ -324,7 +324,7 @@
         const value = input.value;
         const length = value.length;
 
-        // Primeros 4 caracteres deben ser letras (2 apellidos y nombre)
+
         if (length <= 4) {
             if (!/^[A-Za-z]$/.test(value[length - 1])) {
                 input.value = value.slice(0, length - 1);
@@ -332,7 +332,7 @@
             }
         }
 
-        // los siguientes 6 caracteres deben ser números (fecha de nacimiento)
+
         if (length > 4 && length <= 10) {
             if (!/^[0-9]$/.test(value[length - 1])) {
                 input.value = value.slice(0, length - 1);
@@ -352,7 +352,7 @@
         const input = event.target;
         const value = input.value;
 
-        const validValue = value.replace(/[^0-9]/g, ''); // aqui se cualquier carácter no numérico
+        const validValue = value.replace(/[^0-9]/g, ''); 
 
         // Actualiza el valor del campo con solo números
         if (value !== validValue) {
@@ -360,13 +360,13 @@
         }
     }
 
-    // Validar RFC
+    // Validacion RFC
     function validarRFC(event) {
         const input = event.target;
         const value = input.value;
         const length = value.length;
 
-        // Primeros 4 caracteres deben ser letras
+
         if (length <= 4) {
             if (!/^[A-Za-z]$/.test(value[length - 1])) {
                 input.value = value.slice(0, length - 1);
@@ -374,7 +374,7 @@
             }
         }
 
-        // Los siguientes 6 caracteres deben ser números (fecha de nacimiento)
+
         if (length > 4 && length <= 10) {
             if (!/^[0-9]$/.test(value[length - 1])) {
                 input.value = value.slice(0, length - 1);
@@ -382,7 +382,7 @@
             }
         }
 
-        // Después de los primeros 10 caracteres, permitir alfanuméricos (homoclave)
+
         if (length > 10 && length <= 13) {
             if (!/^[A-Za-z0-9]$/.test(value[length - 1])) {
                 input.value = value.slice(0, length - 1);
@@ -450,7 +450,7 @@
                 $('input[name="lastname1"]').val(paternalLastname);
                 $('input[name="lastname2"]').val(maternalLastname);
                 if (gender) {
-                $(`input[name="gender"][value="${gender}"]`).prop('checked', true); // Marcar el género que el usuario tiene en personas
+                $(`input[name="gender"][value="${gender}"]`).prop('checked', true); 
                 }
                 $('input[name="cellphone_number"]').val(cell);
                 $('input[name="birthdate"]').val(birth);

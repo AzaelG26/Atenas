@@ -379,14 +379,8 @@
                 });
             }
 
-    // No modificar estilos al redimensionar para no resetear las animaciones
-    window.addEventListener('resize', () => {
-        if (formReg && formSesion) {
-            formReg.style.borderRadius='15px';
-            // Aquí no removemos los estilos de display ni visibilidad
-        }
-    });
-
+   
+            
     window.addEventListener('load', function() {
         document.getElementById('loader').style.display = 'none';
     });

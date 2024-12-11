@@ -374,7 +374,7 @@
 
             if(contenedorGraficaOnline.style.display === 'none'){
                 contenedorGraficaOnline.style.display = 'block'
-                btnGraficaLine.innerText = 'Ocultar gráfica'; // Cambia el texto del botón correcto            
+                btnGraficaLine.innerText = 'Ocultar gráfica';             
             }
             else if (contenedorGraficaOnline.style.display === 'block'){
                 contenedorGraficaOnline.style.display = 'none'
@@ -414,7 +414,8 @@
                     show: false
                 },
                 xaxis: {
-                    categories: datosGrafica.categories, // Usamos las categorías de ventas
+                    categories: datosGrafica.categories, /
+                    / Usamos las categorías de ventas
                     labels: {
                         style: {
                             fontSize: '12px',

@@ -243,27 +243,27 @@
 
         checkboxes.forEach((checkbox) => {
             checkbox.addEventListener('change', (event) => {
-                const card = event.target.closest('.card'); // Encuentra la tarjeta contenedora
-                const fields = card.querySelectorAll('.editable-field'); // Busca los campos editables
+                const card = event.target.closest('.card'); 
+                const fields = card.querySelectorAll('.editable-field'); 
                 
                 if (checkbox.checked) {
-                    fields.forEach(field => field.removeAttribute('disabled')); // Habilita campos
+                    fields.forEach(field => field.removeAttribute('disabled')); 
                 } else {
-                    fields.forEach(field => field.setAttribute('disabled', true)); // Deshabilita campos
+                    fields.forEach(field => field.setAttribute('disabled', true)); 
                 }
             });
         });
 
 
 
-        // Seleccionar el botón "Siguiente" y las pestañas
+
     const btnSiguiente = document.getElementById('btn-siguiente');
     const homeTab = document.querySelector('#home-tab');
     const menuTab = document.querySelector('#menu-tab');
 
-    // Evento para cambiar a la siguiente pestaña
+
     btnSiguiente.addEventListener('click', () => {
-        // Desactivar la pestaña actual y activar la siguiente
+
         homeTab.classList.remove('active');
         homeTab.setAttribute('aria-selected', 'false');
         document.querySelector('#home').classList.remove('show', 'active');
