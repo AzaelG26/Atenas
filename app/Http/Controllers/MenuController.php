@@ -50,13 +50,11 @@ class MenuController extends Controller
 
     public function showEditionMenu()
     {
-        // con esto traemos las categorias con su stock correspondiente 
         $categorias = Category::with(['menu' => function ($query) {
             $query->with('stock');
         }, 'menu.stock'])->get();
 
         $showCategories = Category::get();
-        // dd($categorias);
         return view('edit_menu', compact(['categorias', 'showCategories']));
     }
 
@@ -70,7 +68,6 @@ class MenuController extends Controller
             'status' => 'nullable|boolean',
         ]);
 
-        // aqui se actualiza el menu y el stock
         $menu = Menu::findOrFail($id);
         $menu->name = $request->input('name');
         $menu->description = $request->input('description');
@@ -221,8 +218,8 @@ class MenuController extends Controller
             'id_category' => 'required',
             'name' => 'required|min:3',
             'description' => 'required|string|min:3',
-            'price' => 'required|numeric|gt:0', // mayor a 0
-            'stock' => 'required|numeric|gte:0' //mayor o igual a 0
+            'price' => 'required|numeric|gt:0', 
+            'stock' => 'required|numeric|gte:0' 
         ]);
 
         $menu = new Menu();

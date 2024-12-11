@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Menú')</title>
 
-    {{-- ÍCONO DEL NEGICIO --}}
     <link rel="icon" href="LOGO_ATENAS_high_quality_transparent.png">
 
 
@@ -214,17 +213,14 @@
     
 
     <script>
-    // Aquí se inicializa el carrito con el localStorage en formato JSON
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    // Función para actualizar la cantidad de productos en el carrito
     function updateCartCount() {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         document.getElementById('cart-count').textContent = totalItems;
         checkCartLimit();
     }
 
-    // Verifica si el límite de productos está alcanzado
     function checkCartLimit() {
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
         const addButtons = document.querySelectorAll('.btn-primary');
@@ -234,7 +230,6 @@
         });
     }
 
-    // Función para agregar un producto al carrito
     function addToCart(name, price, menuId) {
     const quantityInput = document.getElementById(`quantity${menuId}`);
     const quantity = parseInt(quantityInput.value);
@@ -251,7 +246,6 @@
         return;
     }
 
-    // Busca si el producto ya existe en el carrito
     const existingItem = cart.find(item => item.menuId === menuId);
 
     if (existingItem) {
@@ -263,17 +257,15 @@
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount(); 
 
-    // Cerrar el modal actual
     const currentModal = bootstrap.Modal.getInstance(document.getElementById(`modal${menuId}`));
     if (currentModal) {
         currentModal.hide();
     }
 
-    // Abrir el modal del carrito
     const cartModalElement = document.getElementById('cartModal');
     if (cartModalElement) {
         const cartModal = new bootstrap.Modal(cartModalElement);
-        toggleCart(); // Muestra los productos en el carrito
+        toggleCart(); 
         cartModal.show();
     } else {
         console.error('El modal con ID "cartModal" no se encontró en el DOM.');
@@ -281,10 +273,9 @@
 }
 
 
-    // Función para mostrar el carrito dentro del modal
     function toggleCart() {
         const cartItemsContainer = document.getElementById('cart-items');
-        cartItemsContainer.innerHTML = ''; // Limpia el contenido previo
+        cartItemsContainer.innerHTML = ''; 
         let total = 0;
 
         if (cart.length === 0) {
@@ -313,16 +304,6 @@
         }
     }
 
-
-    // Función para eliminar un producto por unidad del carrito
-    function removeFromCart(index) {
-        cart.splice(index, 1); // Elimina el producto del array
-        localStorage.setItem('cart', JSON.stringify(cart));
-        toggleCart(); // Actualiza el contenido del modal
-        updateCartCount();
-    }
-
-    // Incrementa la cantidad de productos y actualiza el carrito
     function increaseQuantity(menuId, stock) {
         const quantityInput = document.getElementById(`quantity${menuId}`);
         const stockElement = document.getElementById(`stock${menuId}`);
@@ -330,26 +311,20 @@
         let currentQuantity = parseInt(quantityInput.value);
         let currentStock = parseInt(stockElement.textContent);
 
-        // Calcular la cantidad total proyectada en el carrito
         const totalItemsInCart = cart.reduce((sum, item) => sum + item.quantity, 0);
-        const projectedTotal = totalItemsInCart + 1; // Proyecta el total si se incrementa este producto
+        const projectedTotal = totalItemsInCart + 1; 
 
-        // Validar límite de productos (10 productos máximo en total)
         if (projectedTotal > 10) {
             alert('No puedes agregar más productos. Límite de 10 alcanzado.');
-            buttonElement.disabled = true; // Deshabilitar el botón si el límite se alcanza
+            buttonElement.disabled = true; 
             return;
         }
 
-        // Validar que no se exceda el stock disponible
         if (currentQuantity < stock && currentStock > 0) {
-            // Incrementar la cantidad visible en el input
             quantityInput.value = currentQuantity + 1;
 
-            // Reducir el stock disponible visualmente
             stockElement.textContent = currentStock - 1;
 
-            // Deshabilitar el botón si el total proyectado alcanza el límite después del incremento
             if (projectedTotal === 10) {
                 buttonElement.disabled = true;
             }
@@ -358,7 +333,6 @@
         }
     }
 
-    // Reduce la cantidad de productos
     function decreaseQuantity(menuId) {
         const quantityInput = document.getElementById(`quantity${menuId}`);
         const stockElement = document.getElementById(`stock${menuId}`);
@@ -383,14 +357,11 @@
         }
     }
 
-    // Función para vaciar el carrito
     function clearCart() {
-    // Vaciar el carrito en el navegador
     cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
 
-    // Realizar una solicitud AJAX al servidor para vaciar el carrito en la sesión
     fetch('/cart/clear', {
         method: 'POST',
         headers: {
@@ -414,7 +385,6 @@
 }
 
 
-    // Limpia la vista correctamente al cerrar el modal
     document.addEventListener('hidden.bs.modal', function (event) {
         if (event.target.id === 'cartModal') {
             document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
@@ -423,14 +393,12 @@
         }
     });
 
-    // Limpieza adicional para asegurarse de que el modal funcione correctamente
     document.getElementById('cartModal').addEventListener('hidden.bs.modal', function () {
         document.body.style = '';
         document.body.classList.remove('modal-open');
         document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
     });
 
-    // Validar carrito antes de enviar el formulario
     function confirmCart() {
         if (cart.length === 0) {
             alert('El carrito está vacío.');
@@ -448,7 +416,6 @@
         form.submit();
     }
 
-    // Inicializar contador del carrito al cargar la página
     document.addEventListener('DOMContentLoaded', function () {
         updateCartCount();
     });

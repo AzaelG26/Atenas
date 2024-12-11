@@ -3,7 +3,6 @@
 @section('title', 'Buscar Direcciones')
 
 <style>
- /* Estilo general */
  body {
         background-color: #121212;
         color: #ffffff;
@@ -50,11 +49,11 @@
 
     .card-body {
         padding: 15px;
-        color: #000000; /* Cambiar el color de las letras */
+        color: #000000; 
     }
 
     .card:hover, .card.selected {
-        box-shadow: 0 0 15px 5px gold; /* Efecto de luz dorada */
+        box-shadow: 0 0 15px 5px gold; 
     }
 
     .card-title {
@@ -88,7 +87,6 @@
         transform: translateY(-2px);
     }
 
-    /* Responsividad */
     @media (max-width: 768px) {
         h2 {
             font-size: 2rem;
@@ -234,7 +232,6 @@
     const postalCodesData = document.getElementById('postalCodesData').getAttribute('data-postalcodes');
     const neighborhoods = JSON.parse(postalCodesData);
 
-    // Buscador dinámico
     document.getElementById('busqueda').addEventListener('keyup', function() {
         const query = this.value.toLowerCase();
         const resultados = document.getElementById('resultados');
@@ -338,7 +335,6 @@
     });
 
     document.getElementById('guardarDireccionBtn').addEventListener('click', function(event) {
-    // Obtener los valores de los campos obligatorios
     const calle = document.getElementById('calle').value.trim();
     const numeroExterior = document.getElementById('numeroExterior').value.trim();
     const referencia = document.getElementById('referencia').value.trim();

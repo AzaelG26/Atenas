@@ -13,10 +13,8 @@ class CartController extends Controller
     {
         $user = Auth::user();
 
-        // Obtener el carrito del usuario autenticado
         $cart = $user->cart;
 
-        // Si no existe un carrito, crear uno vacío
         if (!$cart) {
             $cart = Cart::create([
                 'user_id' => $user->id,
@@ -24,14 +22,11 @@ class CartController extends Controller
             ]);
         }
 
-        // Decodificar los items del carrito
         $items = json_decode($cart->items, true) ?? [];
 
-        // Pasar la variable $items a la vista
         return view('cart.show', compact('items'));
     }
 
-    // Agregar un producto al carrito
     public function addToCart(Request $request)
     {
         $user = Auth::user();
@@ -62,14 +57,12 @@ class CartController extends Controller
         $cart->items = json_encode($items);
         $cart->save();
 
-        // Agrega esta línea temporal para verificar el contenido del carrito
         dd($items);
 
         return response()->json(['message' => 'Producto(s) añadido(s) al carrito']);
     }
 
 
-    // Actualizar el carrito
     public function updateCart(Request $request)
     {
         $cart = Auth::user()->cart->firstOrCreate(['items' => json_encode([])]);
@@ -82,32 +75,12 @@ class CartController extends Controller
         return response()->json(['message' => 'Carrito actualizado']);
     }
 
-    // Eliminar un producto del carrito
-    public function removeFromCart(Request $request)
-    {
-        $cart = Auth::user()->cart;
-        if (!$cart) {
-            return response()->json(['message' => 'El carrito está vacío'], 400);
-        }
-
-        $items = json_decode($cart->items, true);
-        $menuId = $request->input('menuId');
-
-        $items = array_filter($items, fn($item) => $item['menuId'] !== $menuId);
-
-        $cart->items = json_encode(array_values($items));
-        $cart->save();
-
-        return response()->json(['message' => 'Producto eliminado del carrito']);
-    }
 
     // Vaciar el carrito
     public function clearCart(Request $request)
     {
-        // Limpia el carrito en la sesión
         $request->session()->forget('carrito');
 
-        // Devuelve una respuesta indicando éxito
         return response()->json(['success' => true, 'message' => 'El carrito ha sido vaciado.']);
     }
 }

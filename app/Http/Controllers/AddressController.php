@@ -79,7 +79,6 @@ class AddressController extends Controller
 
     public function registerAddress(Request $request)
 {
-    // Validar los campos, excepto el número interior
     $validatedData = $request->validate([
         'id_neighborhood' => 'required',
         'street' => 'required|string',
@@ -94,7 +93,6 @@ class AddressController extends Controller
         'reference.required' => 'Para nosotros es importante que coloques una referencia de donde quieres que se realice tu pedido.',
     ]);
 
-    // Obtener el ID del usuario autenticado
     $user = auth()->user()->people?->id;
 
     if ($user) {
@@ -172,12 +170,10 @@ class AddressController extends Controller
             return redirect()->back()->withErrors(['error' => 'Dirección no válida o no encontrada.']);
         }
 
-        // Guardar la dirección seleccionada en la sesión
         session(['selectedAddress' => $direccion]);
 
-        // Asegurar que el carrito esté en la sesión
         if (!session()->has('carrito')) {
-            session(['carrito' => []]); // Si no hay carrito, inicializa como vacío
+            session(['carrito' => []]); 
         }
 
         return redirect()->route('post_carro')->with('success', 'Dirección seleccionada correctamente.');

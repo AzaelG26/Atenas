@@ -39,19 +39,16 @@ return new class extends Migration
             DECLARE new_payment_id BIGINT;
             DECLARE new_order_id BIGINT;
 
-            -- Insertar el pago
             INSERT INTO payments (id_payment_method, amount, status, payment_date, created_at, updated_at) 
             VALUES (payment_method_id, payment_amount, payment_status, NOW(), NOW(), NOW());
 
             SET new_payment_id = LAST_INSERT_ID();
 
-            -- Insertar la orden online con la dirección asociada
             INSERT INTO online_orders (order_name, notes, id_people, total_price, id_payment, status, id_address, created_at, updated_at) 
             VALUES (order_name, order_notes, person_id, total_price, new_payment_id, "Pending", address_id, NOW(), NOW());
 
             SET new_order_id = LAST_INSERT_ID();
 
-            -- Devolver IDs generados
             SELECT 
                 new_payment_id AS PaymentID, 
                 new_order_id AS OrderID;
@@ -68,11 +65,9 @@ return new class extends Migration
         BEGIN
             -- Verificar si el stock es suficiente antes de proceder
             IF (SELECT stock FROM stock WHERE id_menu = menu_id) >= item_quantity THEN
-                -- Insertar los detalles de la orden
                 INSERT INTO online_orders_details (id_online_order, id_menu, quantity, specifications)
                 VALUES (order_id, menu_id, item_quantity, item_specifications);
 
-                -- Reducir el stock del producto
                 UPDATE stock
                 SET stock = stock - item_quantity
                 WHERE id_menu = menu_id;
@@ -88,12 +83,9 @@ return new class extends Migration
                 BEGIN
                     DECLARE new_folio_identifier VARCHAR(20);
                     
-                    -- Verificamos que el estado de la orden sea "Paid"
                     IF EXISTS (SELECT 1 FROM online_orders WHERE id_online_order = order_id AND status = "Paid") THEN
-                        -- Generar el folio basado en el ID de la orden
                         SET new_folio_identifier = CONCAT("ORD-", LPAD(order_id, 8, "0"));
                         
-                        -- Insertar el folio en la tabla `folios`
                         INSERT INTO folios (identifier, created_at, updated_at) 
                         VALUES (new_folio_identifier, NOW(), NOW());
                     END IF;
@@ -106,13 +98,11 @@ return new class extends Migration
             DECLARE order_id BIGINT;
             DECLARE folio_identifier VARCHAR(20);
 
-            -- Verificar si existe un folio con el ID proporcionado
             SELECT identifier INTO folio_identifier
             FROM folios
             WHERE id_folio = folio_id
             LIMIT 1;
 
-            -- Si el folio existe, asignarlo a una orden pendiente
             IF folio_identifier IS NOT NULL THEN
                 SELECT id_online_order INTO order_id
                 FROM online_orders
@@ -136,28 +126,21 @@ return new class extends Migration
                 DECLARE new_folio_identifier VARCHAR(20);
                 DECLARE existing_folio_id BIGINT;
 
-                -- Generamos el folio basado en el ID de la orden
                 SET new_folio_identifier = CONCAT("ORD-", LPAD(order_id, 8, "0"));
 
-                -- Verificar si la orden está en estado Completed
                 IF EXISTS (SELECT 1 FROM orders WHERE id_order = order_id AND status = "Completed") THEN
-                    -- Verificamos si ya existe un folio con este identificador
                     IF NOT EXISTS (SELECT 1 FROM folios WHERE identifier = new_folio_identifier) THEN
-                        -- Insertar el folio en la tabla `folios`
                         INSERT INTO folios (identifier, created_at, updated_at)
                         VALUES (new_folio_identifier, NOW(), NOW());
 
-                        -- Obtener el ID del folio insertado
                         SET existing_folio_id = LAST_INSERT_ID();
                     ELSE
-                        -- Si el folio ya existe, obtener el ID del folio existente
                         SELECT id_folio INTO existing_folio_id
                         FROM folios
                         WHERE identifier = new_folio_identifier
                         LIMIT 1;
                     END IF;
 
-                    -- Actualizar la orden para asociarla al folio
                     UPDATE orders
                     SET id_folio = existing_folio_id
                     WHERE id_order = order_id;
